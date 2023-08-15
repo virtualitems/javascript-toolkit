@@ -7,7 +7,7 @@ const Title = class extends React.Component {
 
 const Header = class extends React.Component {
     render() {
-        return React.createElement('header', { className: 'Header' }, this.props.children);
+        return React.createElement('header', { className: 'header' }, this.props.children);
     }
 };
 
