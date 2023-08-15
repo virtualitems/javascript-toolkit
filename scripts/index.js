@@ -34,6 +34,22 @@ const CounterButton = class extends React.Component {
 
 };
 
+
+const ToggleButton = function (props) {
+    const [active, setActive] = React.useState(false);
+    const el = React.createElement(
+        'button',
+        {
+            className: 'button',
+            onClick: () => setActive(!active)
+        },
+        `Active: ${active}`,
+    );
+
+    return el;
+};
+
+
 const Content = class extends React.Component {
     render() {
         return React.createElement('main', { className: 'content' }, this.props.children);
@@ -44,7 +60,7 @@ const Content = class extends React.Component {
 const App = class extends React.Component {
     render() {
         const header = React.createElement(Header, null, React.createElement(Title));
-        const content = React.createElement(Content, null, React.createElement(CounterButton));
+        const content = React.createElement(Content, null, React.createElement(CounterButton), React.createElement(ToggleButton));
         return React.createElement(React.Fragment, null, header, content);
     }
 };
