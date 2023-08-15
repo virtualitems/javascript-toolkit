@@ -34,6 +34,7 @@ const CounterButton = class extends React.Component {
 
 };
 
+
 const Content = class extends React.Component {
     render() {
         return React.createElement('main', { className: 'content' }, this.props.children);
