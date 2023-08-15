@@ -35,13 +35,25 @@ const CounterButton = class extends React.Component {
 };
 
 
+const useToggle = function (initialState) {
+
+    const [active, setActive] = React.useState(Boolean(initialState));
+
+    const toggle = () => {
+        setActive(!active);
+    };
+
+    return [active, toggle];
+};
+
+
 const ToggleButton = function (props) {
-    const [active, setActive] = React.useState(false);
+    const [active, toggle] = useToggle(false);
     const el = React.createElement(
         'button',
         {
             className: 'button',
-            onClick: () => setActive(!active)
+            onClick: toggle,
         },
         `Active: ${active}`,
     );
