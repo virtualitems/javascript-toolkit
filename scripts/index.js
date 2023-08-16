@@ -29,6 +29,7 @@ const Title = function(props) {
 
 const Button = function(props) {
     // example of dynamic text content
+    // if the component is actionable, the actions must be passed as props
     return React.createElement('button', { className: 'button', onClick: props.onClick }, props.innerText);
 };
 
@@ -87,7 +88,7 @@ const HeaderMainFooter = function(props) {
 // ----------------------------------------
 // pages return a rendered layout with contents
 
-const Page = function(props) {
+const BasicPage = function(props) {
     // example of page
 
     const headerContents = React.createElement(Title);
@@ -101,13 +102,26 @@ const Page = function(props) {
     return React.createElement(HeaderMainFooter, { headerContents, mainContents, footerContents });
 };
 
+const ContextPage = function(props) {
+    // example of page
+
+    const headerContents = React.createElement(Title);
+
+    const mainContents = null;
+
+    const footerContents = null;
+
+    return React.createElement(HeaderMainFooter, { headerContents, mainContents, footerContents });
+
+};
+
 
 // ----------------------------------------
 // root
 // ----------------------------------------
 
 // the root element can be inside a React wrapper
-const root = React.createElement(React.StrictMode, null, React.createElement(Page));
+const root = React.createElement(React.StrictMode, null, React.createElement(BasicPage));
 
 // the root element can have only one child
 ReactDOM.render(root, document.getElementById('root'));
