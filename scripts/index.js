@@ -1,84 +1,114 @@
-const Title = class extends React.Component {
-    render() {
-        return React.createElement('h1', null, 'React library');
-    }
+// ----------------------------------------
+// utils
+// ----------------------------------------
+
+// ----------------------------------------
+// hooks
+// ----------------------------------------
+
+const useCounter = function (initial) {
+    // example of custom hook
+    const initialState = Number(initial) || 0;
+    const [count, setCount] = React.useState(initialState);
+    const increment = () => setCount(count + 1);
+    const decrement = () => setCount(count - 1);
+    const reset = () => setCount(initialState);
+    return [count, increment, decrement, reset];
 };
 
 
-const Header = class extends React.Component {
-    render() {
-        return React.createElement('header', { className: 'header' }, this.props.children);
-    }
+// ----------------------------------------
+// contents
+// ----------------------------------------
+// contents use custom props to pass data
+
+const Title = function(props) {
+    // example of fixed text content
+    return React.createElement('h1', null, 'React library');
+};
+
+const Button = function(props) {
+    // example of dynamic text content
+    return React.createElement('button', { className: 'button', onClick: props.onClick }, props.innerText);
 };
 
 
-const CounterButton = class extends React.Component {
+// ----------------------------------------
+// containers
+// ----------------------------------------
+// containers use children prop to pass data
 
-    constructor(props) {
-        super(props);
-        this.state = { count: 0 };
-    }
-
-    render() {
-        const el = React.createElement(
-            'button',
-            {
-                className: 'button',
-                onClick: () => this.setState({ count: this.state.count + 1 })
-            },
-            `Count: ${this.state.count}`,
-        );
-
-        return el;
-    }
-
+const Header = function(props) {
+    // example of dynamic children container
+    return React.createElement('header', { className: 'header' }, props.children);
 };
 
-
-const useToggle = function (initialState) {
-
-    const [active, setActive] = React.useState(Boolean(initialState));
-
-    const toggle = () => {
-        setActive(!active);
-    };
-
-    return [active, toggle];
+const Content = function(props) {
+    return React.createElement('main', { className: 'content' }, props.children);
 };
 
+const Footer = function(props) {
+    return React.createElement('footer', { className: 'footer' }, props.children);
+};
 
-const ToggleButton = function (props) {
-    const [active, toggle] = useToggle(false);
-    const el = React.createElement(
-        'button',
-        {
-            className: 'button',
-            onClick: toggle,
-        },
-        `Active: ${active}`,
+const Counter = function(props) {
+    // example of fixed children container
+
+    const [count, increment, decrement, reset] = useCounter(props.initialCount);
+
+    const decrementButton = React.createElement(Button, { onClick: decrement, innerText: '-' });
+    const incrementButton = React.createElement(Button, { onClick: increment, innerText: '+' });
+    const countText = React.createElement('span', null, count);
+
+    return React.createElement('div', { className: 'counter' },
+        [decrementButton, countText, incrementButton]
     );
-
-    return el;
 };
 
 
-const Content = class extends React.Component {
-    render() {
-        return React.createElement('main', { className: 'content' }, this.props.children);
-    }
+// ----------------------------------------
+// layouts
+// ----------------------------------------
+// layouts return a fragment with placeholders
+
+const HeaderMainFooter = function(props) {
+    // example of layout
+
+    const header = React.createElement(Header, null, props.headerContents);
+    const main = React.createElement(Content, null, props.mainContents);
+    const footer = React.createElement(Footer, null, props.footerContents);
+
+    return React.createElement(React.Fragment, null, [header, main, footer]);
 };
 
 
-const App = class extends React.Component {
-    render() {
-        const header = React.createElement(Header, null, React.createElement(Title));
-        const content = React.createElement(Content, null, React.createElement(CounterButton), React.createElement(ToggleButton));
-        return React.createElement(React.Fragment, null, header, content);
-    }
+// ----------------------------------------
+// pages
+// ----------------------------------------
+// pages return a rendered layout with contents
+
+const Page = function(props) {
+    // example of page
+
+    const headerContents = React.createElement(Title);
+
+    const mainContents = React.createElement('div', { className: 'container' }, [
+        React.createElement(Counter, { initialCount: 0 }),
+    ]);
+
+    const footerContents = null;
+
+    return React.createElement(HeaderMainFooter, { headerContents, mainContents, footerContents });
 };
 
+
+// ----------------------------------------
+// root
+// ----------------------------------------
+// the root element can have only one child
+// the root element can be inside a React wrapper
 
 ReactDOM.render(
-    React.createElement(React.StrictMode, null, React.createElement(App)),
+    React.createElement(React.StrictMode, null, React.createElement(Page)),
     document.getElementById('root'),
 );
