@@ -17,6 +17,17 @@ const useCounter = function (initial) {
     return [count, increment, decrement, reset];
 };
 
+const useToggle = function (firstValue, secondValue) {
+    const [value, setValue] = React.useState(firstValue);
+
+    const toggle = function () {
+        const newValue = value === firstValue ? secondValue : firstValue;
+        setValue(newValue);
+    };
+
+    return [value, toggle];
+};
+
 
 // ----------------------------------------
 // context
@@ -98,6 +109,9 @@ const HeaderMainFooter = function(props) {
     const header = React.createElement(Header,
         {
             className: `theme--${context.theme}`,
+            onClick: function() {
+                console.log('header clicked');
+            },
         },
         props.headerContents
     );
