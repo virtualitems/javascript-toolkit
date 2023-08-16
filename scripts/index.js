@@ -92,11 +92,12 @@ const Header = function(props) {
 
 const Content = function(props) {
     // example of dynamic children container
-    return React.createElement('main', null, props.children);
+    return React.createElement('main', {className: 'main'}, props.children);
 };
 
 const Footer = function(props) {
-    return React.createElement('footer', null, props.children);
+    // example of dynamic children container
+    return React.createElement('footer', {className: 'footer'}, props.children);
 };
 
 const Counter = function(props) {
