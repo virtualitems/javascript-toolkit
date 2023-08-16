@@ -149,13 +149,13 @@ const ThreeSectionsLayout = function(props) {
 
 const Page = function(props) {
     // example of page
-    const context = React.useContext(AppContext);
-
     const headerContents = React.createElement(Title);
 
-    const mainContents = React.createElement('div', { className: 'container' }, [
-        React.createElement(Counter, { initialCount: 0 }),
-    ]);
+    const mainContents = React.createElement(React.Fragment, null,
+        React.createElement('section', null,
+            React.createElement(Counter, { initialCount: 0 }),
+        ),
+    );
 
     const footerContents = null;
 
