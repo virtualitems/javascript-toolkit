@@ -1,3 +1,6 @@
+// beginning of application
+(function (document, window) {
+
 // ----------------------------------------
 // utils
 // ----------------------------------------
@@ -173,3 +176,7 @@ const root =
 
 // the root element can have only one child
 ReactDOM.render(root, document.getElementById('root'));
+
+
+// end of application
+})(document, window);
