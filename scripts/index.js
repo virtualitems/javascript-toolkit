@@ -115,6 +115,21 @@ const Counter = function(props) {
 };
 
 
+const Form = function({ children, className, onSubmit, method, action, enctype }) {
+    // example of form container
+    // if the component is actionable, the actions must be passed as props
+
+    const config = {
+        className: `form ${className || ''}`,
+        onSubmit: onSubmit,
+        method: method,
+        action: action,
+        enctype: enctype,
+    };
+
+    return React.createElement('form', config, children);
+};
+
 // ----------------------------------------
 // layouts
 // ----------------------------------------
@@ -152,8 +167,14 @@ const Page = function(props) {
     const headerContents = React.createElement(Title);
 
     const mainContents = React.createElement(React.Fragment, null,
-        React.createElement('section', null,
+        React.createElement('section', { className: 'section' },
             React.createElement(Counter, { initialCount: 0 }),
+        ),
+        React.createElement('section', { className: 'section' },
+            React.createElement(Form, { method: 'POST', enctype: 'multipart/form-data', action: '#' },
+                React.createElement('input', { type: 'file', name: 'file' }),
+                React.createElement('input', { type: 'submit', value: 'Submit' }),
+            ),
         ),
     );
 
@@ -167,16 +188,26 @@ const Page = function(props) {
 // root
 // ----------------------------------------
 
-// the root element can be inside wrappers
-const root =
+// is necessary an html element with id="root"
+const htmlRootElement = document.getElementById('root');
+
+// create an ReactDOM root element
+const reactRootElement = ReactDOM.createRoot(htmlRootElement);
+
+// the main component can be inside wrappers
+// the root element can have only one child
+const App =
     React.createElement(React.StrictMode, null,
         React.createElement(AppContextProvider, null,
             React.createElement(Page)
         )
     );
 
-// the root element can have only one child
-ReactDOM.render(root, document.getElementById('root'));
+// render the main component inside the root element
+reactRootElement.render(App);
+
+// short version
+//ReactDOM.render(App, document.getElementById('root'));
 
 
 // end of application

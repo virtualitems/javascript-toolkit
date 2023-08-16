@@ -11,6 +11,10 @@ body {
     width: 100%;
 }
 
+.section {
+    margin: 1em 0;
+}
+
 .header {
     background-color: #333;
     color: #fff;
