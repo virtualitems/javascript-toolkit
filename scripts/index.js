@@ -2,6 +2,7 @@
 // utils
 // ----------------------------------------
 
+
 // ----------------------------------------
 // hooks
 // ----------------------------------------
@@ -15,6 +16,12 @@ const useCounter = function (initial) {
     const reset = () => setCount(initialState);
     return [count, increment, decrement, reset];
 };
+
+
+// ----------------------------------------
+// context
+// ----------------------------------------
+const AppContext = React.createContext(null);
 
 
 // ----------------------------------------
@@ -41,15 +48,26 @@ const Button = function(props) {
 
 const Header = function(props) {
     // example of dynamic children container
-    return React.createElement('header', { className: 'header' }, props.children);
+    const { children, className, onClick } = props;
+
+    const element = React.createElement('header',
+        {
+            className: `header ${className || ''}`,
+            onClick: onClick,
+        },
+        children
+    );
+
+    return element;
 };
 
 const Content = function(props) {
-    return React.createElement('main', { className: 'content' }, props.children);
+    // example of dynamic children container
+    return React.createElement('main', null, props.children);
 };
 
 const Footer = function(props) {
-    return React.createElement('footer', { className: 'footer' }, props.children);
+    return React.createElement('footer', null, props.children);
 };
 
 const Counter = function(props) {
@@ -75,8 +93,17 @@ const Counter = function(props) {
 const HeaderMainFooter = function(props) {
     // example of layout
 
-    const header = React.createElement(Header, null, props.headerContents);
+    const context = React.useContext(AppContext);
+
+    const header = React.createElement(Header,
+        {
+            className: `theme--${context.theme}`,
+        },
+        props.headerContents
+    );
+
     const main = React.createElement(Content, null, props.mainContents);
+
     const footer = React.createElement(Footer, null, props.footerContents);
 
     return React.createElement(React.Fragment, null, [header, main, footer]);
@@ -88,8 +115,9 @@ const HeaderMainFooter = function(props) {
 // ----------------------------------------
 // pages return a rendered layout with contents
 
-const BasicPage = function(props) {
+const Page = function(props) {
     // example of page
+    const context = React.useContext(AppContext);
 
     const headerContents = React.createElement(Title);
 
@@ -102,26 +130,19 @@ const BasicPage = function(props) {
     return React.createElement(HeaderMainFooter, { headerContents, mainContents, footerContents });
 };
 
-const ContextPage = function(props) {
-    // example of page
-
-    const headerContents = React.createElement(Title);
-
-    const mainContents = null;
-
-    const footerContents = null;
-
-    return React.createElement(HeaderMainFooter, { headerContents, mainContents, footerContents });
-
-};
-
 
 // ----------------------------------------
 // root
 // ----------------------------------------
 
 // the root element can be inside a React wrapper
-const root = React.createElement(React.StrictMode, null, React.createElement(BasicPage));
+
+const root =
+    React.createElement(React.StrictMode, null,
+        React.createElement(AppContext.Provider, {value: {theme: 'dark'}},
+            React.createElement(Page)
+        )
+    );
 
 // the root element can have only one child
 ReactDOM.render(root, document.getElementById('root'));
