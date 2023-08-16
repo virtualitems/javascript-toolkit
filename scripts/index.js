@@ -105,10 +105,9 @@ const Page = function(props) {
 // ----------------------------------------
 // root
 // ----------------------------------------
-// the root element can have only one child
-// the root element can be inside a React wrapper
 
-ReactDOM.render(
-    React.createElement(React.StrictMode, null, React.createElement(Page)),
-    document.getElementById('root'),
-);
+// the root element can be inside a React wrapper
+const root = React.createElement(React.StrictMode, null, React.createElement(Page));
+
+// the root element can have only one child
+ReactDOM.render(root, document.getElementById('root'));
