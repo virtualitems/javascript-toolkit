@@ -39,7 +39,7 @@ const useToggle = function (firstValue, secondValue) {
 
 const AppContext = React.createContext(null);
 
-const ContextWrapper = function(props) {
+const AppContextProvider = function(props) {
     // example of context wrapper
 
     const [theme, toggleTheme] = useToggle('dark', 'light');
@@ -165,11 +165,10 @@ const Page = function(props) {
 // root
 // ----------------------------------------
 
-// the root element can be inside a React wrapper
-
+// the root element can be inside wrappers
 const root =
     React.createElement(React.StrictMode, null,
-        React.createElement(ContextWrapper, null,
+        React.createElement(AppContextProvider, null,
             React.createElement(Page)
         )
     );
