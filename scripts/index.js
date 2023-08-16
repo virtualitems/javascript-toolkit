@@ -39,7 +39,7 @@ const useToggle = function (firstValue, secondValue) {
 
 const AppContext = React.createContext(null);
 
-const AppContextProvider = function(props) {
+const AppContextProvider = function({ children }) {
     // example of context wrapper
 
     const [theme, toggleTheme] = useToggle('dark', 'light');
@@ -49,7 +49,7 @@ const AppContextProvider = function(props) {
         toggleTheme,
     };
 
-    return React.createElement(AppContext.Provider, {value: context}, props.children);
+    return React.createElement(AppContext.Provider, {value: context}, children);
 };
 
 
@@ -58,15 +58,15 @@ const AppContextProvider = function(props) {
 // ----------------------------------------
 // contents use custom props to pass data
 
-const Title = function(props) {
+const Title = function(_) {
     // example of fixed text content
     return React.createElement('h1', null, 'React library');
 };
 
-const Button = function(props) {
+const Button = function({ onClick, innerText }) {
     // example of dynamic text content
     // if the component is actionable, the actions must be passed as props
-    return React.createElement('button', { className: 'button', onClick: props.onClick }, props.innerText);
+    return React.createElement('button', { className: 'button', onClick }, innerText);
 };
 
 
@@ -75,9 +75,8 @@ const Button = function(props) {
 // ----------------------------------------
 // containers use children prop to pass data
 
-const Header = function(props) {
+const Header = function({ children, className, onClick }) {
     // example of dynamic children container
-    const { children, className, onClick } = props;
 
     const element = React.createElement('header',
         {
@@ -90,20 +89,20 @@ const Header = function(props) {
     return element;
 };
 
-const Content = function(props) {
+const Content = function({ children }) {
     // example of dynamic children container
-    return React.createElement('main', {className: 'main'}, props.children);
+    return React.createElement('main', {className: 'main'}, children);
 };
 
-const Footer = function(props) {
+const Footer = function({ children }) {
     // example of dynamic children container
-    return React.createElement('footer', {className: 'footer'}, props.children);
+    return React.createElement('footer', {className: 'footer'}, children);
 };
 
-const Counter = function(props) {
+const Counter = function({ initialCount }) {
     // example of fixed children container
 
-    const [count, increment, decrement, reset] = useCounter(props.initialCount);
+    const [count, increment, decrement, reset] = useCounter(initialCount);
 
     const decrementButton = React.createElement(Button, { onClick: decrement, innerText: '-' });
     const incrementButton = React.createElement(Button, { onClick: increment, innerText: '+' });
@@ -112,6 +111,7 @@ const Counter = function(props) {
     return React.createElement('div', { className: 'counter' },
         [decrementButton, countText, incrementButton]
     );
+
 };
 
 
@@ -136,7 +136,11 @@ const Form = function({ children, className, onSubmit, method, action, enctype }
 // layouts return a fragment with placeholders
 // the placeholders are props
 
-const ThreeSectionsLayout = function(props) {
+const ThreeSectionsLayout = function({
+        headerContents,
+        mainContents,
+        footerContents,
+    }) {
     // example of layout
 
     const context = React.useContext(AppContext);
@@ -146,12 +150,12 @@ const ThreeSectionsLayout = function(props) {
             className: `theme--${context.theme}`,
             onClick: () => context.toggleTheme(),
         },
-        props.headerContents
+        headerContents
     );
 
-    const main = React.createElement(Content, null, props.mainContents);
+    const main = React.createElement(Content, null, mainContents);
 
-    const footer = React.createElement(Footer, null, props.footerContents);
+    const footer = React.createElement(Footer, null, footerContents);
 
     return React.createElement(React.Fragment, null, [header, main, footer]);
 };
@@ -162,7 +166,7 @@ const ThreeSectionsLayout = function(props) {
 // ----------------------------------------
 // pages return a rendered layout with contents
 
-const Page = function(props) {
+const Page = function(_) {
     // example of page
     const headerContents = React.createElement(Title);
 
