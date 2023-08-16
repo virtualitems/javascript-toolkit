@@ -119,8 +119,9 @@ const Counter = function(props) {
 // layouts
 // ----------------------------------------
 // layouts return a fragment with placeholders
+// the placeholders are props
 
-const HeaderMainFooter = function(props) {
+const ThreeSectionsLayout = function(props) {
     // example of layout
 
     const context = React.useContext(AppContext);
@@ -158,7 +159,7 @@ const Page = function(props) {
 
     const footerContents = null;
 
-    return React.createElement(HeaderMainFooter, { headerContents, mainContents, footerContents });
+    return React.createElement(ThreeSectionsLayout, { headerContents, mainContents, footerContents });
 };
 
 
