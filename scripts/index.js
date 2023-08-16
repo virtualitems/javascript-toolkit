@@ -32,7 +32,22 @@ const useToggle = function (firstValue, secondValue) {
 // ----------------------------------------
 // context
 // ----------------------------------------
+// context is used to share one state between all components
+
 const AppContext = React.createContext(null);
+
+const ContextWrapper = function(props) {
+    // example of context wrapper
+
+    const [theme, toggleTheme] = useToggle('dark', 'light');
+
+    const context = {
+        theme,
+        toggleTheme,
+    };
+
+    return React.createElement(AppContext.Provider, {value: context}, props.children);
+};
 
 
 // ----------------------------------------
@@ -109,9 +124,7 @@ const HeaderMainFooter = function(props) {
     const header = React.createElement(Header,
         {
             className: `theme--${context.theme}`,
-            onClick: function() {
-                console.log('header clicked');
-            },
+            onClick: () => context.toggleTheme(),
         },
         props.headerContents
     );
@@ -153,7 +166,7 @@ const Page = function(props) {
 
 const root =
     React.createElement(React.StrictMode, null,
-        React.createElement(AppContext.Provider, {value: {theme: 'dark'}},
+        React.createElement(ContextWrapper, null,
             React.createElement(Page)
         )
     );
