@@ -68,16 +68,28 @@ const useRepository = function (model, fetchTarget, fetchConfig) {
         () => new Promise((resolve, reject) => {
 
             fetch(fetchTarget, fetchConfig)
-                .catch(error => reject(error))
+                .catch(error => reject({
+                    when: 'fetch',
+                    throwed: error
+                }))
 
                 .then(response => response.json())
-                    .catch(error => reject(error))
+                    .catch(error => reject({
+                        when: 'response',
+                        throwed: error
+                    }))
 
                 .then(rawData => rawData.map(itemData => new model(itemData)))
-                    .catch(error => reject(error))
+                    .catch(error => reject({
+                        when: 'transform',
+                        throwed: error
+                    }))
 
                 .then(data => resolve(data))
-                    .catch(error => reject(error))
+                    .catch(error => reject({
+                        when: 'resolve',
+                        throwed: error
+                    }))
         }),
         [fetchTarget, fetchConfig, model]
     );
@@ -137,25 +149,6 @@ const UserModel = class {
         this.website = website;
         this.company = company;
     }
-};
-
-
-// ----------------------------------------
-// repositories
-// ----------------------------------------
-// repositories are used to obtain data from external sources
-
-const UsersRepository = class {
-    async all() {
-
-        const url = 'https://jsonplaceholder.typicode.com/users';
-
-        const response = await fetch(url);
-        const rawData = await response.json();
-        const users = rawData.map(userData => new UserModel(userData));
-
-        return users;
-    };
 };
 
 
