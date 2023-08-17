@@ -59,10 +59,12 @@ const useToggle = function (firstValue, secondValue) {
     return [value, toggle];
 };
 
-const useRepository = function (model, fetchTarget, fetchConfig) {
+const useRepository = function (model, fetchTarget, fetchConfig, repoConfig) {
     const [data, setData] = React.useState(null);
     const [error, setError] = React.useState(null);
     const [loading, setLoading] = React.useState(false);
+
+    const isValid = repoConfig?.isValid || (() => true);
 
     const fetchData = React.useCallback(
         () => new Promise((resolve, reject) => {
@@ -79,7 +81,12 @@ const useRepository = function (model, fetchTarget, fetchConfig) {
                         throwed: error
                     }))
 
-                .then(rawData => rawData.map(itemData => new model(itemData)))
+                .then(rawData => rawData.map(itemData => {
+                    if (isValid(itemData))
+                        return new model(itemData);
+                    else
+                        throw new Error('Invalid data');
+                }))
                     .catch(error => reject({
                         when: 'transform',
                         throwed: error
