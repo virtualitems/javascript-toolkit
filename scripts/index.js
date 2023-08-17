@@ -26,6 +26,7 @@ const UserModel = class {
     }
 };
 
+
 // ----------------------------------------
 // polyfills
 // ----------------------------------------
@@ -114,6 +115,7 @@ const Title = function(_) {
 };
 
 const Button = function({ onClick, innerText }) {
+    console.log('rendered button', innerText);
     // example of dynamic text content
     // if the component is actionable, the actions must be passed as props
     return React.createElement('button', { type: 'button', className: 'button', onClick }, innerText);
@@ -188,26 +190,12 @@ const Form = function({ children, className, onSubmit, method, action, enctype }
 // layouts return a fragment with placeholders
 // the placeholders are props
 
-const ThreeSectionsLayout = function({
-        headerContents,
-        mainContents,
-        footerContents,
-    }) {
+const ThreeSectionsLayout = function({ headerContents, mainContents, footerContents }) {
     // example of layout
 
-    const context = React.useContext(AppContext);
-
-    const header = React.createElement(Header,
-        {
-            className: `theme--${context.theme}`,
-            onClick: () => context.toggleTheme(),
-        },
-        headerContents
-    );
-
-    const main = React.createElement(Content, null, mainContents);
-
-    const footer = React.createElement(Footer, null, footerContents);
+    const header = React.createElement(Header, headerContents?.props, headerContents?.children);
+    const main = React.createElement(Content, mainContents?.props, mainContents?.children);
+    const footer = React.createElement(Footer, footerContents?.props, footerContents?.children);
 
     return React.createElement(React.Fragment, null, [header, main, footer]);
 };
@@ -220,30 +208,51 @@ const ThreeSectionsLayout = function({
 
 const Page = function(_) {
     // example of page
-    const headerContents = React.createElement(Title);
 
-    const mainContents = React.createElement(React.Fragment, null,
+    const context = React.useContext(AppContext);
 
-        React.createElement('section', { className: 'section' },
+    const headerContents = {
+        props: {
+            className: `theme--${context.theme}`,
+            onClick: () => context.toggleTheme(),
+        },
+        children: React.createElement(Title)
+    };
 
-            React.createElement('h1', null, 'Counter section'),
-            React.createElement(Counter, { initialCount: 0 }),
+    const mainContents = {
+        props: null,
 
-        ),  // end of counter section
+        children: React.createElement(React.Fragment, null,
 
-        React.createElement('section', { className: 'section' },
-            React.createElement(Form, { method: 'POST', enctype: 'multipart/form-data', action: '#' },
-            React.createElement('h1', null, 'Form section'),
-            React.createElement('div', null,
-                    React.createElement('input', { type: 'file', name: 'file' })
-                ),
+            React.createElement('section', { className: 'section' },
+
+                React.createElement('h1', null, 'Theme section'),
+                React.createElement('p', null, `Current theme: ${context.theme}`),
+
+            ),  // end of counter section
+
+            React.createElement('section', { className: 'section' },
+
+                React.createElement('h1', null, 'Counter section'),
+                React.createElement(Counter, { initialCount: 0 }),
+
+            ),  // end of counter section
+
+            React.createElement('section', { className: 'section' },
+                React.createElement(Form, { method: 'POST', enctype: 'multipart/form-data', action: '#' },
+                React.createElement('h1', null, 'Form section'),
                 React.createElement('div', null,
-                    React.createElement('input', { type: 'submit', value: 'Submit' }),
-                ),
-            ),
-        ),  // end of form section
+                        React.createElement('input', { type: 'file', name: 'file' })
+                    ),
+                    React.createElement('div', null,
+                        React.createElement('input', { type: 'submit', value: 'Submit' }),
+                    ),
+                )
 
-    );  // end of main contents
+            )  // end of form section
+
+        )  // end of main contents
+    };
 
     const footerContents = null;
 
