@@ -80,9 +80,19 @@ const useToggle = function (firstValue, secondValue) {
 };
 
 const useRepository = function (model_class, fetchTarget, fetchConfig, repoConfig) {
-    const [data, setData] = React.useState(null);
-    const [error, setError] = React.useState(null);
+    const [data, setStateData] = React.useState(null);
+    const [error, setStateError] = React.useState(null);
     const [loading, setLoading] = React.useState(false);
+
+    const setData = React.useCallback((newData) => {
+        setStateData(newData);
+        setStateError(null);
+    }, [setStateData, setStateError]);
+
+    const setError = React.useCallback((newError) => {
+        setStateData(null);
+        setStateError(newError);
+    }, [setStateData, setStateError]);
 
     const isValid = repoConfig?.isValid || (() => true);
 
@@ -115,10 +125,9 @@ const useRepository = function (model_class, fetchTarget, fetchConfig, repoConfi
 
             // transform
             .then(rawData => rawData.map(itemData => {
-                if (isValid(itemData))
-                    return new model_class(itemData);
-                else
-                    reject(new ValidationError('Invalid data'));
+                return isValid(itemData)
+                        ? new model_class(itemData)
+                        : reject(new ValidationError('Invalid data'));
             }))
             .catch(stepError => {
                 setError(new RepositoryError({
@@ -150,7 +159,7 @@ const useRepository = function (model_class, fetchTarget, fetchConfig, repoConfi
         // loading
         setLoading(true);
 
-    }, [model_class, fetchTarget, fetchConfig]);
+    }, [model_class, fetchTarget, fetchConfig, repoConfig]);
 
     return [send, data, error, loading];
 
