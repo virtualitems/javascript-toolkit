@@ -358,9 +358,11 @@ const Page = function(_) {
             ),  // end of counter section
 
             React.createElement('section', { className: 'section' },
-                React.createElement(Form, { method: 'POST', enctype: 'multipart/form-data', action: '#' },
+
                 React.createElement('h1', null, 'Form section'),
-                React.createElement('div', null,
+
+                React.createElement(Form, { method: 'POST', enctype: 'multipart/form-data', action: '#' },
+                    React.createElement('div', null,
                         React.createElement('input', { type: 'file', name: 'file' })
                     ),
                     React.createElement('div', null,
