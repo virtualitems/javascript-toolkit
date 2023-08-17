@@ -1,6 +1,19 @@
 // beginning of application
 (function (document, window) {
 
+
+// ----------------------------------------
+// style strings
+// ----------------------------------------
+// style strings are used to group css class names in a single variable
+
+
+// ----------------------------------------
+// polyfills
+// ----------------------------------------
+// polyfills are used to provide modern functionality on older browsers that do not natively support it
+
+
 // ----------------------------------------
 // utils
 // ----------------------------------------
