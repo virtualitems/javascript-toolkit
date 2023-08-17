@@ -1,30 +1,26 @@
+/* Notes
+
+Components architecture:
+Page > Sections > Layout > Containers > Contents
+
+Components instances:
+  Page
+  |- Sections
+  |  |- Contents
+  |  |- Containers
+  |- Layout
+
+*/
+
 // beginning of application
 (function (document, window) {
-
+'use strict';
 
 // ----------------------------------------
-// style strings
+// globals
 // ----------------------------------------
+// globals are constants that are used in the whole application
 // style strings are used to group css class names in a single variable
-
-
-// ----------------------------------------
-// models
-// ----------------------------------------
-// models are used to define the structure of data
-
-const UserModel = class {
-    constructor({id, name, username, email, address, phone, website, company}) {
-        this.id = id;
-        this.name = name;
-        this.username = username;
-        this.email = email;
-        this.address = address;
-        this.phone = phone;
-        this.website = website;
-        this.company = company;
-    }
-};
 
 
 // ----------------------------------------
@@ -36,25 +32,6 @@ const UserModel = class {
 // ----------------------------------------
 // utils
 // ----------------------------------------
-
-
-// ----------------------------------------
-// repositories
-// ----------------------------------------
-// repositories are used to obtain data from external sources
-
-const UsersRepository = class {
-    async all() {
-
-        const url = 'https://jsonplaceholder.typicode.com/users';
-
-        const response = await fetch(url);
-        const rawData = await response.json();
-        const users = rawData.map(userData => new UserModel(userData));
-
-        return users;
-    };
-};
 
 
 // ----------------------------------------
@@ -105,6 +82,44 @@ const AppContextProvider = function({ children }) {
 
 
 // ----------------------------------------
+// models
+// ----------------------------------------
+// models are used to define the structure of data
+
+const UserModel = class {
+    constructor({id, name, username, email, address, phone, website, company}) {
+        this.id = id;
+        this.name = name;
+        this.username = username;
+        this.email = email;
+        this.address = address;
+        this.phone = phone;
+        this.website = website;
+        this.company = company;
+    }
+};
+
+
+// ----------------------------------------
+// repositories
+// ----------------------------------------
+// repositories are used to obtain data from external sources
+
+const UsersRepository = class {
+    async all() {
+
+        const url = 'https://jsonplaceholder.typicode.com/users';
+
+        const response = await fetch(url);
+        const rawData = await response.json();
+        const users = rawData.map(userData => new UserModel(userData));
+
+        return users;
+    };
+};
+
+
+// ----------------------------------------
 // contents
 // ----------------------------------------
 // contents use custom props to pass data
@@ -115,7 +130,6 @@ const Title = function(_) {
 };
 
 const Button = function({ onClick, innerText }) {
-    console.log('rendered button', innerText);
     // example of dynamic text content
     // if the component is actionable, the actions must be passed as props
     return React.createElement('button', { type: 'button', className: 'button', onClick }, innerText);
@@ -154,7 +168,7 @@ const Footer = function({ children }) {
 const Counter = function({ initialCount }) {
     // example of fixed children container
 
-    const [count, increment, decrement, reset] = useCounter(initialCount);
+    const [count, increment, decrement, _] = useCounter(initialCount);
 
     const decrementButton = React.createElement(Button, { onClick: decrement, innerText: '-' });
     const incrementButton = React.createElement(Button, { onClick: increment, innerText: '+' });
@@ -183,6 +197,12 @@ const Form = function({ children, className, onSubmit, method, action, enctype }
 
     return React.createElement('form', config, children);
 };
+
+
+// ----------------------------------------
+// Sections
+// ----------------------------------------
+
 
 // ----------------------------------------
 // layouts
