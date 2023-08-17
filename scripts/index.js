@@ -9,6 +9,24 @@
 
 
 // ----------------------------------------
+// models
+// ----------------------------------------
+// models are used to define the structure of data
+
+const UserModel = class {
+    constructor({id, name, username, email, address, phone, website, company}) {
+        this.id = id;
+        this.name = name;
+        this.username = username;
+        this.email = email;
+        this.address = address;
+        this.phone = phone;
+        this.website = website;
+        this.company = company;
+    }
+};
+
+// ----------------------------------------
 // polyfills
 // ----------------------------------------
 // polyfills are used to provide modern functionality on older browsers that do not natively support it
@@ -17,6 +35,25 @@
 // ----------------------------------------
 // utils
 // ----------------------------------------
+
+
+// ----------------------------------------
+// repositories
+// ----------------------------------------
+// repositories are used to obtain data from external sources
+
+const UsersRepository = class {
+    async all() {
+
+        const url = 'https://jsonplaceholder.typicode.com/users';
+
+        const response = await fetch(url);
+        const rawData = await response.json();
+        const users = rawData.map(userData => new UserModel(userData));
+
+        return users;
+    };
+};
 
 
 // ----------------------------------------
@@ -79,7 +116,7 @@ const Title = function(_) {
 const Button = function({ onClick, innerText }) {
     // example of dynamic text content
     // if the component is actionable, the actions must be passed as props
-    return React.createElement('button', { className: 'button', onClick }, innerText);
+    return React.createElement('button', { type: 'button', className: 'button', onClick }, innerText);
 };
 
 
@@ -122,7 +159,9 @@ const Counter = function({ initialCount }) {
     const countText = React.createElement('span', null, count);
 
     return React.createElement('div', { className: 'counter' },
-        [decrementButton, countText, incrementButton]
+        decrementButton,
+        countText,
+        incrementButton,
     );
 
 };
@@ -184,16 +223,27 @@ const Page = function(_) {
     const headerContents = React.createElement(Title);
 
     const mainContents = React.createElement(React.Fragment, null,
+
         React.createElement('section', { className: 'section' },
+
+            React.createElement('h1', null, 'Counter section'),
             React.createElement(Counter, { initialCount: 0 }),
-        ),
+
+        ),  // end of counter section
+
         React.createElement('section', { className: 'section' },
             React.createElement(Form, { method: 'POST', enctype: 'multipart/form-data', action: '#' },
-                React.createElement('input', { type: 'file', name: 'file' }),
-                React.createElement('input', { type: 'submit', value: 'Submit' }),
+            React.createElement('h1', null, 'Form section'),
+            React.createElement('div', null,
+                    React.createElement('input', { type: 'file', name: 'file' })
+                ),
+                React.createElement('div', null,
+                    React.createElement('input', { type: 'submit', value: 'Submit' }),
+                ),
             ),
-        ),
-    );
+        ),  // end of form section
+
+    );  // end of main contents
 
     const footerContents = null;
 
