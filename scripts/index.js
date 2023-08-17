@@ -85,68 +85,72 @@ const useRepository = function (model_class, fetchTarget, fetchConfig, repoConfi
     const [loading, setLoading] = React.useState(false);
 
     const isValid = repoConfig?.isValid || (() => true);
-    const dependencies = repoConfig?.dependencies || [];
 
+    const send = React.useCallback(() => {
 
-    const fetchData = React.useCallback(
-        () => new Promise((resolve, reject) => {
+        // async process wrapper
+        new Promise((resolve, reject) => {
 
+            // request
             fetch(fetchTarget, fetchConfig)
-                .catch(error => reject(
-                    new RepositoryError({
-                        message: 'Fetch failed',
-                        step: 'request',
-                        throwed: error
-                    })
-                ))
+            .catch(stepError => {
+                setError(new RepositoryError({
+                    message: 'Fetch failed',
+                    step: 'request',
+                    throwed: stepError
+                }));
+                reject(stepError);
+            })
 
-                .then(response => response.json())
-                    .catch(error => reject(
-                        new RepositoryError({
-                            message: 'Response parsing failed',
-                            step: 'response',
-                            throwed: error
-                        })
-                    ))
+            // response
+            .then(response => response.json())
+            .catch(stepError => {
+                setError(new RepositoryError({
+                    message: 'Response parsing failed',
+                    step: 'response',
+                    throwed: stepError
+                }));
+                reject(stepError);
+            })
 
-                .then(rawData => rawData.map(itemData => {
-                    if (isValid(itemData))
-                        return new model_class(itemData);
-                    else
-                        throw new Error('Invalid data');
-                }))
-                    .catch(error => reject(
-                        new RepositoryError({
-                            message: 'Data transformation failed',
-                            step: 'transform',
-                            throwed: error
-                        })
-                    ))
+            // transform
+            .then(rawData => rawData.map(itemData => {
+                if (isValid(itemData))
+                    return new model_class(itemData);
+                else
+                    reject(new ValidationError('Invalid data'));
+            }))
+            .catch(stepError => {
+                setError(new RepositoryError({
+                    message: 'Data transformation failed',
+                    step: 'transform',
+                    throwed: stepError
+                }));
+                reject(stepError);
+            })
 
-                .then(data => resolve(data))
-                    .catch(error => reject(
-                        new RepositoryError({
-                            message: 'Data resolving failed',
-                            step: 'data',
-                            throwed: error
-                        })
-                    ))
-        }),
-        [fetchTarget, fetchConfig, model_class]
-    );
+            // resolve
+            .then(resultData => {
+                setData(resultData);
+                resolve(resultData);
+            })
+            .catch(stepError => setError(
+                new RepositoryError({
+                    message: 'Data resolving failed',
+                    step: 'data',
+                    throwed: stepError
+                })
+            ))
 
-    const send = React.useCallback(
-        () => {
+            // done
+            .finally(() => setLoading(false));
 
-            fetchData()
-                .then(data => setData(data))
-                .catch(error => setError(error))
-                .finally(() => setLoading(false));
+        }); //:: new Promise
 
-            setLoading(true);
-        },
-        dependencies
-    );
+        // loading
+        setLoading(true);
+
+    }, [model_class, fetchTarget, fetchConfig]);
 
     return [send, data, error, loading];
 
