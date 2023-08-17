@@ -85,6 +85,8 @@ const useRepository = function (model_class, fetchTarget, fetchConfig, repoConfi
     const [loading, setLoading] = React.useState(false);
 
     const isValid = repoConfig?.isValid || (() => true);
+    const dependencies = repoConfig?.dependencies || [];
+
 
     const fetchData = React.useCallback(
         () => new Promise((resolve, reject) => {
@@ -133,18 +135,20 @@ const useRepository = function (model_class, fetchTarget, fetchConfig, repoConfi
         [fetchTarget, fetchConfig, model_class]
     );
 
-    React.useEffect(() => {
+    const send = React.useCallback(
+        () => {
 
-        fetchData()
-            .then(data => setData(data))
-            .catch(error => setError(error))
-            .finally(() => setLoading(false));
+            fetchData()
+                .then(data => setData(data))
+                .catch(error => setError(error))
+                .finally(() => setLoading(false));
 
-        setLoading(true);
+            setLoading(true);
+        },
+        dependencies
+    );
 
-    }, []);
-
-    return [data, error, loading];
+    return [send, data, error, loading];
 
 }; //::useRepository
 
@@ -303,6 +307,11 @@ const Page = function(_) {
     const context = React.useContext(AppContext);
 
     const usersRepo = useRepository(UserModel, 'https://jsonplaceholder.typicode.com/users');
+    
+    React.useEffect(() => {
+        usersRepo[0]();
+    }, []);
+
     console.log(usersRepo);
 
     const headerContents = {
