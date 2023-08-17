@@ -46,7 +46,7 @@ const RepositoryError = class extends Error {
         this.step = step;
         this.throwed = throwed;
     }
-}
+};
 
 
 // ----------------------------------------
@@ -310,13 +310,13 @@ const Page = function(_) {
 
     const context = React.useContext(AppContext);
 
-    const usersRepo = useRepository(UserModel, 'https://jsonplaceholder.typicode.com/users');
-    
+    const [getUsers, usersList, usersError, loadingUsers] = useRepository(UserModel, 'https://jsonplaceholder.typicode.com/users');
+
     React.useEffect(() => {
-        usersRepo[0]();
+        getUsers();
     }, []);
 
-    console.log(usersRepo);
+    console.log(loadingUsers, usersError, usersList);
 
     const headerContents = {
         props: {
