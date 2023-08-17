@@ -34,19 +34,9 @@ const VERSION = '0.1';
 // ----------------------------------------
 // errors are used to handle exceptions
 
-const ValidationError = class extends Error {
-    constructor(message) {
-        super(message);
-    }
-};
+const ValidationError = class extends Error {};
 
-const RepositoryError = class extends Error {
-    constructor({ message, step, throwed }) {
-        super(message);
-        this.step = step;
-        this.throwed = throwed;
-    }
-};
+const RepositoryError = class extends Error {};
 
 
 // ----------------------------------------
@@ -97,45 +87,59 @@ const useRepository = function (model_class, fetchTarget, fetchConfig, repoConfi
             // request
             fetch(fetchTarget, fetchConfig)
             .catch(stepError =>
-                reject(new RepositoryError({
-                    message: 'Fetch failed',
+                reject({
+                    message: 'Request failed',
                     step: 'request',
                     throwed: stepError
-                }))
+                })
             )
 
             // response
             .then(response => response.json())
             .catch(stepError =>
-                reject(new RepositoryError({
+                reject({
                     message: 'Response parsing failed',
                     step: 'response',
                     throwed: stepError
-                }))
+                })
             )
 
             // transform
-            .then(rawData => rawData.map(itemData =>
-                isValid(itemData)
-                    ? new model_class(itemData)
-                    : reject(new ValidationError('Invalid data'))
-            ))
+            .then(rawData => {
+                if (!Array.isArray(rawData))
+                    reject({
+                        message: 'Parsed data is not a list',
+                        step: 'transform',
+                        throwed: new RepositoryError('Invalid data')
+                    });
+
+                return rawData.map(itemData => {
+                    if (isValid(itemData))
+                        return new model_class(itemData);
+                    else
+                        reject({
+                            message: 'Data validation failed',
+                            step: 'validation',
+                            throwed: new ValidationError('Invalid data')
+                        });
+                });
+            })
             .catch(stepError =>
-                reject(new RepositoryError({
+                reject({
                     message: 'Data transformation failed',
                     step: 'transform',
                     throwed: stepError
-                }))
+                })
             )
 
             // resolve
             .then(resultData => resolve(resultData))
             .catch(stepError =>
-                reject(new RepositoryError({
+                reject({
                     message: 'Data resolving failed',
                     step: 'data',
                     throwed: stepError
-                }))
+                })
             );
 
         }); //:: new Promise
@@ -326,8 +330,7 @@ const Page = function(_) {
 
     React.useEffect(() => {
         titleRef.current.innerText += ` ${VERSION}`;
-        getUsers()
-            .catch(console.warn);
+        getUsers();
     }, []);
 
     const headerContents = {
@@ -379,7 +382,7 @@ const Page = function(_) {
                 loadingUsers
                     ? React.createElement('span', null, 'Loading...')
                     : usersError
-                    ? React.createElement('span', null, String(usersError))
+                    ? React.createElement('span', null, usersError.message)
                     : React.createElement('ul', null,
                         usersList?.map(user => React.createElement('li', { key: user.id }, user.name)),
                     )
