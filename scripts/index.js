@@ -30,6 +30,26 @@ Components instances:
 
 
 // ----------------------------------------
+// errors
+// ----------------------------------------
+// errors are used to handle exceptions
+
+const ValidationError = class extends Error {
+    constructor(message) {
+        super(message);
+    }
+};
+
+const RepositoryError = class extends Error {
+    constructor({ message, step, throwed }) {
+        super(message);
+        this.step = step;
+        this.throwed = throwed;
+    }
+}
+
+
+// ----------------------------------------
 // utils
 // ----------------------------------------
 
@@ -59,7 +79,7 @@ const useToggle = function (firstValue, secondValue) {
     return [value, toggle];
 };
 
-const useRepository = function (model, fetchTarget, fetchConfig, repoConfig) {
+const useRepository = function (model_class, fetchTarget, fetchConfig, repoConfig) {
     const [data, setData] = React.useState(null);
     const [error, setError] = React.useState(null);
     const [loading, setLoading] = React.useState(false);
@@ -70,35 +90,47 @@ const useRepository = function (model, fetchTarget, fetchConfig, repoConfig) {
         () => new Promise((resolve, reject) => {
 
             fetch(fetchTarget, fetchConfig)
-                .catch(error => reject({
-                    when: 'fetch',
-                    throwed: error
-                }))
+                .catch(error => reject(
+                    new RepositoryError({
+                        message: 'Fetch failed',
+                        step: 'request',
+                        throwed: error
+                    })
+                ))
 
                 .then(response => response.json())
-                    .catch(error => reject({
-                        when: 'response',
-                        throwed: error
-                    }))
+                    .catch(error => reject(
+                        new RepositoryError({
+                            message: 'Response parsing failed',
+                            step: 'response',
+                            throwed: error
+                        })
+                    ))
 
                 .then(rawData => rawData.map(itemData => {
                     if (isValid(itemData))
-                        return new model(itemData);
+                        return new model_class(itemData);
                     else
                         throw new Error('Invalid data');
                 }))
-                    .catch(error => reject({
-                        when: 'transform',
-                        throwed: error
-                    }))
+                    .catch(error => reject(
+                        new RepositoryError({
+                            message: 'Data transformation failed',
+                            step: 'transform',
+                            throwed: error
+                        })
+                    ))
 
                 .then(data => resolve(data))
-                    .catch(error => reject({
-                        when: 'resolve',
-                        throwed: error
-                    }))
+                    .catch(error => reject(
+                        new RepositoryError({
+                            message: 'Data resolving failed',
+                            step: 'data',
+                            throwed: error
+                        })
+                    ))
         }),
-        [fetchTarget, fetchConfig, model]
+        [fetchTarget, fetchConfig, model_class]
     );
 
     React.useEffect(() => {
