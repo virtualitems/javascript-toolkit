@@ -21,7 +21,7 @@ Components instances:
 // ----------------------------------------
 // globals are constants that are used in the whole application
 // style strings are used to group css class names in a single variable
-
+const VERSION = '0.1';
 
 // ----------------------------------------
 // polyfills
@@ -317,11 +317,14 @@ const ThreeSectionsLayout = function({ headerContents, mainContents, footerConte
 const Page = function(_) {
     // example of page
 
+    const titleRef = React.useRef(document.querySelector('title'));
+
     const context = React.useContext(AppContext);
 
     const [getUsers, usersList, usersError, loadingUsers] = useRepository(UserModel, 'https://jsonplaceholder.typicode.com/users');
 
     React.useEffect(() => {
+        titleRef.current.innerText += ` ${VERSION}`;
         getUsers();
     }, []);
 
