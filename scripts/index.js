@@ -59,6 +59,46 @@ const useToggle = function (firstValue, secondValue) {
     return [value, toggle];
 };
 
+const useRepository = function (model, fetchTarget, fetchConfig) {
+    const [data, setData] = React.useState(null);
+    const [error, setError] = React.useState(null);
+    const [loading, setLoading] = React.useState(false);
+
+    const fetchData = React.useCallback(
+        () => new Promise((resolve, reject) => {
+
+            fetch(fetchTarget, fetchConfig)
+                .catch(error => reject(error))
+
+                .then(response => response.json())
+                    .catch(error => reject(error))
+
+                .then(rawData => rawData.map(itemData => new model(itemData)))
+                    .catch(error => reject(error))
+
+                .then(data => resolve(data))
+                    .catch(error => reject(error))
+        }),
+        [fetchTarget, fetchConfig, model]
+    );
+
+    React.useEffect(() => {
+
+        fetchData()
+            .then(data => setData(data))
+            .catch(error => setError(error))
+            .finally(() => setLoading(false));
+
+        setLoading(true);
+
+    }, []);
+
+    return [data, error, loading];
+
+}; //::useRepository
+
+// TODO useHttpRequest
+
 
 // ----------------------------------------
 // context
@@ -182,7 +222,6 @@ const Counter = function({ initialCount }) {
 
 };
 
-
 const Form = function({ children, className, onSubmit, method, action, enctype }) {
     // example of form container
     // if the component is actionable, the actions must be passed as props
@@ -230,6 +269,9 @@ const Page = function(_) {
     // example of page
 
     const context = React.useContext(AppContext);
+
+    const usersRepo = useRepository(UserModel, 'https://jsonplaceholder.typicode.com/users');
+    console.log(usersRepo);
 
     const headerContents = {
         props: {
