@@ -80,88 +80,89 @@ const useToggle = function (firstValue, secondValue) {
 };
 
 const useRepository = function (model_class, fetchTarget, fetchConfig, repoConfig) {
-    const [data, setStateData] = React.useState(null);
-    const [error, setStateError] = React.useState(null);
-    const [loading, setLoading] = React.useState(false);
-
-    const setData = React.useCallback((newData) => {
-        setStateData(newData);
-        setStateError(null);
-    }, [setStateData, setStateError]);
-
-    const setError = React.useCallback((newError) => {
-        setStateData(null);
-        setStateError(newError);
-    }, [setStateData, setStateError]);
 
     const isValid = repoConfig?.isValid || (() => true);
+
+    const [state, setState] = React.useState({
+        data: null,
+        error: null,
+        loading: false,
+    });
 
     const send = React.useCallback(() => {
 
         // async process wrapper
-        new Promise((resolve, reject) => {
+        const processPromise = new Promise((resolve, reject) => {
 
             // request
             fetch(fetchTarget, fetchConfig)
-            .catch(stepError => {
-                setError(new RepositoryError({
+            .catch(stepError =>
+                reject(new RepositoryError({
                     message: 'Fetch failed',
                     step: 'request',
                     throwed: stepError
-                }));
-                reject(stepError);
-            })
+                }))
+            )
 
             // response
             .then(response => response.json())
-            .catch(stepError => {
-                setError(new RepositoryError({
+            .catch(stepError =>
+                reject(new RepositoryError({
                     message: 'Response parsing failed',
                     step: 'response',
                     throwed: stepError
-                }));
-                reject(stepError);
-            })
+                }))
+            )
 
             // transform
-            .then(rawData => rawData.map(itemData => {
-                return isValid(itemData)
-                        ? new model_class(itemData)
-                        : reject(new ValidationError('Invalid data'));
-            }))
-            .catch(stepError => {
-                setError(new RepositoryError({
+            .then(rawData => rawData.map(itemData =>
+                isValid(itemData)
+                    ? new model_class(itemData)
+                    : reject(new ValidationError('Invalid data'))
+            ))
+            .catch(stepError =>
+                reject(new RepositoryError({
                     message: 'Data transformation failed',
                     step: 'transform',
                     throwed: stepError
-                }));
-                reject(stepError);
-            })
+                }))
+            )
 
             // resolve
-            .then(resultData => {
-                setData(resultData);
-                resolve(resultData);
-            })
-            .catch(stepError => setError(
-                new RepositoryError({
+            .then(resultData => resolve(resultData))
+            .catch(stepError =>
+                reject(new RepositoryError({
                     message: 'Data resolving failed',
                     step: 'data',
                     throwed: stepError
-                })
-            ))
-
-            // done
-            .finally(() => setLoading(false));
+                }))
+            );
 
         }); //:: new Promise
 
+        // done
+        processPromise
+            .then(data => {
+                state.data = data;
+                state.error = null;
+            })
+            .catch(error => {
+                state.data = null;
+                state.error = error;
+            })
+            .finally(() => {
+                state.loading = false;
+                setState(state);
+            });
+
         // loading
-        setLoading(true);
+        setState({ ...state, loading: true });
+
+        return processPromise;
 
     }, [model_class, fetchTarget, fetchConfig, repoConfig]);
 
-    return [send, data, error, loading];
+    return [send, state.data, state.error, state.loading];
 
 }; //::useRepository
 
@@ -325,10 +326,9 @@ const Page = function(_) {
 
     React.useEffect(() => {
         titleRef.current.innerText += ` ${VERSION}`;
-        getUsers();
+        getUsers()
+            .catch(console.warn);
     }, []);
-
-    console.log(loadingUsers, usersError, usersList);
 
     const headerContents = {
         props: {
@@ -370,7 +370,21 @@ const Page = function(_) {
                     ),
                 )
 
-            )  // end of form section
+            ),  // end of form section
+
+            React.createElement('section', { className: 'section' },
+
+                React.createElement('h1', null, 'Users section'),
+
+                loadingUsers
+                    ? React.createElement('span', null, 'Loading...')
+                    : usersError
+                    ? React.createElement('span', null, String(usersError))
+                    : React.createElement('ul', null,
+                        usersList?.map(user => React.createElement('li', { key: user.id }, user.name)),
+                    )
+
+            ),  // end of users section
 
         )  // end of main contents
     };
