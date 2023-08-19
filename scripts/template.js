@@ -21,6 +21,7 @@ if (!window.ReactDOM) {
 // ----------------------------------------
 const React = window.React;
 const ReactDOM = window.ReactDOM;
+const ce = React.createElement;
 
 
 // ----------------------------------------
@@ -89,7 +90,7 @@ const ReactDOM = window.ReactDOM;
 
 ReactDOM
   .createRoot(document.getElementById('root'))
-  .render(React.createElement(React.StrictMode));
+  .render(ce(React.StrictMode));
 
 
 })(window, document);
