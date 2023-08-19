@@ -22,6 +22,7 @@ if (!window.ReactDOM) {
 const React = window.React;
 const ReactDOM = window.ReactDOM;
 const ce = React.createElement;
+const useState = React.useState;
 
 // ----------------------------------------
 // Errors
@@ -82,7 +83,7 @@ const ce = React.createElement;
 // ----------------------------------------
 
 const App = function() {
-  const [counter, setCounter] = React.useState(0);
+  const [counter, setCounter] = useState(0);
 
   const onClick = function() {
     setCounter(counter + 1);
