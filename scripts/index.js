@@ -79,7 +79,9 @@ const useRepository = function (model_class, fetchTarget, fetchConfig, repoConfi
         loading: false,
     });
 
-    const send = React.useCallback(() => {
+    // example of useCallback
+    // this function is regenerated only when the dependencies change
+    const getAll = React.useCallback(() => {
 
         // async process wrapper
         const processPromise = new Promise((resolve, reject) => {
@@ -166,7 +168,20 @@ const useRepository = function (model_class, fetchTarget, fetchConfig, repoConfi
 
     }, [model_class, fetchTarget, fetchConfig, repoConfig]);
 
-    return [send, state.data, state.error, state.loading];
+
+    // example of useMemo
+    // the repository object is regenerated only when the dependencies change
+    const repository = React.useMemo(
+        () => ({
+            all: getAll,
+            data: state.data,
+            error: state.error,
+            loading: state.loading,
+        }),
+        [getAll, state.data, state.error, state.loading]
+    );
+
+    return repository;
 
 }; //::useRepository
 
@@ -326,11 +341,12 @@ const Page = function(_) {
 
     const context = React.useContext(AppContext);
 
-    const [getUsers, usersList, usersError, loadingUsers] = useRepository(UserModel, 'https://jsonplaceholder.typicode.com/users');
+    // const [getUsers, usersList, usersError, loadingUsers] = 
+    const usersRepository = useRepository(UserModel, 'https://jsonplaceholder.typicode.com/users');
 
     React.useEffect(() => {
         titleRef.current.innerText += ` ${VERSION}`;
-        getUsers();
+        usersRepository.all();
     }, []);
 
     const headerContents = {
@@ -379,12 +395,12 @@ const Page = function(_) {
 
                 React.createElement('h1', null, 'Users section'),
 
-                loadingUsers
+                usersRepository.loading
                     ? React.createElement('span', null, 'Loading...')
-                    : usersError
-                    ? React.createElement('span', null, usersError.message)
+                    : usersRepository.error
+                    ? React.createElement('span', null, usersRepository.error.message)
                     : React.createElement('ul', null,
-                        usersList?.map(user => React.createElement('li', { key: user.id }, user.name)),
+                        usersRepository.data?.map(user => React.createElement('li', { key: user.id }, user.name)),
                     )
 
             ),  // end of users section
