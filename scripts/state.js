@@ -28,9 +28,11 @@ const ReactDOM = window.ReactDOM;
 // ----------------------------------------
 
 
+
 // ----------------------------------------
 // Utils
 // ----------------------------------------
+
 
 
 // ----------------------------------------
@@ -38,9 +40,11 @@ const ReactDOM = window.ReactDOM;
 // ----------------------------------------
 
 
+
 // ----------------------------------------
 // Context
 // ----------------------------------------
+
 
 
 // ----------------------------------------
@@ -48,9 +52,11 @@ const ReactDOM = window.ReactDOM;
 // ----------------------------------------
 
 
+
 // ----------------------------------------
 // Contents
 // ----------------------------------------
+
 
 
 // ----------------------------------------
@@ -58,9 +64,11 @@ const ReactDOM = window.ReactDOM;
 // ----------------------------------------
 
 
+
 // ----------------------------------------
 // Composites
 // ----------------------------------------
+
 
 
 // ----------------------------------------
@@ -68,9 +76,21 @@ const ReactDOM = window.ReactDOM;
 // ----------------------------------------
 
 
+
 // ----------------------------------------
-// Page
+// View
 // ----------------------------------------
+
+const App = function() {
+  const [counter, setCounter] = React.useState(0);
+
+  const increment = function() {
+    setCounter(counter + 1);
+  };
+
+  return React.createElement('button', { onClick: increment }, counter);
+
+};
 
 
 // ----------------------------------------
@@ -79,7 +99,9 @@ const ReactDOM = window.ReactDOM;
 
 ReactDOM
   .createRoot(document.getElementById('root'))
-  .render(React.createElement(React.StrictMode));
+  .render(React.createElement(React.StrictMode, null,
+    React.createElement(App))
+  );
 
 
 })(window, document);
