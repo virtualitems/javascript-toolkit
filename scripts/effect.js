@@ -23,6 +23,7 @@ const React = window.React;
 const ReactDOM = window.ReactDOM;
 const ce = React.createElement;
 
+
 // ----------------------------------------
 // Errors
 // ----------------------------------------
@@ -81,26 +82,6 @@ const ce = React.createElement;
 // View
 // ----------------------------------------
 
-const App = function() {
-  const [counter, setCounter] = React.useState(0);
-
-  const onClick = function() {
-    setCounter(counter + 1);
-  };
-
-  const style = {
-    display: 'inline-block',
-    margin: '1rem',
-    padding: '0.5em 1em',
-    backgroundColor: '#eee',
-    border: '1px solid #ccc',
-    borderRadius: '3px',
-    cursor: 'pointer',
-  };
-
-  return ce('button', { onClick, style }, counter);
-
-};
 
 
 // ----------------------------------------
