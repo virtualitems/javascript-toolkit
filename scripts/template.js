@@ -1,4 +1,4 @@
-(function(document, window) {
+(function(window, document) {
 'use strict';
 
 // ----------------------------------------
@@ -82,4 +82,4 @@ ReactDOM
   .render(React.createElement(React.StrictMode));
 
 
-})(document, window);
+})(window, document);
