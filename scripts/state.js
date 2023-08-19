@@ -21,7 +21,7 @@ if (!window.ReactDOM) {
 // ----------------------------------------
 const React = window.React;
 const ReactDOM = window.ReactDOM;
-
+const ce = React.createElement;
 
 // ----------------------------------------
 // Errors
@@ -98,7 +98,7 @@ const App = function() {
     cursor: 'pointer',
   };
 
-  return React.createElement('button', { onClick, style }, counter);
+  return ce('button', { onClick, style }, counter);
 
 };
 
@@ -109,8 +109,10 @@ const App = function() {
 
 ReactDOM
   .createRoot(document.getElementById('root'))
-  .render(React.createElement(React.StrictMode, null,
-    React.createElement(App))
+  .render(
+    ce(React.StrictMode, null,
+      ce(App)
+    )
   );
 
 
