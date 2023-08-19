@@ -2,8 +2,25 @@
 'use strict';
 
 // ----------------------------------------
+// Checks
+// ----------------------------------------
+
+if (!window.React) {
+  console.error('React is not loaded');
+  return;
+}
+
+if (!window.ReactDOM) {
+  console.error('ReactDOM is not loaded');
+  return;
+}
+
+
+// ----------------------------------------
 // Globals
 // ----------------------------------------
+const React = window.React;
+const ReactDOM = window.ReactDOM;
 
 
 // ----------------------------------------
@@ -59,6 +76,10 @@
 // ----------------------------------------
 // Root
 // ----------------------------------------
+
+ReactDOM
+  .createRoot(document.getElementById('root'))
+  .render(React.createElement(React.StrictMode));
 
 
 })(document, window);
