@@ -84,11 +84,21 @@ const ReactDOM = window.ReactDOM;
 const App = function() {
   const [counter, setCounter] = React.useState(0);
 
-  const increment = function() {
+  const onClick = function() {
     setCounter(counter + 1);
   };
 
-  return React.createElement('button', { onClick: increment }, counter);
+  const style = {
+    display: 'inline-block',
+    margin: '1rem',
+    padding: '0.5em 1em',
+    backgroundColor: '#eee',
+    border: '1px solid #ccc',
+    borderRadius: '3px',
+    cursor: 'pointer',
+  };
+
+  return React.createElement('button', { onClick, style }, counter);
 
 };
 
