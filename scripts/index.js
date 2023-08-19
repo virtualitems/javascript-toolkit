@@ -420,9 +420,6 @@ const App =
 // render the main component inside the root element
 reactRootElement.render(App);
 
-// short version
-//ReactDOM.render(App, document.getElementById('root'));
-
 
 // end of application
 })(document, window);
