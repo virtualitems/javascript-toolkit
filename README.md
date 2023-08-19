@@ -1,7 +1,7 @@
 # Components architecture
 
 - Wrappers
-    - Page
+    - View
         - Layouts
             - Containers
             - Contents
@@ -63,8 +63,8 @@ Layout components
 
 <br/>
 
-## Page
-Application page
+## View
+Application view
 
 <br/>
 
