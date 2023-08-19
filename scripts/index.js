@@ -294,7 +294,7 @@ const Form = function({ children, className, onSubmit, method, action, enctype }
 
 
 // ----------------------------------------
-// Sections
+// composites
 // ----------------------------------------
 
 
@@ -316,9 +316,9 @@ const ThreeSectionsLayout = function({ headerContents, mainContents, footerConte
 
 
 // ----------------------------------------
-// pages
+// page
 // ----------------------------------------
-// pages return a rendered layout with contents
+// page returns a rendered layout with contents
 
 const Page = function(_) {
     // example of page
