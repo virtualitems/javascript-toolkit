@@ -1,17 +1,3 @@
-/* Notes
-
-Components architecture:
-Page > Sections > Layout > Containers > Contents
-
-Components instances:
-  Page
-  |- Sections
-  |  |- Contents
-  |  |- Containers
-  |- Layout
-
-*/
-
 // beginning of application
 (function (document, window) {
 'use strict';
@@ -341,7 +327,6 @@ const Page = function(_) {
 
     const context = React.useContext(AppContext);
 
-    // const [getUsers, usersList, usersError, loadingUsers] = 
     const usersRepository = useRepository(UserModel, 'https://jsonplaceholder.typicode.com/users');
 
     React.useEffect(() => {
