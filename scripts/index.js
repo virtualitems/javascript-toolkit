@@ -24,6 +24,7 @@ const React = window.React;
 const ReactDOM = window.ReactDOM;
 
 const ce = React.createElement;
+const createContext = React.createContext;
 
 const Fragment = React.Fragment;
 const StrictMode = React.StrictMode;
@@ -51,7 +52,7 @@ const StrictMode = React.StrictMode;
 // Context
 // ----------------------------------------
 
-const Context = React.createContext();
+const Context = createContext();
 
 const ContextProvider = function({ children }) {
 
