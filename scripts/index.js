@@ -98,7 +98,7 @@ const Aside = function(props) {
 // Layouts
 // ----------------------------------------
 
-const HeaderMainFooterAsidesLayout = function(props) {
+const BorderBoxLayout = function(props) {
 
   if (!props?.top?.component)
     throw new Error('top component is required');
@@ -165,7 +165,7 @@ const View = function(props) {
     },
   };
 
-  const layout = ce(HeaderMainFooterAsidesLayout, layoutProps);
+  const layout = ce(BorderBoxLayout, layoutProps);
 
   return ce(Fragment, null, layout);
 }
