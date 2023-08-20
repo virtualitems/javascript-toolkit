@@ -19,10 +19,14 @@ if (!window.ReactDOM) {
 // ----------------------------------------
 // Globals
 // ----------------------------------------
+
 const React = window.React;
 const ReactDOM = window.ReactDOM;
+
 const ce = React.createElement;
+
 const Fragment = React.Fragment;
+const StrictMode = React.StrictMode;
 
 
 // ----------------------------------------
@@ -216,7 +220,7 @@ const View = function() {
 ReactDOM
   .createRoot(document.getElementById('root'))
   .render(
-    ce(React.StrictMode, null,
+    ce(StrictMode, null,
       ce(ContextProvider, null,
         ce(View),
       ),
