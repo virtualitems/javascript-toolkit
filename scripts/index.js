@@ -67,8 +67,8 @@ const ContextProvider = function({ children }) {
 // Contents
 // ----------------------------------------
 
-const NavAnchor = function({ href, text }) {
-  return ce('a', { href }, text);
+const NavAnchor = function({ href, target, text }) {
+  return ce('a', { href, target }, text);
 };
 
 
@@ -111,9 +111,8 @@ const Col = function({ children, width }) {
 const Header = function() {
 
   const anchors = [
-    ce(NavAnchor, { href: '#', text: 'Home', key: 'Home' }),
-    ce(NavAnchor, { href: '#', text: 'About', key: 'About' }),
-    ce(NavAnchor, { href: '#', text: 'Contact', key: 'Contact' }),
+    ce(NavAnchor, { key: 'website', target: '_blank', href: 'https://alejandrocr.co/', text: 'Website' }),
+    ce(NavAnchor, { key: 'github', target: '_blank', href: 'https://github.com/virtualitems/', text: 'Github' }),
   ];
 
   const navbar = ce(Navbar, null, anchors);
@@ -138,7 +137,7 @@ const Footer = function() {
     className: 'footer',
   };
 
-  return ce('footer', props, 'Footer');
+  return ce('footer', props, 'Copyright (c) Virtual Items 2023');
 };
 
 const Aside = function() {

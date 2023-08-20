@@ -35,7 +35,6 @@ body {
   position: relative;
 }
 
-
 .col-1 {
   flex: 0 0 8.333333%;
   max-width: 8.333333%;
@@ -111,6 +110,7 @@ body {
   left: 0;
   bottom: 0;
   width: 100%;
+  padding: 0.5rem;
   background-color: #222;
   color: white;
   text-align: center;
