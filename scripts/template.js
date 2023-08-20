@@ -19,6 +19,7 @@ if (!window.ReactDOM) {
 // ----------------------------------------
 // Globals
 // ----------------------------------------
+
 const React = window.React;
 const ReactDOM = window.ReactDOM;
 
@@ -79,6 +80,7 @@ const StrictMode = React.StrictMode;
 // ----------------------------------------
 // Layout
 // ----------------------------------------
+
 const Layout = function() {
   return ce(Fragment);
 };
@@ -87,6 +89,7 @@ const Layout = function() {
 // ----------------------------------------
 // View
 // ----------------------------------------
+
 const View = function() {
   return ce(Fragment, null, ce(Layout));
 };
