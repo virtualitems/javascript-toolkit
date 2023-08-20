@@ -158,19 +158,19 @@ const BorderBoxLayout = function({ top, left, center, right, bottom }) {
 
   const visibleComponents = [];
 
-  if (top?.component && top?.visible !== false)
+  if (top?.component && top?.visible === true)
     visibleComponents.push(top.component);
 
-  if (left?.component && left?.visible !== false)
+  if (left?.component && left?.visible === true)
     visibleComponents.push(left.component);
 
-  if (center?.component && center?.visible !== false)
+  if (center?.component && center?.visible === true)
     visibleComponents.push(center.component);
 
-  if (right?.component && right?.visible !== false)
+  if (right?.component && right?.visible === true)
     visibleComponents.push(right.component);
 
-  if (bottom?.component && bottom?.visible !== false)
+  if (bottom?.component && bottom?.visible === true)
     visibleComponents.push(bottom.component);
 
   return ce.apply(null, [Fragment, null].concat(visibleComponents));
