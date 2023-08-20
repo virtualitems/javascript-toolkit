@@ -122,7 +122,7 @@ const Aside = function() {
 
 
 // ----------------------------------------
-// Layouts
+// Layout
 // ----------------------------------------
 
 const BorderBoxLayout = function({ top, left, center, right, bottom }) {
