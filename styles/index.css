@@ -105,8 +105,35 @@ body {
 
 
 
-/* Containers and Contents */
+/* Objects */
+.navbar {
+  overflow: hidden;
+  background-color: #222;
+}
 
+.navbar a {
+  float: left;
+  display: block;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+.navbar a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+.footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: #222;
+  color: white;
+  text-align: center;
+}
 
 
 /* Theme */

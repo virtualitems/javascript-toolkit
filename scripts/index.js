@@ -49,9 +49,11 @@ const Fragment = React.Fragment;
 
 const Context = React.createContext();
 
-const ContextProvider = function(props) {
+const ContextProvider = function({ children }) {
 
-  return ce(Context.Provider, { value: {} }, props.children);
+  const value = {};
+
+  return ce(Context.Provider, { value }, children);
 };
 
 
@@ -65,31 +67,56 @@ const ContextProvider = function(props) {
 // Contents
 // ----------------------------------------
 
+const NavAnchor = function({ href, text }) {
+  return ce('a', { href }, text);
+};
 
 
 // ----------------------------------------
 // Containers
 // ----------------------------------------
 
+const Navbar = function({ children }) {
+
+  const props = {
+    className: 'navbar',
+  };
+
+  return ce('nav', props, children);
+};
 
 
 // ----------------------------------------
 // Composites
 // ----------------------------------------
 
-const Header = function(props) {
-  return ce('header', null, 'Header');
+const Header = function() {
+
+  const anchors = [
+    ce(NavAnchor, { href: '#', text: 'Home', key: 'Home' }),
+    ce(NavAnchor, { href: '#', text: 'About', key: 'About' }),
+    ce(NavAnchor, { href: '#', text: 'Contact', key: 'Contact' }),
+  ];
+
+  const navbar = ce(Navbar, null, anchors);
+
+  return ce('header', null, navbar);
 };
 
-const Main = function(props) {
+const Main = function() {
   return ce('main', null, 'Main');
 };
 
-const Footer = function(props) {
-  return ce('footer', null, 'Footer');
+const Footer = function() {
+
+  const props = {
+    className: 'footer',
+  };
+
+  return ce('footer', props, 'Footer');
 };
 
-const Aside = function(props) {
+const Aside = function() {
   return ce('aside', null, 'Aside');
 };
 
@@ -98,39 +125,24 @@ const Aside = function(props) {
 // Layouts
 // ----------------------------------------
 
-const BorderBoxLayout = function(props) {
-
-  if (!props?.top?.component)
-    throw new Error('top component is required');
-
-  if (!props?.left?.component)
-    throw new Error('left component is required');
-
-  if (!props?.center?.component)
-    throw new Error('center component is required');
-
-  if (!props?.right?.component)
-    throw new Error('right component is required');
-
-  if (!props?.bottom?.component)
-    throw new Error('bottom component is required');
+const BorderBoxLayout = function({ top, left, center, right, bottom }) {
 
   const visibleComponents = [];
 
-  if (props?.top?.visible !== false)
-    visibleComponents.push(props.top.component);
+  if (top?.component && top?.visible !== false)
+    visibleComponents.push(top.component);
 
-  if (props?.left?.visible !== false)
-    visibleComponents.push(props.left.component);
+  if (left?.component && left?.visible !== false)
+    visibleComponents.push(left.component);
 
-  if (props?.center?.visible !== false)
-    visibleComponents.push(props.center.component);
+  if (center?.component && center?.visible !== false)
+    visibleComponents.push(center.component);
 
-  if (props?.right?.visible !== false)
-    visibleComponents.push(props.right.component);
+  if (right?.component && right?.visible !== false)
+    visibleComponents.push(right.component);
 
-  if (props?.bottom?.visible !== false)
-    visibleComponents.push(props.bottom.component);
+  if (bottom?.component && bottom?.visible !== false)
+    visibleComponents.push(bottom.component);
 
   return ce.apply(null, [Fragment, null].concat(visibleComponents));
 
@@ -140,7 +152,7 @@ const BorderBoxLayout = function(props) {
 // ----------------------------------------
 // View
 // ----------------------------------------
-const View = function(props) {
+const View = function() {
 
   const header = ce(Header);
   const main = ce(Main);
@@ -153,12 +165,14 @@ const View = function(props) {
     },
     left: {
       component: aside,
+      visible: false,
     },
     center: {
       component: main,
     },
     right: {
       component: aside,
+      visible: false,
     },
     bottom: {
       component: footer,
