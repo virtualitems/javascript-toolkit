@@ -21,7 +21,11 @@ if (!window.ReactDOM) {
 // ----------------------------------------
 const React = window.React;
 const ReactDOM = window.ReactDOM;
+
 const ce = React.createElement;
+
+const Fragment = React.Fragment;
+const StrictMode = React.StrictMode;
 
 
 // ----------------------------------------
@@ -75,13 +79,17 @@ const ce = React.createElement;
 // ----------------------------------------
 // Layout
 // ----------------------------------------
-
+const Layout = function() {
+  return ce(Fragment);
+};
 
 
 // ----------------------------------------
 // View
 // ----------------------------------------
-
+const View = function() {
+  return ce(Fragment, null, ce(Layout));
+};
 
 
 // ----------------------------------------
@@ -90,7 +98,7 @@ const ce = React.createElement;
 
 ReactDOM
   .createRoot(document.getElementById('root'))
-  .render(ce(React.StrictMode));
+  .render(ce(StrictMode, null, ce(View)));
 
 
 })(window, document);
