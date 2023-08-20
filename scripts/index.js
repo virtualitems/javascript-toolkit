@@ -85,6 +85,24 @@ const Navbar = function({ children }) {
   return ce('nav', props, children);
 };
 
+const Row = function({ children }) {
+
+  const props = {
+    className: 'row',
+  };
+
+  return ce('div', props, children);
+};
+
+const Col = function({ children, width }) {
+
+  const props = {
+    className: `col-${width}`,
+  };
+
+  return ce('div', props, children);
+};
+
 
 // ----------------------------------------
 // Composites
@@ -104,7 +122,14 @@ const Header = function() {
 };
 
 const Main = function() {
-  return ce('main', null, 'Main');
+
+  const col1 = ce(Col, { width: 4 }, 'Col 1');
+  const col2 = ce(Col, { width: 4 }, 'Col 2');
+  const col3 = ce(Col, { width: 4 }, 'Col 3');
+
+  const row = ce(Row, null, col1, col2, col3);
+
+  return ce('main', null, row);
 };
 
 const Footer = function() {
