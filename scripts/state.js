@@ -82,7 +82,7 @@ const useState = React.useState;
 // View
 // ----------------------------------------
 
-const App = function() {
+const View = function() {
   const [counter, setCounter] = useState(0);
 
   const onClick = function() {
@@ -110,7 +110,7 @@ const App = function() {
 
 ReactDOM
   .createRoot(document.getElementById('root'))
-  .render(ce(React.StrictMode, null, ce(App)));
+  .render(ce(React.StrictMode, null, ce(View)));
 
 
 })(window, document);
