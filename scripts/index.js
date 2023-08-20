@@ -116,7 +116,7 @@ const Col = function({ children, width }) {
 const Header = function() {
 
   const anchors = [
-    ce(NavAnchor, { key: 'website', target: '_blank', href: 'https://alejandrocr.co/', text: 'Website' }),
+    ce(NavAnchor, { key: 'website', target: '_blank', href: 'https://www.alejandrocr.co/', text: 'Website' }),
     ce(NavAnchor, { key: 'github', target: '_blank', href: 'https://github.com/virtualitems/', text: 'Github' }),
   ];
 
@@ -181,6 +181,7 @@ const BorderBoxLayout = function({ top, left, center, right, bottom }) {
 // ----------------------------------------
 // View
 // ----------------------------------------
+
 const View = function() {
 
   const header = ce(Header);
