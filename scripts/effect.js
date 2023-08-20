@@ -22,6 +22,7 @@ if (!window.ReactDOM) {
 const React = window.React;
 const ReactDOM = window.ReactDOM;
 const ce = React.createElement;
+const useEffect = React.useEffect;
 
 
 // ----------------------------------------
@@ -82,6 +83,19 @@ const ce = React.createElement;
 // View
 // ----------------------------------------
 
+const View = function() {
+
+  useEffect(() => {
+
+    return function() {
+    };
+
+  }, []);
+
+
+  return ce('span');
+
+};
 
 
 // ----------------------------------------
@@ -90,7 +104,7 @@ const ce = React.createElement;
 
 ReactDOM
   .createRoot(document.getElementById('root'))
-  .render(ce(React.StrictMode, null, ce(App)));
+  .render(ce(React.StrictMode, null, ce(View)));
 
 
 })(window, document);
