@@ -11,6 +11,25 @@
   <link rel="stylesheet" href="vendor/normalize.css">
   <link rel="stylesheet" href="vendor/bootstrap.min.css">
   <link rel="stylesheet" href="styles/index.css">
+  <style>
+  .alert-enter {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  .alert-enter-active {
+    opacity: 1;
+    transform: translateX(0);
+    transition: opacity 300ms, transform 300ms;
+  }
+  .alert-exit {
+    opacity: 1;
+  }
+  .alert-exit-active {
+    opacity: 0;
+    transform: scale(0.9);
+    transition: opacity 300ms, transform 300ms;
+  }
+  </style>
 </head>
 
 <body>
@@ -18,9 +37,11 @@
     You need to enable Javascript to run this app.
   </noscript>
   <div id="root"></div>
+  <script src="vendor/bootstrap.min.js"></script>
   <script src="vendor/react.production.min.js"></script>
   <script src="vendor/react-dom.production.min.js"></script>
   <script src="vendor/react-bootstrap.min.js"></script>
+  <script src="vendor/react-transition-group.js"></script>
   <script src="scripts/index.js"></script>
 </body>
 
