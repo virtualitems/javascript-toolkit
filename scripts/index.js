@@ -139,12 +139,13 @@ const ModalExample = function() {
   const [modalShow, setModalShow] = React.useState(false);
 
   const modal = (
-    ce(Modal, {
-      show: modalShow,
-      size: 'lg',
-      centered: true,
-      animation: true,
-    },
+    ce(Modal,
+      {
+        show: modalShow,
+        size: 'lg',
+        centered: true,
+        animation: true,
+      },
       ce(Modal.Header, { closeButton: true },
         ce(Modal.Title, { id: 'contained-modal-title-vcenter' }, 'Modal heading')
       ),
