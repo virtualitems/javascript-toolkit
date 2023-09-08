@@ -20,13 +20,18 @@ if (!window.ReactDOM) {
 // Globals
 // ----------------------------------------
 
-const React = window.React;
-const ReactDOM = window.ReactDOM;
+const {
+  React,
+  ReactDOM
 
-const ce = React.createElement;
+} = window;
 
-const Fragment = React.Fragment;
-const StrictMode = React.StrictMode;
+const {
+  createElement: ce,
+  Fragment,
+  StrictMode
+
+} = React;
 
 
 // ----------------------------------------
