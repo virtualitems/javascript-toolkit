@@ -72,6 +72,14 @@ const root = document.getElementById(rid);
 
 const shadowRoot = root.attachShadow({mode: 'open'});
 
+const rootAttributes = {
+  bootstrapCss: root.getAttribute('bootstrap-css'),
+  bootstrapJs: root.getAttribute('bootstrap-js'),
+  customCss: root.getAttribute('custom-css'),
+  fontAwesomeCss: root.getAttribute('font-awesome-css'),
+  tituloEvaluacion: root.getAttribute('titulo-evaluacion'),
+};
+
 
 // ----------------------------------------
 // Errors
@@ -110,8 +118,8 @@ const icon = function(className) {
 // Contents
 // ----------------------------------------
 
-const iconButton = function({ iconName, ...props }) {
-  return ce(Button, props, icon(iconName));
+const iconButton = function({ children, iconName, ...props }) {
+  return ce(Button, props, icon(iconName), children);
 };
 
 
@@ -125,6 +133,74 @@ const blockButton = function({children, ...props}) {
 // Containers
 // ----------------------------------------
 
+const DosColumnas = function({ izquierda, derecha }) {
+
+  const panel = ce(Row,
+    {
+      className: 'px-2 py-3 position-relative',
+    },
+    izquierda,
+    derecha,
+  );
+
+  return panel;
+
+};
+
+/*
+<Card>
+  <Card.Header>Featured</Card.Header>
+  <Card.Body>
+    <Card.Title>Special title treatment</Card.Title>
+    <Card.Text>
+      With supporting text below as a natural lead-in to additional content.
+    </Card.Text>
+    <Button variant="primary">Go somewhere</Button>
+  </Card.Body>
+</Card>
+*/
+
+/*
+
+
+
+*/
+
+const Modulo = function({ elementos = [] }) {
+
+  const title = ce(Fragment, null,
+    ce(Col, { xs: 3, className: 'mb-4' }, ce('span', { className: 'h3' }, 'Nombre del módulo:')),
+    ce(Col, { xs: 9, className: 'mb-4' }, ce(Form.Control, { type: 'text' })),
+  );
+
+  const filasElementos = elementos.map((elemento, i) => ce(Col, { key: i, xs: 12, className: 'mb-3' }, elemento));
+
+  const btnAgregarContenidos = ce(blockButton, { variant: 'primary', size: 'lg'}, icon('fa fa-plus'), ' Agregar contenidos');
+
+  const btnAgregarCampos = ce(blockButton, { variant: 'primary', size: 'lg'}, icon('fa fa-plus'), ' Agregar preguntas');
+
+  const botones = ce(Fragment, null,
+    ce(Col, { xs: 6, className: 'mb-3' }, btnAgregarContenidos),
+    ce(Col, { xs: 6, className: 'mb-3' }, btnAgregarCampos),
+  );
+
+  const panel = (
+    ce(Card, null,
+      ce(Card.Body, null,
+        ce(Row, null,
+          title,
+          filasElementos,
+          botones,
+        )
+      )
+    )
+  );
+
+  return panel;
+
+};
+
+
 const OpcionPreguntaSeleccion = function() {
 
   const campoDescripcion = ce(Form.Control, {
@@ -137,7 +213,7 @@ const OpcionPreguntaSeleccion = function() {
     label: '¿Es correcta?',
   });
 
-  const btnEliminar = ce(iconButton, { iconName: 'fa fa-trash', variant: 'danger' });
+  const btnEliminar = ce(iconButton, { iconName: 'fa fa-trash', variant: 'danger', size: 'sm' });
 
   const fila = ce(Row, null,
     ce(Col, null, campoDescripcion),
@@ -149,78 +225,234 @@ const OpcionPreguntaSeleccion = function() {
 };
 
 
-const PreguntaSeleccion = function() {
+const PreguntaSeleccion = function({ opciones = [] }) {
 
   // Columna izquierda
 
-  const listaOpciones = [
-    ce('div', { key: 1, className: 'mb-2' }, ce(OpcionPreguntaSeleccion)),
-    ce('div', { key: 2, className: 'mb-2' }, ce(OpcionPreguntaSeleccion)),
-    ce('div', { key: 3, className: 'mb-2' }, ce(OpcionPreguntaSeleccion)),
-  ];
+  const listaOpcionesConLinea = opciones.map((opcion, i) => ce(Fragment, { key: i }, opcion, ce('hr')))
 
-  const opciones = ce(Col, { xs: 12, className: 'mb-4' }, listaOpciones);
+  const listaOpciones = ce(Col,
+    {
+      xs: 12,
+      className: 'mb-4'
+    },
+    listaOpcionesConLinea
+  );
+
   const agregarOpcion = ce(Col, { xs: 12, className: 'mb-4' }, ce(blockButton, null, icon('fa fa-plus')));
 
-  const columnaIzquierda = ce(Col, { xs: 10 }, ce(Row, null, opciones, agregarOpcion));
+  const columnaIzquierda = ce(Col, { xs: 10 }, ce(Row, null, listaOpciones, agregarOpcion));
 
   // Columna derecha
 
-  const btnEliminar = (
+  const eliminador = (
     ce(Col, null,
       ce(iconButton,
         {
           size: 'sm',
           iconName: 'fa fa-trash',
           variant: 'danger',
-          style: {
-            position: 'absolute',
-            top: '0',
-            right: '0',
-          },
+          className: 'position-absolute top-0 end-0',
         }
       )
     )
   );
 
-  const espacio = ce(Col, { xs: 12, className: 'mb-2' }, ce('div', null, nbsp));
+  const espacio = ce(Col, { xs: 12, className: 'mb-3' }, ce('div', null, nbsp));
 
   const puntaje = ce(Col, { xs: 12, className: 'mb-4' }, ce(Form.Control, { type: 'number', placeholder: 'Puntaje' }));
+
   const requerido = ce(Col, { xs: 12, className: 'mb-4' }, ce(Form.Check, { type: 'checkbox', label: '¿Requerida?', defaultChecked: true }));
 
-  const columnaDerecha = ce(Col, { xs: 2 }, ce(Row, null, btnEliminar, espacio, puntaje, requerido));
+  const columnaDerecha = ce(Col, { xs: 2 }, ce(Row, null, eliminador, espacio, puntaje, requerido));
 
   // conjunto
 
-  const dobleColumna = ce(Row,
-    {
-      style: {
-        position: 'relative',
-      },
-      className: 'px-2 py-3',
-    },
-    columnaIzquierda,
-    columnaDerecha,
-  );
+  return ce(DosColumnas, { izquierda: columnaIzquierda, derecha: columnaDerecha });
 
-  return dobleColumna;
 };
 
-/*
-<Card>
-<Card.Header>Featured</Card.Header>
-<Card.Body>
-  <Card.Title>Special title treatment</Card.Title>
-  <Card.Text>
-    With supporting text below as a natural lead-in to additional content.
-  </Card.Text>
-  <Button variant="primary">Go somewhere</Button>
-</Card.Body>
-</Card>
-*/
+
+const PreguntaTexto = function() {
+
+  // Columna izquierda
+
+  const descripcion = ce('p',
+    {
+      className: 'h-100 rounded p-4',
+      style: {
+        border: '1px solid #ced4da',
+        backgroundColor: '#e9ecef',
+      }
+    },
+    'Espacio reservado para un campo de texto'
+  );
+  // const descripcion = ce('p', null, ce(Form.Control, { as: 'textarea', type: 'text', placeholder: 'Campo de tipo texto', disabled: true, className: 'h-100' }));
+
+  const columnaIzquierda = ce(Col, { xs: 10 }, descripcion);
+
+  // Columna derecha
+
+  const eliminador = (
+    ce(Col, null,
+      ce(iconButton,
+        {
+          size: 'sm',
+          iconName: 'fa fa-trash',
+          variant: 'danger',
+          className: 'position-absolute top-0 end-0',
+        }
+      )
+    )
+  );
+
+  const espacio = ce(Col, { xs: 12, className: 'mb-3' }, ce('div', null, nbsp));
+
+  const puntaje = ce(Col, { xs: 12, className: 'mb-4' }, ce(Form.Control, { type: 'number', placeholder: 'Puntaje' }));
+
+  const requerido = ce(Col, { xs: 12, className: 'mb-4' }, ce(Form.Check, { type: 'checkbox', label: '¿Requerida?', defaultChecked: true }));
+
+  const columnaDerecha = ce(Col, { xs: 2 }, ce(Row, null, eliminador, espacio, puntaje, requerido));
+
+  // unión
+
+  return ce(DosColumnas, { izquierda: columnaIzquierda, derecha: columnaDerecha });
+
+};
+
+
+const ContenidoTexto = function() {
+  // texto
+
+  // Columna izquierda
+
+  const campo = ce(Form.Control, { as: 'textarea', type: 'text', placeholder: 'Escribe aquí el texto', className: 'h-100' });
+
+  const columnaIzquierda = ce(Col, { xs: 11 }, campo);
+
+  // Columna derecha
+
+  const eliminador = (
+    ce(Col, null,
+      ce(iconButton,
+        {
+          size: 'sm',
+          iconName: 'fa fa-trash',
+          variant: 'danger',
+          className: 'position-absolute top-0 end-0',
+        }
+      )
+    )
+  );
+
+  const espacio = ce(Col, { xs: 12, className: 'mb-3' }, ce('div', null, nbsp));
+
+  const columnaDerecha = ce(Col, { xs: 1 }, ce(Row, null, eliminador, espacio));
+
+  // unión
+
+  return ce(DosColumnas, { izquierda: columnaIzquierda, derecha: columnaDerecha });
+
+};
+
+
+const ContenidoEnlace = function() {
+  // url
+  // texto
+
+  // Columna izquierda
+
+  const campoEnlace = ce(Form.Control, { type: 'text', className: 'mb-3', placeholder: 'Escribe aquí el enlace' });
+
+  const campoTexto = ce(Form.Control, { type: 'text', placeholder: 'Escribe aquí el texto' });
+
+  const columnaIzquierda = ce(Col, { xs: 11 }, campoEnlace, campoTexto);
+
+  // Columna derecha
+
+  const eliminador = (
+    ce(Col, null,
+      ce(iconButton,
+        {
+          size: 'sm',
+          iconName: 'fa fa-trash',
+          variant: 'danger',
+          className: 'position-absolute top-0 end-0',
+        }
+      )
+    )
+  );
+
+  const espacio = ce(Col, { xs: 12, className: 'mb-3' }, ce('div', null, nbsp));
+
+  const columnaDerecha = ce(Col, { xs: 1 }, ce(Row, null, eliminador, espacio));
+
+  // unión
+
+  return ce(DosColumnas, { izquierda: columnaIzquierda, derecha: columnaDerecha });
+
+};
+
+
+const ContenidoImagen = function() {
+  // archivo
+
+};
+
+
+const ContenidoPDF = function() {
+  // archivo
+
+};
+
+
 // ----------------------------------------
 // Composites
 // ----------------------------------------
+
+const Cabecera = function() {
+  return ce('header', null,
+    ce('h1', null, rootAttributes.tituloEvaluacion)
+  );
+};
+
+
+const ManejadorDeModulos = function({ modulos = [], ...props }) {
+
+  const listaModulos = [
+    ce(Modulo, { key: 1, elementos: [
+      ce(PreguntaTexto),
+      ce(PreguntaSeleccion, {
+        opciones: [
+          ce(OpcionPreguntaSeleccion),
+          ce(OpcionPreguntaSeleccion),
+          ce(OpcionPreguntaSeleccion)
+        ]
+      }),
+      ce(PreguntaTexto),
+
+    ] }),
+    // ce(Modulo, { key: 2 }),
+    // ce(Modulo, { key: 3 }),
+  ];
+
+  const btnAgregar = ce(blockButton, { variant: 'success', size: 'lg' }, icon('fa fa-plus'), ' Agregar módulo');
+
+  const panel = (
+    ce(Row, {},
+      ce(Col, { xs: 12, className: 'mb-3' }, listaModulos),
+      ce(Col, { xs: 12, className: 'mb-3' }, btnAgregar),
+    )
+  );
+
+  return panel;
+
+};
+
+
+const BotonesFormulario = function() {
+  return ce('div', null, 'Botones del formulario');
+};
 
 
 
@@ -228,15 +460,16 @@ const PreguntaSeleccion = function() {
 // Layout
 // ----------------------------------------
 
-const Layout = function() {
-  const test = ce(PreguntaSeleccion,
-    {
-      //
-    },
-    'text content'
+const Layout = function({north, center, south}) {
+
+  const fila = ce(Row, null,
+    ce(Col, { xs: 12 }, north),
+    ce(Col, { xs: 12 }, center),
+    ce(Col, { xs: 12 }, south),
   );
 
-  return ce(Fragment, null, test);
+  return ce(Container, null, fila);
+
 };
 
 
@@ -245,7 +478,14 @@ const Layout = function() {
 // ----------------------------------------
 
 const View = function() {
-  return ce(Fragment, null, ce(Layout));
+  // composites
+  const north = ce(Cabecera, null, 'Norte');
+  const center = ce(ManejadorDeModulos, null, 'Centro');
+  const south = ce(BotonesFormulario, null, 'Sur');
+
+  // layout
+  return ce(Fragment, null, ce(Layout, { north, center, south } ));
+
 };
 
 
@@ -256,25 +496,25 @@ let ext = null;
 
 ext = document.createElement('link');
 ext.rel = 'stylesheet';
-ext.href = root.getAttribute('bootstrap-css');
+ext.href = rootAttributes.bootstrapCss;
 
 shadowRoot.appendChild(ext);
 
 ext = document.createElement('script');
 ext.type = 'application/javascript';
-ext.src = root.getAttribute('bootstrap-js');
+ext.src = rootAttributes.bootstrapJs;
 
 shadowRoot.appendChild(ext);
 
 ext = document.createElement('link');
 ext.rel = 'stylesheet';
-ext.href = root.getAttribute('custom-css');
+ext.href = rootAttributes.customCss;
 
 shadowRoot.appendChild(ext);
 
 ext = document.createElement('link');
 ext.rel = 'stylesheet';
-ext.href = root.getAttribute('font-awesome-css');
+ext.href = rootAttributes.fontAwesomeCss;
 
 shadowRoot.appendChild(ext);
 
