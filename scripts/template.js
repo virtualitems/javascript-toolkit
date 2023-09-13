@@ -1,3 +1,8 @@
+/**
+ * @requires React
+ * @requires React-DOM
+ * @see https://react.dev/
+ */
 (function(window, document) {
 'use strict';
 
