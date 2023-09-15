@@ -11,6 +11,7 @@
  * @param {Object} Plugins
  */
 (function(rootElement, React, ReactDOM, Plugins) {
+  console.log(Plugins)
 'use strict';
 
 // ----------------------------------------
@@ -125,5 +126,7 @@ ReactDOM
   // window.document.getElementById('root').attachShadow({ mode: 'open' }),
   window.React,
   window.ReactDOM,
-  window,
+  {
+    // Plugins
+  },
 );
