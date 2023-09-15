@@ -8,6 +8,7 @@
  * @param {HTMLElement} rootElement
  * @param {Object} React
  * @param {Object} ReactDOM
+ * @param {Object} Plugins
  */
 (function(rootElement, React, ReactDOM, Plugins) {
 'use strict';
