@@ -10,7 +10,7 @@
  * @param {Object} ReactDOM
  * @param {Object} Plugins
  */
-(function(rootElement, React, ReactDOM, Plugins) {
+(function(rootElement, React, ReactDOM, Plugins=null) {
 'use strict';
 
 // ----------------------------------------
@@ -165,14 +165,17 @@ const View = function(props) {
 // ----------------------------------------
 ReactDOM
   .createRoot(rootElement)
-  .render(ce(StrictMode, null, ce(View)));
+  .render(
+    ce(StrictMode, null,
+      // Providers
+      ce(View)
+    )
+  );
 
 
 })(
-  window.document.getElementById('root'),
+  window.document.getElementById('root'), // may be shadowRoot
   window.React,
   window.ReactDOM,
-  {
-    // Plugins
-  },
+  // Plugins
 );
