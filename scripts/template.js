@@ -11,7 +11,6 @@
  * @param {Object} Plugins
  */
 (function(rootElement, React, ReactDOM, Plugins) {
-  console.log(Plugins)
 'use strict';
 
 // ----------------------------------------
