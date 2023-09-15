@@ -1,21 +1,32 @@
 /**
+ * React Application
+ *
  * @requires React
  * @requires React-DOM
  * @see https://react.dev/
+ *
+ * @param {HTMLElement} rootElement
+ * @param {Object} React
+ * @param {Object} ReactDOM
  */
-(function(window, document) {
+(function(rootElement, React, ReactDOM) {
 'use strict';
 
 // ----------------------------------------
 // Checks
 // ----------------------------------------
 
-if (!window.React) {
+if (!rootElement) {
+  console.error('Root element is not found');
+  return;
+}
+
+if (!React) {
   console.error('React is not loaded');
   return;
 }
 
-if (!window.ReactDOM) {
+if (!ReactDOM) {
   console.error('ReactDOM is not loaded');
   return;
 }
@@ -24,12 +35,6 @@ if (!window.ReactDOM) {
 // ----------------------------------------
 // Globals
 // ----------------------------------------
-
-const {
-  React,
-  ReactDOM
-
-} = window;
 
 const {
   createElement: ce,
@@ -110,8 +115,13 @@ const View = function() {
 // ----------------------------------------
 
 ReactDOM
-  .createRoot(document.getElementById('root'))
+  .createRoot(rootElement)
   .render(ce(StrictMode, null, ce(View)));
 
 
-})(window, document);
+})(
+  window.document.getElementById('root'),
+  // window.document.getElementById('root').attachShadow({ mode: 'open' }),
+  window.React,
+  window.ReactDOM,
+);
