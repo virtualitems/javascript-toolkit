@@ -9,7 +9,7 @@
  * @param {Object} React
  * @param {Object} ReactDOM
  */
-(function(rootElement, React, ReactDOM) {
+(function(rootElement, React, ReactDOM, Plugins) {
 'use strict';
 
 // ----------------------------------------
@@ -124,4 +124,5 @@ ReactDOM
   // window.document.getElementById('root').attachShadow({ mode: 'open' }),
   window.React,
   window.ReactDOM,
+  window,
 );
