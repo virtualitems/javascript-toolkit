@@ -40,7 +40,7 @@ if (!ReactDOM) {
 const {
   createElement: ce,
   Fragment,
-  StrictMode
+  StrictMode,
 
 } = React;
 
@@ -67,12 +67,28 @@ const {
 // Context
 // ----------------------------------------
 
+const Context = React.createContext();
+
+const ContextProvider = function(props) {
+  const { children } = props;
+
+  const value = {
+    //
+  };
+
+  return ce(Context.Provider, { value }, children);
+};
 
 
 // ----------------------------------------
 // Models
 // ----------------------------------------
 
+const Model = class {
+  constructor() {
+    //
+  }
+};
 
 
 // ----------------------------------------
@@ -126,7 +142,7 @@ const View = function(props) {
   const center = ce(Composite);
   const layout = ce(Layout, { center });
 
-  return ce(Fragment, props, layout);
+  return ce(Fragment, null, layout);
 };
 
 
@@ -137,7 +153,7 @@ const View = function(props) {
 ReactDOM
   .createRoot(rootElement)
   .render(ce(StrictMode, null, ce(View)));
-
+  // .render(ce(StrictMode, null, ce(ContextProvider, null, ce(View))));
 
 })(
   window.document.getElementById('root'),
