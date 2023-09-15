@@ -64,10 +64,11 @@ const {
 
 
 // ----------------------------------------
-// Context
+// Providers
 // ----------------------------------------
 
 const Context = React.createContext();
+
 
 const ContextProvider = function(props) {
   const { children } = props;
@@ -80,13 +81,26 @@ const ContextProvider = function(props) {
 };
 
 
+const ResourcesProvider = function(props) {
+  const { children, links, scripts } = props;
+
+  return ce(
+    Fragment,
+    null,
+    links.map((link, index) => ce('link', { key: index, ...link })),
+    children,
+    scripts.map((script, index) => ce('script', { key: index, ...script })),
+  );
+};
+
+
 // ----------------------------------------
 // Models
 // ----------------------------------------
 
-const Model = class {
-  constructor() {
-    //
+const BaseModel = class {
+  constructor(key=null) {
+    this.key = key;
   }
 };
 
@@ -149,15 +163,13 @@ const View = function(props) {
 // ----------------------------------------
 // Root
 // ----------------------------------------
-
 ReactDOM
   .createRoot(rootElement)
   .render(ce(StrictMode, null, ce(View)));
-  // .render(ce(StrictMode, null, ce(ContextProvider, null, ce(View))));
+
 
 })(
   window.document.getElementById('root'),
-  // window.document.getElementById('root').attachShadow({ mode: 'open' }),
   window.React,
   window.ReactDOM,
   {
