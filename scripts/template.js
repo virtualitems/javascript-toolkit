@@ -80,7 +80,7 @@ const {
 // ----------------------------------------
 
 const Content = function(props) {
-  return ce('h1', null, 'React Application')
+  return ce('h1', props, 'React Application')
 };
 
 
@@ -91,7 +91,7 @@ const Content = function(props) {
 const Container = function(props) {
   const { children } = props;
 
-  return ce('header', null, children);
+  return ce('header', props, children);
 };
 
 
@@ -103,7 +103,7 @@ const Composite = function(props) {
   const content = ce(Content);
   const container = ce(Container, null, content);
 
-  return ce('main', null, container);
+  return ce('main', props, container);
 };
 
 
@@ -114,7 +114,7 @@ const Composite = function(props) {
 const Layout = function(props) {
   const { center } = props;
 
-  return ce(Fragment, null, center);
+  return ce(Fragment, props, center);
 };
 
 
@@ -122,11 +122,11 @@ const Layout = function(props) {
 // View
 // ----------------------------------------
 
-const View = function() {
+const View = function(props) {
   const center = ce(Composite);
   const layout = ce(Layout, { center });
 
-  return ce(Fragment, null, layout);
+  return ce(Fragment, props, layout);
 };
 
 
