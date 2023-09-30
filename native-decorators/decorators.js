@@ -17,3 +17,27 @@ const decorator = function(fn, ...args) {
 
   return wrapper;
 };
+
+
+/**
+ * Prevents a function from being called more than once during a specified time interval
+ *
+ * @param {Function} fn
+ * @param {Number} delay
+ * @returns {Function}
+ */
+const debounce = function(fn, delay) {
+
+  let timeout = null;
+
+  const wrapper = function() {
+    const thisArg = this;
+    const argArray = arguments;
+
+    clearTimeout(timeout);
+
+    timeout = setTimeout(() => fn.apply(thisArg, argArray), delay);
+  };
+
+  return wrapper;
+};
