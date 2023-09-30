@@ -149,7 +149,7 @@ const Composite = function(props) {
 const Layout = function(props) {
   const { center } = props;
 
-  return ce(Fragment, props, center);
+  return ce(Fragment, null, center);
 };
 
 
