@@ -10,8 +10,9 @@
  * @param {Object} ReactDOM
  * @param {Object} Plugins
  */
-(function(rootElement, React, ReactDOM, Plugins=null) {
+(function(rootElement, React, ReactDOM, Plugins) {
 'use strict';
+
 
 // ----------------------------------------
 // Checks
@@ -30,6 +31,10 @@ if (!React) {
 if (!ReactDOM) {
   console.error('ReactDOM is not loaded');
   return;
+}
+
+if (!(Plugins instanceof Object)) {
+  Plugins = {};
 }
 
 
