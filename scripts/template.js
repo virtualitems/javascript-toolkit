@@ -63,6 +63,17 @@ const {
 
 
 // ----------------------------------------
+// Models
+// ----------------------------------------
+
+const BaseModel = class {
+  constructor(key=null) {
+    this.key = key;
+  }
+};
+
+
+// ----------------------------------------
 // Hooks
 // ----------------------------------------
 
@@ -96,17 +107,6 @@ const ResourcesProvider = function(props) {
     children,
     scripts.map((script, index) => ce('script', { key: index, ...script })),
   );
-};
-
-
-// ----------------------------------------
-// Models
-// ----------------------------------------
-
-const BaseModel = class {
-  constructor(key=null) {
-    this.key = key;
-  }
 };
 
 
@@ -182,5 +182,5 @@ ReactDOM
   window.document.getElementById('root'), // may be shadowRoot
   window.React,
   window.ReactDOM,
-  // Plugins
+  // Plugins Object
 );
