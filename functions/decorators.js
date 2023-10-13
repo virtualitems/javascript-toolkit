@@ -29,14 +29,18 @@ const decorator = function(fn, ...args) {
 const debounce = function(fn, delay) {
 
   let timeout = null;
+  let callback = null;
 
   const wrapper = function() {
-    const thisArg = this;
-    const argArray = arguments;
-
     clearTimeout(timeout);
 
-    timeout = setTimeout(() => fn.apply(thisArg, argArray), delay);
+    if (callback === null) {
+      const context = this;
+      const args = arguments;
+      callback = () => fn.apply(context, args);
+    }
+
+    timeout = setTimeout(callback, delay);
   };
 
   return wrapper;
