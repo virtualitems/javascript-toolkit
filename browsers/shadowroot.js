@@ -1,3 +1,5 @@
+(function(){
+
 const rootElement = document.getElementById('root');
 
 const shadow = rootElement.attachShadow({mode: 'open'});
@@ -15,3 +17,5 @@ heading.textContent = 'Shadow DOM';
 
 shadow.appendChild(style);
 shadow.appendChild(heading);
+
+})();
