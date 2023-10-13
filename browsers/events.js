@@ -13,4 +13,3 @@ document.dispatchEvent(new CustomEvent('greet-event',
 ));
 
 })();
-
