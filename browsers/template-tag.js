@@ -1,3 +1,5 @@
+// <template><h1>Heading</h1></template>
+
 (function(){
 
 const template = document.querySelector('template');

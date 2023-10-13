@@ -1,6 +1,7 @@
 // ----------------------------------------
 // Model View Presenter (MVP) architecture
 // ----------------------------------------
+// <input type="text"><span></span>
 
 const Model = class {
   constructor() {

@@ -1,3 +1,5 @@
+// <div id="root"></div>
+
 (function(){
 
 const rootElement = document.getElementById('root');

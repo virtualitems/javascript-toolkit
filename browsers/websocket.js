@@ -1,4 +1,3 @@
-// promise web sockets
 (function() {
 
   const socket = new WebSocket('wss://example.com');
