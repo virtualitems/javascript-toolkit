@@ -10,7 +10,10 @@ const Model = class {
   }
   static fromJSON(json) {
     const model = new Model();
-    Object.assign(model, json);
+    model.userId = json.userId;
+    model.id = json.id;
+    model.title = json.title;
+    model.completed = json.completed;
     return model;
   }
 };
