@@ -11,8 +11,8 @@ const coalesce = function() {
     const arg = args[i];
 
     if (
-      !arg === undefined &&
-      !arg === null &&
+      arg !== undefined &&
+      arg !== null &&
       !Object.is(arg, NaN)
     ) {
       return arg;
