@@ -33,7 +33,7 @@ if (!ReactDOM) {
   return;
 }
 
-if (!(Plugins instanceof Object)) {
+if (typeof Plugins !== 'object') {
   Plugins = {};
 }
 
