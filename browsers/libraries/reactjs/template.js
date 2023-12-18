@@ -8,9 +8,9 @@
  * @param {HTMLElement} rootElement
  * @param {Object} React
  * @param {Object} ReactDOM
- * @param {Object} Plugins
+ * @param {Window} window
  */
-(function(rootElement, React, ReactDOM, Plugins) {
+(function(rootElement, React, ReactDOM, window) {
 'use strict';
 
 
@@ -33,14 +33,19 @@ if (!ReactDOM) {
   return;
 }
 
-if (typeof Plugins !== 'object') {
-  Plugins = {};
+if (typeof window !== 'object') {
+  window = {};
 }
 
 
 // ----------------------------------------
 // Globals
 // ----------------------------------------
+
+const {
+  document
+
+} = window;
 
 const {
   createElement: ce,
@@ -147,5 +152,5 @@ ReactDOM
   window.document.getElementById('root'),
   window.React,
   window.ReactDOM,
-  null
+  window,
 );
