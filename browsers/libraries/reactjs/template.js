@@ -18,23 +18,28 @@
 // Checks
 // ----------------------------------------
 
-if (!rootElement) {
-  console.error('Root element not found');
-  return;
+/**
+ * Check if a value is valuable
+ *
+ * @param {any} value
+ * @returns {Boolean}
+ */
+const isValuable = (value) => (value !== undefined && value !== null && !Object.is(value, NaN));
+
+if (!isValuable(rootElement)) {
+  throw new Error('Root element not found');
 }
 
-if (!React) {
-  console.error('React not loaded');
-  return;
+if (!isValuable(React)) {
+  throw new Error('React not found');
 }
 
-if (!ReactDOM) {
-  console.error('ReactDOM not loaded');
-  return;
+if (!isValuable(ReactDOM)) {
+  throw new Error('ReactDOM not found');
 }
 
-if (typeof window !== 'object') {
-  window = {};
+if (!isValuable(window)) {
+  throw new Error('Window not found');
 }
 
 
