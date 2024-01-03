@@ -14,9 +14,20 @@ class WebComponent extends HTMLElement {
     return ['class', 'id', 'lang', 'style', 'title'];
   }
 
+  get html() {
+    return '<h1><slot></slot></h1>';
+  }
+
+  get css() {
+    return 'h1 { color: red; }';
+  }
+
   render() {
     console.log('ƒ render');
-    this.shadowRoot.innerHTML = '<h1><slot></slot></h1>';
+    const css = new CSSStyleSheet();
+    css.replaceSync(this.css);
+    this.shadowRoot.adoptedStyleSheets.push(css);
+    this.shadowRoot.innerHTML = this.html;
   }
 
   dispose() {
