@@ -6,11 +6,18 @@ class WebComponent extends HTMLElement {
    */
   constructor() {
     super();
+
+    // shadow
     this.attachShadow({ mode: 'open' });
+
+    // css
+    const style = new CSSStyleSheet();
+    style.replaceSync(this.css);
+    this.shadowRoot.adoptedStyleSheets.push(style);
+
   }
 
   static get observedAttributes() {
-    // return an array of attribute names
     return ['class', 'id', 'lang', 'style', 'title'];
   }
 
@@ -19,14 +26,11 @@ class WebComponent extends HTMLElement {
   }
 
   get css() {
-    return 'h1 { color: red; }';
+    return 'h1 { color: darkred; }';
   }
 
   render() {
     console.log('ƒ render');
-    const css = new CSSStyleSheet();
-    css.replaceSync(this.css);
-    this.shadowRoot.adoptedStyleSheets.push(css);
     this.shadowRoot.innerHTML = this.html;
   }
 
