@@ -1,5 +1,7 @@
 # Tutorial de JSDOC
 
+<br>
+
 ## Apertura y cierre de comentarios
 
 Todo lo que se escriba entre `/**` y `*/` se considera un comentario de documentación. Cada línea intermedia debe iniciar con `*`.
@@ -14,6 +16,8 @@ Todo lo que se escriba entre `/**` y `*/` se considera un comentario de document
  * varias líneas
  */
 ```
+
+<br>
 
 ## Etiquetas
 
@@ -30,6 +34,8 @@ Las etiquetas son palabras que inician con `@` y que se usan para indicar el tip
  */
 ```
 
+<br>
+
 ## Abstract
 
 @abstract _(synonyms: @virtual)_ Identifica un miembro que debe ser implementado (o sobreescrito) por los objetos que lo hereden.
@@ -44,6 +50,8 @@ SuperClass.prototype.theMethod = function() {
     throw new Error('not implemented');
 };
 ```
+
+<br>
 
 ## Access
 
@@ -83,4 +91,32 @@ function TheClass() {
      */
     this.publicMember = null;
 }
+```
+
+<br>
+
+## Alias
+
+@alias _(synonyms: @name)_ Especifica un nombre alternativo para un miembro.
+
+<br>
+
+## Desestructuración
+
+La desestructuración consiste en extraer valores de un objeto o un array en variables independientes.
+
+Para documentar la desestructuración se usa la etiqueta `@type` y se indica el tipo de dato que se espera en cada variable entre `[` y `]` para arrays o entre `{` y `}` para objetos.
+
+**Ejemplo:**
+
+```js
+/**
+ * @type {[string, number]}
+ */
+const [first, second] = list;
+
+/**
+ * @type {{aa: string, bb: number}}
+ */
+const {aa, bb} = object;
 ```
