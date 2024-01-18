@@ -55,6 +55,8 @@ SuperClass.prototype.theMethod = function() {
 
 ## Access
 
+> @access &lt;nivel&gt;
+
 @access especifica el nivel de acceso de un miembro.
 
 El texto a continuación de la etiqueta indica el nivel de acceso que puede ser:
@@ -95,9 +97,81 @@ function TheClass() {
 
 <br>
 
-## Alias
+## Async
 
-@alias _(synonyms: @name)_ Especifica un nombre alternativo para un miembro.
+@async especifica que una función es asíncrona.
+
+**Ejemplo:**
+
+```js
+/**
+ * @async
+ */
+async function fn() {
+    // ...
+}
+
+/**
+ * @async
+ */
+function fn() {
+    return new Promise(
+        // ...
+    );
+}
+```
+
+<br>
+
+## Author
+
+> @author nombre &lt;correo&gt;
+
+@author identifica el autor de un elemento. Se debe agregar el nombre y opcionalmente se puede agregar un medio de contacto entre símbolos `<` y `>`.
+
+**Ejemplo:**
+
+```js
+/**
+ * @author John Doe <john.doe@example.com>
+ */
+```
+
+## Borrows
+
+> @borrows &lt;padre&gt; as &lt;hijo&gt;
+
+@borrows especifica que un miembro hereda la documentación de otro miembro.
+
+**Ejemplo:**
+
+```js
+/**
+ * @borrows window.alert as alert
+ */
+const util = {
+    alert: window.alert,
+};
+```
+
+<br>
+
+## Class
+
+@class marca una función como constructora, lo que significa que se usará con el operador `new` para crear objetos.
+
+**Ejemplo:**
+
+```js
+/**
+ * @class
+ */
+function Entity() {
+    // ...
+}
+
+const entity = new Entity();
+```
 
 <br>
 
