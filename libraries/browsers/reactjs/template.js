@@ -16,34 +16,34 @@
  * @param {Object} window.ReactDOM
  * @param {Object} window.ReactRouterDOM
  */
-(function(rootElement, window) {
+(function(rootElement, window, extras) {
 'use strict';
 
 // ----------------------------------------
 // Checks
 // ----------------------------------------
 
-if (! typeof rootElement === 'object') {
+if (! (typeof rootElement === 'object')) {
   throw new Error('Root element not found');
 }
 
-if (! typeof window === 'object') {
+if (! (typeof window === 'object')) {
   throw new Error('Window not found');
 }
 
-if (! typeof window.document === 'object') {
+if (! (typeof window.document === 'object')) {
   throw new Error('window.document not found');
 }
 
-if (! typeof window.React === 'object') {
+if (! (typeof window.React === 'object')) {
   throw new Error('window.React not found');
 }
 
-if (! typeof window.ReactDOM === 'object') {
+if (! (typeof window.ReactDOM === 'object')) {
   throw new Error('window.ReactDOM not found');
 }
 
-if (! typeof window.ReactRouterDOM === 'object') {
+if (! (typeof window.ReactRouterDOM === 'object')) {
   throw new Error('window.ReactRouterDOM not found');
 }
 
@@ -213,11 +213,13 @@ const Bootstrap = function(props) {
 // ----------------------------------------
 // Root
 // ----------------------------------------
+
 ReactDOM
   .createRoot(rootElement)
   .render(ce(Bootstrap));
 
 })(
-  window.document.getElementById('root'),
+  window.document.getElementById('root').attachShadow({mode: 'open'}),
   window,
+  {}
 );
