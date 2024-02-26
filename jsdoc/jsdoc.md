@@ -175,6 +175,85 @@ const entity = new Entity();
 
 <br>
 
+## Classdesc
+
+Es usada para proveer una descripción para una clase, separada de la descripción de la función constructora.
+
+@classdesc se debe usar en combinación con @class o @constructor.
+
+**Ejemplo:**
+
+```js
+/**
+ * @classdesc Una entidad
+ * @class
+ */
+class EntityClass {
+    // ...
+}
+
+/**
+ * @classdesc Otra entidad
+ * @constructor
+ */
+function Entity() {
+    // ...
+}
+```
+
+<br>
+
+## Constant
+
+Se usa para denotar que un dato es de tipo constante.
+
+**Ejemplo:**
+
+```js
+/**
+ * @constant
+ */
+const RED = 'FF0000';
+```
+
+<br>
+
+## Constructs
+
+Significa que una función en particular será usada para construir instancias de una clase.
+
+**Ejemplo:**
+
+```js
+const EntitiesManager = {
+
+    /**
+     * @constructs  Entity
+     */
+    factoryMethod() {
+        // ...
+    }
+
+}
+```
+
+<br>
+
+## Copyright
+
+Es usada para documentar información de derechos de autor en un comentario de descripción de archivo. Se debe usar en combinación con la etiqueta @fileoverview.
+
+**Ejemplo:**
+
+```js
+/**
+ * @fileoverview Descripción del archivo
+ * @copyright John Doe 2011
+ */
+```
+
+<br>
+
 ## Desestructuración
 
 La desestructuración consiste en extraer valores de un objeto o un array en variables independientes.
