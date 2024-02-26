@@ -2,11 +2,11 @@
 // but we can check if an object has a method or not
 
 // definition:
-const isDoable = function(obj) {
+function isDoable(obj) {
   return obj && typeof obj.do === 'function';
 };
 
-const Model = class {
+class Model {
   constructor(id) {
     this.id = id;
   }
@@ -18,7 +18,10 @@ const Model = class {
 // usage:
 const obj = new Model(1);
 
-if (isDoable(obj))
+if (isDoable(obj)) {
   obj.do();
-else
+
+} else {
   console.error('not doable');
+
+}
