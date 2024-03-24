@@ -12,6 +12,11 @@
 
   // browser
   else {
+
+    if (global.UMD !== 'undefined') {
+      throw new Error('UMD is already defined');
+    }
+
     global.UMD = factory(/* send dependencies */);
   }
 
