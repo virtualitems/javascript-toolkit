@@ -13,9 +13,11 @@
 (function(rootElement, React, ReactDOM, extras) {
 'use strict';
 
+
 // ----------------------------------------
 // Checks
 // ----------------------------------------
+
 
 if (! (typeof rootElement === 'object')) {
   throw new Error('Root element not found');
@@ -29,7 +31,7 @@ if (! (typeof ReactDOM === 'object')) {
   throw new Error('ReactDOM not found');
 }
 
-if (extras !== undefined && typeof extras !== 'object') {
+if (! (typeof extras === 'object')) {
   throw new Error('Extras must be an object');
 }
 
@@ -37,6 +39,7 @@ if (extras !== undefined && typeof extras !== 'object') {
 // ----------------------------------------
 // Constants
 // ----------------------------------------
+
 
 const {
   createElement: ce,
@@ -47,19 +50,13 @@ const {
 
 
 // ----------------------------------------
-// Errors
+// Entities
 // ----------------------------------------
 
 
 
 // ----------------------------------------
-// Utils
-// ----------------------------------------
-
-
-
-// ----------------------------------------
-// Models
+// Services
 // ----------------------------------------
 
 
@@ -71,18 +68,12 @@ const {
 
 
 // ----------------------------------------
-// Providers
-// ----------------------------------------
-
-
-
-// ----------------------------------------
 // Content components
 // ----------------------------------------
 
 
 /**
- * @description App component
+ * @description React component
  * @param {import('react').HTMLProps} props
  */
 function App(props) {
@@ -96,10 +87,10 @@ function App(props) {
   return ce('div', null,
     ce('h1', null, 'React Application'),
     ce('h2', null, `Counter: ${counterState}`),
-    ce('button', {onClick: handleClick}, 'Increment'),
+    ce('button', { onClick: handleClick }, 'Increment'),
   );
 
-} //:: App;
+}  //:: App
 
 
 // ----------------------------------------
@@ -112,6 +103,7 @@ function App(props) {
 // Root
 // ----------------------------------------
 
+
 ReactDOM
   .createRoot(rootElement)
   .render(ce(StrictMode, null, ce(App)));
@@ -119,5 +111,6 @@ ReactDOM
 })(
   window.document.getElementById('root'),
   window.React,
-  window.ReactDOM
+  window.ReactDOM,
+  {}
 );
