@@ -15,8 +15,10 @@
     global.UMD = factory(/* send dependencies */);
   }
 
-})((typeof globalThis !== 'undefined' ? globalThis : typeof self !== 'undefined' ? self : this), (function (/* receive dependencies */) {
+})((typeof globalThis !== 'undefined' ? globalThis : typeof self !== 'undefined' ? self : this), (function () {
   'use strict';
+
+  const [/* receive dependencies */] = arguments;
 
   const exports = {};
 
