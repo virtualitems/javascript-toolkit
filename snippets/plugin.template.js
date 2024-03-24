@@ -75,3 +75,5 @@ return {
 })(
   window.alert // add dependency injection
 );
+
+// usage: <script> window.Lib.greet(); </script>
