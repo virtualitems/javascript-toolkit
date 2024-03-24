@@ -9,7 +9,7 @@
 // ----------------------------------------
 
 
-if (! window.alert) {
+if (! window.alert) { // add dependency check
   throw new Error('alert not found');
 }
 
@@ -19,11 +19,11 @@ if (! window.alert) {
 // ----------------------------------------
 
 
-if ('undefined' !== typeof window.Lib) {
+if ('undefined' !== typeof window.Lib) { // check if library namespace is already defined
   throw new Error('Lib is already defined');
 }
 
-window.Lib = (function (alert) {
+window.Lib = (function (alert) { // create library namespace and add dependencies namespaces
 
 'use strict';
 
@@ -67,5 +67,5 @@ return {
 
 
 })(
-  window.alert
+  window.alert // add dependency injection
 );
