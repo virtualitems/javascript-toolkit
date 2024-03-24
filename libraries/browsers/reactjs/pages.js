@@ -50,6 +50,10 @@ if (! window.ReactRouterDOM) {
 // ----------------------------------------
 
 
+if (window.hasOwnProperty('App')) {
+  throw new Error('App already defined');
+}
+
 window.App = (function(React, ReactDOM, RemixRouter, ReactRouter, ReactRouterDOM) {
 
 'use strict';

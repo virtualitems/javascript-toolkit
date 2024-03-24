@@ -29,6 +29,10 @@ if (! window.ReactDOM) {
 // ----------------------------------------
 
 
+if (window.hasOwnProperty('App')) {
+  throw new Error('App already defined');
+}
+
 window.App = (function(React, ReactDOM) {
 
 'use strict';
