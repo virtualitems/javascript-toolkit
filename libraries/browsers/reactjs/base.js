@@ -3,8 +3,10 @@
  * @version 0.0.1
  *
  * @requires react
+ * @see https://www.npmjs.com/package/react
+ *
  * @requires react-dom
- * @see https://react.dev/
+ * @see https://www.npmjs.com/package/react-dom
  */
 
 
@@ -13,7 +15,7 @@
 // ----------------------------------------
 
 
-if (!window.React) {
+if (! window.React) {
   throw new Error('React not found');
 }
 
