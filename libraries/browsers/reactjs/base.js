@@ -1,17 +1,11 @@
 /**
- * React Application
+ * @fileoverview React application
+ * @version 0.0.1
  *
  * @requires react
  * @requires react-dom
  * @see https://react.dev/
- *
- * @param {HTMLElement} rootElement
- * @param {import('react')} React
- * @param {import('react-dom')} ReactDOM
- * @param {Object} extras
  */
-(function(rootElement, React, ReactDOM, extras) {
-'use strict';
 
 
 // ----------------------------------------
@@ -19,21 +13,23 @@
 // ----------------------------------------
 
 
-if (! (typeof rootElement === 'object')) {
-  throw new Error('Root element not found');
-}
-
-if (! (typeof React === 'object')) {
+if (!window.React) {
   throw new Error('React not found');
 }
 
-if (! (typeof ReactDOM === 'object')) {
+if (! window.ReactDOM) {
   throw new Error('ReactDOM not found');
 }
 
-if (! (typeof extras === 'object')) {
-  throw new Error('Extras must be an object');
-}
+
+// ----------------------------------------
+// Namespaces
+// ----------------------------------------
+
+
+window.App = (function(React, ReactDOM) {
+
+'use strict';
 
 
 // ----------------------------------------
@@ -100,17 +96,26 @@ function App(props) {
 
 
 // ----------------------------------------
-// Root
+// Exports
 // ----------------------------------------
 
 
-ReactDOM
-  .createRoot(rootElement)
-  .render(ce(StrictMode, null, ce(App)));
+const _version = '0.0.1';
+
+function _render(root) {
+  ReactDOM.createRoot(root).render(ce(StrictMode, null, ce(App)));
+}
+
+return {
+  version: _version,
+  render: _render,
+};
+
+
+// ----------------------------------------
+
 
 })(
-  window.document.getElementById('root'),
   window.React,
-  window.ReactDOM,
-  {}
+  window.ReactDOM
 );
