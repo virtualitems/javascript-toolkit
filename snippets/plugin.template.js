@@ -29,6 +29,14 @@ window.Lib = (function (alert) { // create library namespace and add dependencie
 
 
 // ----------------------------------------
+// Constants
+// ----------------------------------------
+
+
+const _version = '0.0.1';
+
+
+// ----------------------------------------
 // Entities
 // ----------------------------------------
 
@@ -45,17 +53,15 @@ window.Lib = (function (alert) { // create library namespace and add dependencie
 // ----------------------------------------
 
 
+function _greet() {
+  alert('Hello, World!');
+}
+
 
 // ----------------------------------------
 // Exports
 // ----------------------------------------
 
-
-const _version = '0.0.1';
-
-function _greet() {
-  alert('Hello, World!');
-}
 
 return {
   version: _version,
