@@ -174,9 +174,9 @@ return {
 
 
 })(
-  React,
-  ReactDOM,
-  RemixRouter,
-  ReactRouter,
-  ReactRouterDOM
+  window.React,
+  window.ReactDOM,
+  window.RemixRouter,
+  window.ReactRouter,
+  window.ReactRouterDOM
 );
