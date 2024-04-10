@@ -161,16 +161,15 @@ function RoutingProvider(props) {
 // ----------------------------------------
 
 
-const _version = '0.0.1';
+const exports = {};
 
-function _render(root) {
-  ReactDOM.createRoot(root).render(ce(StrictMode, null, ce(RoutingProvider)));
-}
+exports.version = '0.0.1';
 
-return {
-  version: _version,
-  render: _render,
+exports.render = function(root) {
+  ReactDOM.createRoot(root).render(ce(App));
 };
+
+return exports;
 
 
 // ----------------------------------------

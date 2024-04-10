@@ -160,16 +160,15 @@ function App() {
 // ----------------------------------------
 
 
-const _version = '0.0.1';
+const exports = {};
 
-function _render(root) {
+exports.version = '0.0.1';
+
+exports.render = function(root) {
   ReactDOM.createRoot(root).render(ce(App));
-}
-
-return {
-  version: _version,
-  render: _render,
 };
+
+return exports;
 
 
 // ----------------------------------------
