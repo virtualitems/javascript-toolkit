@@ -97,11 +97,17 @@ function Lifecycle(props) {
   }, []);
 
   useEffect(
-    () => console.log('!! component effect')
+    () => {
+      console.log('!! component generic effect');
+      return () => console.log('!! component generic cleanup');
+    },
   );
 
   useEffect(
-    () => console.log('!! component dependency effect'),
+    () => {
+      console.log('!! component dependency effect');
+      return () => console.log('!! component dependency cleanup');
+    },
     [counterState]
   );
 
