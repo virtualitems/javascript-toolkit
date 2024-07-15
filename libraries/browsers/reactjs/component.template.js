@@ -24,7 +24,7 @@ import React from 'react'
 /**
  * @description 
  *
- * @param {React.HTMLAttributes} props
+ * @param {React.HTMLAttributes<HTMLElement>} props
  * @returns {React.ReactElement}
  */
 export default function __COMPONENT__(props)
