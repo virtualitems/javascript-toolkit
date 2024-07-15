@@ -111,7 +111,7 @@ const exports = {};
 exports.version = '0.0.1';
 
 exports.render = function(root) {
-  ReactDOM.createRoot(root).render(ce(App));
+  ReactDOM.createRoot(root).render(ce(StrictMode, null, ce(App)));
 };
 
 return exports;
