@@ -1,5 +1,7 @@
 // Libraries
 
+import React from 'react'
+
 // Same Shared Module Layer
 
 // Lower Shared Module Layers
@@ -21,20 +23,23 @@
 
 /**
  * @description 
+ *
+ * @param {React.HTMLAttributes} props
+ * @returns {React.ReactElement}
  */
-export default __COMPONENT__(props)
+export default function __COMPONENT__(props)
 {
 
   // MODEL -----------------------------
 
   // VIEW MODEL ------------------------
 
-  // HANDLERS --------------------------
-
   // EFFECTS ---------------------------
+
+  // HANDLERS --------------------------
 
   // VIEW ------------------------------
 
-  return (null);
+  return (props.children);
 
 } //:: __COMPONENT__
