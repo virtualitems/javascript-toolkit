@@ -73,6 +73,7 @@ const {
 // Content components
 // ----------------------------------------
 
+const ErrorBoundary = React.lazy(() => import('./ErrorBoundary.js'));
 const LazyComponent = React.lazy(() => import('./LazyComponent.js'));
 
 /**
@@ -81,12 +82,19 @@ const LazyComponent = React.lazy(() => import('./LazyComponent.js'));
  */
 function App(props) {
 
-  return ce(
-    React.Suspense,
-    {
-      fallback: ce('div', null, 'Loading...')
-    },
-    ce(LazyComponent, null, 'Lazy component loaded!'),
+  return (
+    ce(ErrorBoundary,
+      {
+        fallback: (props) => ce('div', null, 'Fallback for Error => ', props.error.message),
+        componentDidCatch: (error, errorInfo) => console.warn(error, errorInfo),
+      },
+      ce(React.Suspense,
+        {
+          fallback: ce('div', null, 'Loading...')
+        },
+        ce(LazyComponent, null, 'Lazy component loaded!'),
+      )
+    )
   );
 
 }  //:: App
