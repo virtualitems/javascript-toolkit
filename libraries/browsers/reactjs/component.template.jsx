@@ -42,4 +42,4 @@ export default function __COMPONENT__(props)
 
   return (props.children);
 
-} //:: __COMPONENT__
+} //:: ReactElement
