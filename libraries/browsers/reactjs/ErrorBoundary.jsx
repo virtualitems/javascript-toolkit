@@ -1,38 +1,56 @@
 import React from 'react';
 
-
-type TProps = React.HTMLAttributes<HTMLDivElement> & {
-  fallback?: (error: Error) => React.ReactNode;
-  componentDidCatch?: (error: Error, errorInfo: React.ErrorInfo) => void;
-};
-
-type TState = {
-  error: Error | null;
-};
-
+/**
+ * @typedef _TProps
+ * @type {object}
+ * @property {(error: Error) => React.ReactNode} fallback
+ * @property {(error: Error, errorInfo: React.ErrorInfo) => void} componentDidCatch
+ *
+ * @typedef TProps
+ * @type {import('react').HTMLAttributes<HTMLDivElement> & _TProps}
+ */
 
 /**
- * @description Provides an error boundary for the children components
+ * @typedef TState
+ * @type {object}
+ * @property {Error | null} error
+ */
+
+/**
+ * @description 
  */
 export default class ErrorBoundary extends React.Component
 {
 
-  declare props: TProps;
+  /** @type {TProps} */
+  props;
 
-  declare state: TState;
+  /** @type {TState} */
+  state;
 
-  constructor(props: TProps)
+  /**
+   * @param {TProps} props
+   */
+  constructor(props)
   {
     super(props);
     this.state = { error: null };
   }
 
-  static getDerivedStateFromError(error: Error)
+  /**
+   * @param {Error} error
+   * @returns {TState}
+   */
+  static getDerivedStateFromError(error)
   {
     return { error };
   }
 
-  componentDidCatch(error: Error, errorInfo: React.ErrorInfo)
+  /**
+   * @param {Error} error
+   * @param {import('react').ErrorInfo} errorInfo
+   */
+  componentDidCatch(error, errorInfo)
   {
     if ('function' === typeof this.props.componentDidCatch) {
       this.props.componentDidCatch(error, errorInfo);
@@ -44,6 +62,9 @@ export default class ErrorBoundary extends React.Component
     this.setState({ error: null });
   }
 
+  /**
+   * @returns {import('react').ReactElement}
+   */
   render()
   {
     if (this.state.error === null) {
