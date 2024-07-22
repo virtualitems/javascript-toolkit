@@ -1,9 +1,7 @@
-import React from 'react';
-
 /**
  * @typedef _TProps
  * @type {object}
- * @property {(error: Error) => React.ReactNode} fallback
+ * @property {React.ReactElement} fallback
  * @property {(error: Error, errorInfo: React.ErrorInfo) => void} componentDidCatch
  *
  * @typedef TProps
@@ -52,9 +50,7 @@ export default class ErrorBoundary extends React.Component
    */
   componentDidCatch(error, errorInfo)
   {
-    if ('function' === typeof this.props.componentDidCatch) {
-      this.props.componentDidCatch(error, errorInfo);
-    }
+    this.props.componentDidCatch(error, errorInfo);
   }
 
   resetErrorBoundary()
@@ -71,18 +67,8 @@ export default class ErrorBoundary extends React.Component
       return this.props.children;
     }
 
-    if ('function' !== typeof this.props.fallback) {
-      this.resetErrorBoundary();
-      return this.props.children;
-    }
+    return React.createElement(this.props.fallback, { error: this.state.error });
 
-    const children = this.props.fallback(this.state.error);
-
-    if (React.isValidElement(children)) {
-      return children;
-    }
-
-    throw new Error('ErrorBoundary: fallback must return a valid React element');
   }
 
 }
