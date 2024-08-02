@@ -1,59 +1,102 @@
-// ----------------------------------------
-// Model View Presenter (MVP) architecture
-// ----------------------------------------
-// <input type="text"><span></span>
+/**
+ * @fileoverview Model View Presenter (MVP) architecture
+ *
+ * @example
+ *
+ * [html]
+ *
+ * <input id="one" type="text">
+ * <input id="two" type="text">
+ * <span></span>
+ *
+ * [javascript]
+ *
+ * const model = new Model();
+ *
+ * const view = new View(document.getElementById('one'), document.querySelector('span'));
+ * const presenter = new Presenter(view, model);
+ *
+ * const view2 = new View(document.getElementById('two'), document.querySelector('span'));
+ * const presenter2 = new Presenter(view2, model);
+ */
 
-const Model = class {
+
+class Publisher {
+
   constructor() {
-    this.value = null;
+    this.observers = new Set();
   }
-};
+
+  subscribe(observer) {
+    this.observers.add(observer);
+  }
+
+  unsubscribe(observer) {
+    this.observers.delete(observer);
+  }
+
+  notify() {
+    for (const fn of this.observers) {
+      fn(this);
+    }
+  }
+
+}
 
 
-const View = class {
+class Model extends Publisher {
+  constructor() {
+    super();
+    this._value = null;
+  }
+
+  get value() {
+    return this._value;
+  }
+
+  set value(value) {
+    this._value = value;
+    this.notify();
+  }
+}
+
+
+class View {
   constructor(input, span) {
     this.input = input;
     this.span = span;
   }
-
-  updateSpan(value) {
-    this.span.innerHTML = value;
-  }
-
-  onInputKeyUp(callback) {
-    this.input.addEventListener('keyup', callback);
-  }
 };
 
 
-const Presenter = class {
+class Presenter {
+
+  /**
+   * @param {View} view
+   * @param {Model} model
+   */
   constructor(view, model) {
     this.view = view;
     this.model = model;
 
-    const proxy = new Proxy(this.model, {
-      set: (target, property, value) => {
-        target[property] = value;
-        // model -notifies-> presenter -updates-> view
-        this.view.updateSpan(this.model.value);
-        return true;
-      }
-    });
+    // view -notifies-> presenter -updates-> model
+    this.view.input.addEventListener('keyup', e => this.onKeyUp(e));
 
-    this.view.onInputKeyUp((event) => {
-      // view -notifies-> presenter -updates-> model
-      proxy.value = event.target.value;
-    });
+    // model -notifies-> presenter -updates-> view
+    this.model.subscribe(m => this.onModelChange(m));
 
   }
 
+  /**
+   * @param {Event} event
+   */
+  async onKeyUp(event) {
+    this.model.value = event.target.value;
+  }
+
+  async onModelChange(model) {
+    this.view.input.value = model.value;
+    this.view.span.textContent = model.value;
+  }
+
 };
-
-
-// ----------------------------------------
-// Usage
-// ----------------------------------------
-
-const model = new Model();
-const view = new View(document.querySelector('input'), document.querySelector('span'));
-const presenter = new Presenter(view, model);
