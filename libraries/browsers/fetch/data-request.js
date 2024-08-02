@@ -1,76 +1,92 @@
-// Step by step data request with fetch API
+/**
+ * @fileoverview Step by step data request
+ * @example
+ *
+ * [javascript]
+ *
+ * const request = new DataRequest(target, {init, decoder, transformer});
+ *
+ * request.send().then(data => console.log(data));
+ */
 
-// Model definition
-const Model = class {
-  constructor() {
-    this.userId = null;
-    this.id = null;
-    this.title = null;
-    this.completed = null;
+
+class DataRequest {
+
+  /**
+   * @param {RequestInfo | URL} target
+   * @param {object} options
+   * @param {RequestInit} options.init
+   * @param {(response: Response) => Promise<unknown>} options.decoder
+   * @param {(source: unknown) => Promise<unknown>} options.transformer
+   */
+  constructor(target, options) {
+    this.target = target;
+    this.init = options.init;
+    this.decoder = options.decoder;
+    this.transformer = options.transformer;
   }
-  static fromJSON(json) {
-    const model = new Model();
-    model.userId = json.userId;
-    model.id = json.id;
-    model.title = json.title;
-    model.completed = json.completed;
-    return model;
+
+  /**
+   * @description request -> response
+   * @returns {Promise<Response>}
+   */
+  async request() {
+    try {
+      return await fetch(this.target, this.options);
+    } catch (error) {
+      console.warn(error);
+    }
   }
-};
 
-
-// Request configuration
-const fecthTarget = 'https://jsonplaceholder.typicode.com/todos/';
-
-const fetchOptions = {
-  method: 'GET',
-  headers: {
-    'Accept': 'application/json'
+  /**
+   * @description response -> decoded source
+   * @param {Response} response
+   * @returns {Promise<unknown>}
+   */
+  async decode(response) {
+    try {
+      return await this.decoder(response);
+    } catch (error) {
+      console.warn(error);
+    }
   }
-};
 
+  /**
+   * @description decoded source -> transformed data
+   * @param {unknown} source
+   * @returns {Promise<unknown>}
+   */
+  async transform(source) {
+    try {
+      return await this.transformer(source);
+    } catch (error) {
+      console.warn(error);
+    }
+  }
 
-// on request
-fetch(fecthTarget, fetchOptions)
+  async send() {
+    try {
+      const response = await this.request();
 
-  // on response
-  .then(response => new Promise((resolve, reject) => {
-
-    // on decode
-    response.json()
-      .then(data => {
-
-        // nothing to do
-        if (response.ok) return data;
-
-        // handle 4xx and 5xx errors
-        console.warn(data);
-
-        // jump to catch
+      if (response.ok === false) {
         throw new Error(`${response.status} ${response.statusText}`);
+      }
 
-      })
+      if ('function' !== typeof this.decoder) {
+        return;
+      }
 
-      // on transform
-      .then(rawData => {
-        const models = rawData.map(Model.fromJSON)
-        resolve(models);
-      })
+      const source = await this.decode(response);
 
-      // on error
-      .catch(error => reject(error));
+      if ('function' !== typeof this.transformer) {
+        return source;
+      }
 
-  }))
+      return await this.transform(source);
 
-  // on data
-  .then(data => console.log(data))
+    } catch (error) {
+      console.warn(error);
+    }
+  }
 
-  // on error
-  .catch(error => console.error(error))
-
-  // stop loading
-  .finally(() => console.log('stop loading'));
-
-
-// start loading
-console.log('start loading');
+}
