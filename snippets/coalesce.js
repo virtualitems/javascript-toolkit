@@ -1,10 +1,9 @@
 /**
  * Returns the first valuable argument
  * @param {Array} args
- * @returns {*}
+ * @returns {unknown}
  */
-const coalesce = function() {
-  const args = Array.from(arguments);
+const coalesce = function(...args) {
 
   for(let i=0, end=args.length; i<end; i++) {
 
