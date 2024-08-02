@@ -45,19 +45,17 @@ class Publisher {
 
 
 class Model extends Publisher {
+
   constructor() {
     super();
-    this._value = null;
+    this.value = null;
   }
 
-  get value() {
-    return this._value;
-  }
-
-  set value(value) {
-    this._value = value;
+  update(values) {
+    Object.assign(this, values);
     this.notify();
   }
+
 }
 
 
@@ -108,7 +106,7 @@ class Presenter {
    * @param {Event} event
    */
   async onKeyUp(event) {
-    this.model.value = event.target.value;
+    this.model.update({ value: event.target.value });
   }
 
   async onModelChange(model) {
