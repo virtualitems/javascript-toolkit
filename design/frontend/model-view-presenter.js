@@ -66,6 +66,23 @@ class View {
     this.input = input;
     this.span = span;
   }
+
+  setSpanTextContent(value) {
+    this.span.textContent = value;
+  }
+
+  getInputValue() {
+    return this.input.value;
+  }
+
+  setInputValue(value) {
+    this.input.value = value;
+  }
+
+  addInputKeyUpListener(cb) {
+    this.input.addEventListener('keyup', cb);
+  }
+
 };
 
 
@@ -80,7 +97,7 @@ class Presenter {
     this.model = model;
 
     // view -notifies-> presenter -updates-> model
-    this.view.input.addEventListener('keyup', e => this.onKeyUp(e));
+    this.view.addInputKeyUpListener(e => this.onKeyUp(e));
 
     // model -notifies-> presenter -updates-> view
     this.model.subscribe(m => this.onModelChange(m));
@@ -95,8 +112,8 @@ class Presenter {
   }
 
   async onModelChange(model) {
-    this.view.input.value = model.value;
-    this.view.span.textContent = model.value;
+    this.view.setSpanTextContent(model.value);
+    this.view.setInputValue(model.value);
   }
 
 };
