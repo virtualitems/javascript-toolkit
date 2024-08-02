@@ -28,7 +28,7 @@ async function request(target, options) {
       const recover = options.recovers[response.status];
 
       if ('function' !== typeof recover) {
-        throw new Error(`${response.status} ${response.statusText}`);
+        throw new Error(response.status);
       }
 
       recover();
@@ -50,7 +50,7 @@ async function request(target, options) {
     return await options.transformer(source);
 
   } catch (error) {
-    throw new Error(error);
+    throw new Error(error.message);
 
   }
 
