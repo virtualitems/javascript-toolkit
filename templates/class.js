@@ -18,7 +18,7 @@
 /**
  * @description 
  */
-export default class __CLASS__ extends __OVERRIDE_FIRST_ABSTRACT_LAST__
+export default class __CLASS__ extends __DECLARE_FIRST__OVERRIDE_SECOND__ABSTRACT_LAST__
 {
 
   // public ATTRIBUTES
