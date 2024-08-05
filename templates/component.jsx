@@ -2,9 +2,7 @@
 
 import React from 'react'
 
-// Same Shared Module Layer
-
-// Lower Shared Module Layers
+// Shared Module
 
 // Other Modules
 
@@ -17,8 +15,6 @@ import React from 'react'
 // Interfaces
 
 // Constants
-
-// Functions
 
 
 /**

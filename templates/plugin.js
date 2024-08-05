@@ -26,7 +26,7 @@ if (namespace in window) { // check if library namespace is already defined
 }
 
 
-window[namespace] = (function (alert) { // create library namespace and add dependencies namespaces
+window[namespace] = (function (alert) { // create library namespace and add dependencies
 
   'use strict';
 
