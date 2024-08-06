@@ -41,7 +41,7 @@ window[namespace] = (function (alert) {
   // Exports
   // ----------------------------------------
 
-  return { version, greet };
+  return { greet };
 
 
   // ----------------------------------------
