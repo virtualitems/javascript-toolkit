@@ -1,6 +1,8 @@
 /**
  * @fileoverview Browser library template
  * @version 0.0.1
+ *
+ * @example [html] <script> window.Lib.greet(); </script>
  */
 
 
@@ -30,39 +32,11 @@ window[namespace] = (function (alert) { // create library namespace and add depe
 
   'use strict';
 
-
-  // ----------------------------------------
-  // Constants
-  // ----------------------------------------
-
-
-  const version = '0.0.1';
-
-
-  // ----------------------------------------
-  // Entities
-  // ----------------------------------------
-
-
-
-  // ----------------------------------------
-  // Services
-  // ----------------------------------------
-
-
-
-  // ----------------------------------------
-  // Adapters
-  // ----------------------------------------
-
-
   function greet() {
     alert('Hello, World!');
   }
 
 
-  // ----------------------------------------
-  // Exports
   // ----------------------------------------
 
 
@@ -75,5 +49,3 @@ window[namespace] = (function (alert) { // create library namespace and add depe
 })(
   window.alert // add dependency injection
 );
-
-// usage: <script> window.Lib.greet(); </script>
