@@ -11,7 +11,7 @@
  *
  * [javascript]
  *
- * const model = new Model();
+ * const model = Model.create();
  *
  * const view = new View(document.getElementById('one'), document.querySelector('span'));
  * const presenter = new Presenter(view, model);
@@ -51,7 +51,7 @@ class Model extends Publisher {
     this.value = null;
   }
 
-  static proxy() {
+  static create() {
     return new Proxy(new Model(), {
       set: (target, key, value) => {
         target[key] = value;
