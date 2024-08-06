@@ -65,6 +65,7 @@ class Model extends Publisher {
 
 
 class View {
+
   constructor(input, span) {
     this.input = input;
     this.span = span;

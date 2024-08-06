@@ -1,6 +1,6 @@
 // Libraries
 
-import React from 'react'
+import React from 'react';
 
 // Shared Module
 
@@ -23,8 +23,7 @@ import React from 'react'
  * @param {React.HTMLAttributes<HTMLElement>} props
  * @returns {React.ReactElement}
  */
-export default function __COMPONENT__(props)
-{
+export default function __COMPONENT__(props) {
 
   // MODEL -----------------------------
 
