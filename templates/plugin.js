@@ -11,7 +11,7 @@
 // ----------------------------------------
 
 
-if (!window.alert) { // add dependency check
+if (!window.alert) {
   throw new Error('alert not found');
 }
 
@@ -23,12 +23,12 @@ if (!window.alert) { // add dependency check
 const namespace = 'Lib';
 
 
-if (namespace in window) { // check if library namespace is already defined
+if (namespace in window) {
   throw new Error('Lib is already defined');
 }
 
 
-window[namespace] = (function (alert) { // create library namespace and add dependencies
+window[namespace] = (function (alert) {
 
   'use strict';
 
@@ -38,14 +38,14 @@ window[namespace] = (function (alert) { // create library namespace and add depe
 
 
   // ----------------------------------------
-
+  // Exports
+  // ----------------------------------------
 
   return { version, greet };
 
 
   // ----------------------------------------
+  // Imports
+  // ----------------------------------------
 
-
-})(
-  window.alert // add dependency injection
-);
+})(window.alert);
