@@ -51,9 +51,14 @@ class Model extends Publisher {
     this.value = null;
   }
 
-  update(values) {
-    Object.assign(this, values);
-    this.notify();
+  static proxy() {
+    return new Proxy(new Model(), {
+      set: (target, key, value) => {
+        target[key] = value;
+        target.notify();
+        return true;
+      }
+    });
   }
 
 }
@@ -106,7 +111,7 @@ class Presenter {
    * @param {Event} event
    */
   async onKeyUp(event) {
-    this.model.update({ value: event.target.value });
+    this.model.value = event.target.value;
   }
 
   async onModelChange(model) {
