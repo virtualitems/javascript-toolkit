@@ -6,7 +6,7 @@ import React from 'react';
 
 // Hooks
 
-// Services
+// Features
 
 // Languages
 
