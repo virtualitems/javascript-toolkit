@@ -2,17 +2,13 @@
 
 import React from 'react';
 
-// Shared Module
+// Components
 
-// Other Modules
+// Hooks
 
-// Same Layer
-
-// Lower Layers
+// Services
 
 // Types
-
-// Interfaces
 
 // Constants
 
@@ -20,7 +16,7 @@ import React from 'react';
 /**
  * @description 
  *
- * @param {React.HTMLAttributes<HTMLElement>} props
+ * @param {React.HTMLProps<HTMLElement>} props
  * @returns {React.ReactElement}
  */
 export default function __COMPONENT__(props) {
