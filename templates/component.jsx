@@ -8,7 +8,7 @@ import React from 'react';
 
 // Services
 
-// Language
+// Languages
 
 // Styles
 
