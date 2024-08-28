@@ -1,3 +1,7 @@
+/**
+ * @fileoverview Basic test example
+ */
+
 test('sum', () => {
 
   // Arrange
