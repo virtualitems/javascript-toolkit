@@ -32,20 +32,21 @@ const transformer = function (words) {
 
   return words.map(w => {
 
-    if (w.length === 0) {
+    const clear = clean(w);
+    const length = clear.length;
+
+    if (length === 0) {
       return w;
     }
 
-    else if (w.length === 1) {
+    else if (length === 1) {
       return bold(w);
     }
 
     let offset = w.search(/[a-zA-Z0-9\']/);
     offset = (offset === -1) ? 0 : offset;
 
-    const end = Math.ceil(clean(w).length / 2);
-
-    (offset > 0 && console.log(`${offset} ${w}`));
+    const end = Math.ceil(length / 2);
 
     return bold(w.substring(0, offset + end)) + w.substring(offset + end);
 
