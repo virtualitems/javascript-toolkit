@@ -45,7 +45,7 @@ const transformer = function (words) {
 
     const offset = Math.max(0, w.search(/[a-zA-Z0-9]/));
     const end = Math.ceil(length / 2);
-    const extra = Math.floor(Math.max(0, length - 6) / 6);
+    const extra = Math.floor(length / 8);
     const result = offset + end + extra;
 
     return bold(w.substring(0, result)) + w.substring(result);
