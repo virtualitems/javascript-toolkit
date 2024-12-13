@@ -14,7 +14,7 @@ const bold = function (word) {
  * @param {string} word
  */
 const clean = function (word) {
-  return word.trim().replace(/[^a-zA-Z0-9\']/g, '');
+  return word.replace(/[^a-zA-Z0-9]/g, '');
 };
 
 
@@ -43,12 +43,12 @@ const transformer = function (words) {
       return bold(w);
     }
 
-    let offset = w.search(/[a-zA-Z0-9\']/);
-    offset = (offset === -1) ? 0 : offset;
-
+    const offset = Math.max(0, w.search(/[a-zA-Z0-9]/));
     const end = Math.ceil(length / 2);
+    const extra = Math.ceil(Math.max(0, length - 6) / 6);
+    const result = offset + end + extra;
 
-    return bold(w.substring(0, offset + end)) + w.substring(offset + end);
+    return bold(w.substring(0, result)) + w.substring(result);
 
   });
 
