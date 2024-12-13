@@ -40,9 +40,14 @@ const transformer = function (words) {
       return bold(w);
     }
 
-    const idx = Math.ceil(clean(w).length / 2);
+    let offset = w.search(/[a-zA-Z0-9\']/);
+    offset = (offset === -1) ? 0 : offset;
 
-    return bold(w.substring(0, idx)) + w.substring(idx);
+    const end = Math.ceil(clean(w).length / 2);
+
+    (offset > 0 && console.log(`${offset} ${w}`));
+
+    return bold(w.substring(0, offset + end)) + w.substring(offset + end);
 
   });
 
