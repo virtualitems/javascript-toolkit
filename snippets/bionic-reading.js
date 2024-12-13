@@ -1,5 +1,6 @@
 /**
- * Bold text wrapper
+ * Bold text
+ *
  * @param {string} word
  */
 const bold = function (word) {
@@ -8,7 +9,8 @@ const bold = function (word) {
 
 
 /**
- * Delete all escaped characters (eg: \n, \t, \r)
+ * Delete non letter characters
+ *
  * @param {string} word
  */
 const clean = function (word) {
@@ -17,7 +19,7 @@ const clean = function (word) {
 
 
 /**
- * Wraps a function with a decorator
+ * Transforms an array of words into a Bionic Reading format
  *
  * @param  {string[]} words
  * @returns {string[]}
