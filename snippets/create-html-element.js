@@ -32,9 +32,10 @@ function createElement(tagName, props, ...children) {
       : document.createElement(tagName)
   );
 
-  const { dataset, ...rest } = props ?? {};
+  const { dataset, style, ...rest } = props ?? {};
 
   Object.assign(element.dataset, dataset ?? {});
+  Object.assign(element.style, style ?? {});
   Object.assign(element, rest);
 
   for (child of children) {
