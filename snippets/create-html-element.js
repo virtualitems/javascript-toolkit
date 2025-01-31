@@ -11,8 +11,15 @@
  * @throws {Error} If props is not an object or is an array.
  */
 function createElement(tagName, props, ...children) {
+
   if ('string' !== typeof tagName) {
     throw new Error('Type must be a string');
+  }
+
+  tagName = tagName.trim();
+
+  if (!/^[a-zA-Z0-9-]*$/.test(tagName)) {
+    throw new Error('Tag name must contain only letters, numbers, hyphens, or be an empty string.');
   }
 
   if (props !== undefined && ('object' !== typeof props || Array.isArray(props))) {
