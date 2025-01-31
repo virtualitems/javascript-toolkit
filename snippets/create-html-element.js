@@ -22,20 +22,20 @@ function createElement(tagName, props, ...children) {
     throw new Error('Tag name must contain only letters, numbers, hyphens, or be an empty string.');
   }
 
-  if (props !== undefined && ('object' !== typeof props || Array.isArray(props))) {
-    throw new Error('Props must be an object');
+  if (props !== undefined && props !== null && props.constructor !== Object) {
+    throw new Error('Props must be a plain object or null.');
   }
 
-  let element = null;
+  let element = (
+    tagName === ''
+      ? document.createDocumentFragment()
+      : document.createElement(tagName)
+  );
 
-  if (tagName === '') {
-    element = document.createDocumentFragment();
+  const { dataset, ...rest } = props ?? {};
 
-  } else {
-    element = document.createElement(tagName);
-    Object.assign(element, props);
-
-  }
+  Object.assign(element.dataset, dataset ?? {});
+  Object.assign(element, rest);
 
   for (child of children) {
     element.appendChild(
