@@ -22,6 +22,8 @@ function createElement(tagName, props, ...children) {
     throw new Error('Tag name must contain only letters, numbers, hyphens, or be an empty string.');
   }
 
+  const arePropsDefined = (props !== undefined && props !== null);
+
   if (props !== undefined && props !== null && props.constructor !== Object) {
     throw new Error('Props must be a plain object or null.');
   }
@@ -32,11 +34,15 @@ function createElement(tagName, props, ...children) {
       : document.createElement(tagName)
   );
 
-  const { dataset, style, ...rest } = props ?? {};
+  props = props ?? {};
 
-  Object.assign(element.dataset, dataset ?? {});
-  Object.assign(element.style, style ?? {});
-  Object.assign(element, rest);
+  for (key in props) {
+    if (props[key] instanceof Object) {
+      Object.assign(element[key], props[key]);
+    } else {
+      element[key] = props[key];
+    }
+  }
 
   for (child of children) {
     element.appendChild(
