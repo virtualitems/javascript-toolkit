@@ -8,7 +8,8 @@
  * @returns {HTMLElement|DocumentFragment} The created DOM element or document fragment.
  *
  * @throws {Error} If the tagName is not a string.
- * @throws {Error} If props is not an object or is an array.
+ * @throws {Error} If the tagName contains invalid characters.
+ * @throws {Error} If props is not an object, null, or undefined.
  */
 function createElement(tagName, props, ...children) {
 
