@@ -24,24 +24,30 @@ function createElement(tagName, props, ...children) {
 
   const arePropsDefined = (props !== undefined && props !== null);
 
-  if (props !== undefined && props !== null && props.constructor !== Object) {
+  if (arePropsDefined && props.constructor !== Object) {
     throw new Error('Props must be a plain object or null.');
   }
 
-  let element = (
-    tagName === ''
-      ? document.createDocumentFragment()
-      : document.createElement(tagName)
-  );
-
   props = props ?? {};
 
-  for (key in props) {
-    if (props[key] instanceof Object) {
-      Object.assign(element[key], props[key]);
-    } else {
+  let element = null;
+
+  if (tagName === '') {
+    element = document.createDocumentFragment();
+
+  } else {
+    element = document.createElement(tagName);
+
+    for (key in props) {
+
+      if (props[key]?.constructor === Object) {
+        Object.assign(element[key], props[key]);
+        continue;
+      }
+
       element[key] = props[key];
     }
+
   }
 
   for (child of children) {
