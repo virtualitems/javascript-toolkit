@@ -59,7 +59,7 @@ window[namespace] = (function (window) {
    *
    * @returns {DocumentFragment} The created DocumentFragment with the appended children.
    */
-  function createDocumentFragment(...children) {
+  function createFragment(...children) {
     const fragment = document.createDocumentFragment();
     appendChildren(fragment, children);
     return fragment;
@@ -82,7 +82,7 @@ window[namespace] = (function (window) {
   function createElement(tagName, props, ...children) {
 
     if (tagName === '') {
-      return createDocumentFragment(...children);
+      return createFragment(...children);
     }
 
     if ('string' !== typeof tagName) {
@@ -119,12 +119,35 @@ window[namespace] = (function (window) {
   }
 
 
+  /**
+   * Creates a deep clone of the content of an HTML template element.
+   *
+   * @param {HTMLTemplateElement} template - The template element to clone.
+   * @param {Array<Node|string>} children - An array of child nodes or strings to append to the template's content.
+   * @returns {DocumentFragment} A deep clone of the template's content.
+   *
+   * @throws {Error} If the provided parameter is not an instance of HTMLTemplateElement.
+   */
+  function createClone(template, ...children) {
+    if (!(template instanceof HTMLTemplateElement)) {
+      throw new Error('template param must be an HTMLTemplateElement');
+    }
+
+    const fragment = template.content.cloneNode(true);
+
+    appendChildren(fragment, children);
+
+    return fragment;
+  }
+
+
   // ----------------------------------------
   // Exports
   // ----------------------------------------
 
   return {
-    createDocumentFragment,
+    createClone,
+    createFragment,
     createElement,
   };
 
