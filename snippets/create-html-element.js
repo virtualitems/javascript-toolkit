@@ -1,8 +1,8 @@
 /**
- * @fileoverview Browser library template
+ * @fileoverview HTML Elements Manager
  * @version 1.0.0
  *
- * @example [html] <script> window.Lib.greet(); </script>
+ * @example [html] <script> console.log(GUI.createElement('div', { id: 'my-div' }, 'Hello, World!')); </script>
  */
 
 
@@ -16,7 +16,6 @@
 // ----------------------------------------
 
 const namespace = 'GUI';
-
 
 if (namespace in window) {
   throw new Error(`"${namespace}" already defined in window`);
