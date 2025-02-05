@@ -27,7 +27,6 @@ window[namespace] = (function (window) {
   'use strict';
 
   const document = window.document;
-  const stateMap = new WeakMap();
 
   /**
    * Appends an array of children to a parent node.
@@ -120,35 +119,6 @@ window[namespace] = (function (window) {
   }
 
 
-  /**
-   * Sets the state for a given element.
-   *
-   * @param {HTMLElement} element - The element for which to set the state.
-   * @param {Object} state - The state to set for the element.
-   */
-  function setState(element, state) {
-    if (!(element instanceof Node)) {
-      throw new Error('Element must be a Node');
-    }
-
-    stateMap.set(element, state);
-  }
-
-  /**
-   * Gets the state for a given element.
-   *
-   * @param {Node} element - The element for which to get the state.
-   * @returns {any} The state of the element, or undefined if no state is set.
-   */
-  function getState(element) {
-    if (!(element instanceof Node)) {
-      throw new Error('Element must be a Node');
-    }
-
-    return stateMap.get(element);
-  }
-
-
   // ----------------------------------------
   // Exports
   // ----------------------------------------
@@ -156,8 +126,6 @@ window[namespace] = (function (window) {
   return {
     createDocumentFragment,
     createElement,
-    getState,
-    setState
   };
 
 
