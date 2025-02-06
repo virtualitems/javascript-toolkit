@@ -15,7 +15,7 @@
 // Namespaces
 // ----------------------------------------
 
-const namespace = 'GUI';
+const namespace = 'htmlElementsFactory';
 
 if (namespace in window) {
   throw new Error(`"${namespace}" already defined in window`);
@@ -93,16 +93,22 @@ window[namespace] = (function (window) {
       throw new Error('Tag name must contain only letters, numbers, hyphens, or be an empty string.');
     }
 
-    let element = document.createElement(tagName);
+    const thereAreProps = (props !== null) && (props !== undefined);
 
-    appendChildren(element, children);
-
-    if (props === undefined || props === null) {
-      return element;
+    if (thereAreProps && props.constructor !== Object) {
+      throw new Error('Props must be a plain object or null.');
     }
 
-    if (props.constructor !== Object) {
-      throw new Error('Props must be a plain object or null.');
+    let element = document.createElement(tagName);
+
+    if (tagName === 'template') {
+      appendChildren(element.content, children);
+    } else {
+      appendChildren(element, children);
+    }
+
+    if (!thereAreProps) {
+      return element;
     }
 
     for (const key in props) {
@@ -128,14 +134,13 @@ window[namespace] = (function (window) {
    *
    * @throws {Error} If the provided parameter is not an instance of HTMLTemplateElement.
    */
-  function createClone(template, ...children) {
+  function createClone(template, deep=true) {
+
     if (!(template instanceof HTMLTemplateElement)) {
       throw new Error('template param must be an HTMLTemplateElement');
     }
 
-    const fragment = template.content.cloneNode(true);
-
-    appendChildren(fragment, children);
+    const fragment = template.content.cloneNode(Boolean(deep));
 
     return fragment;
   }
