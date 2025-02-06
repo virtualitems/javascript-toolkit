@@ -15,7 +15,7 @@
 // Namespaces
 // ----------------------------------------
 
-const namespace = 'htmlElementsFactory';
+const namespace = 'GUI';
 
 if (namespace in window) {
   throw new Error(`"${namespace}" already defined in window`);
