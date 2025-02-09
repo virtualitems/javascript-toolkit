@@ -73,8 +73,6 @@ class Presenter {
 
   /**
    * @param {object} view
-   * @param {HTMLInputElement} view.input
-   * @param {HTMLSpanElement} view.span
    * @param {Model} model
    */
   constructor(view, model) {
