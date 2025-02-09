@@ -1,31 +1,11 @@
-/**
- * @fileoverview Model View Presenter (MVP) architecture
- *
- * @example
- *
- * [html]
- *
- * <input type="text" id="input-1">
- * <input type="text" id="input-2">
- * <span id="span"></span>
- *
- * [javascript]
- *
- * const input1 = document.getElementById('input-1');
- * const input2 = document.getElementById('input-2');
- * const span = document.querySelector('span');
- *
- * const model = new Model();
- *
- * const presenter1 = new Presenter({input: input1, span}, model);
- * const presenter2 = new Presenter({input: input2, span}, model);
- */
-
-
 /** @class */
-class Publisher {
+class Model {
 
   constructor() {
+    if (new.target === Model) {
+      throw new TypeError('Cannot instantiate abstract class.');
+    }
+
     this._listeners = new Set();
   }
 
@@ -47,24 +27,12 @@ class Publisher {
     this._listeners.delete(fn);
   }
 
-
   /**
    * Notifies all registered listeners by calling each listener function
    * with the current context (`this`).
    */
   notify() {
     for (const fn of this._listeners) fn(this);
-  }
-
-}
-
-
-/** @class */
-class Model extends Publisher {
-
-  constructor() {
-    super();
-    this.value = null;
   }
 
   /**
@@ -85,25 +53,16 @@ class Presenter {
 
   /**
    * @param {object} view
-   * @param {HTMLInputElement} view.input
-   * @param {HTMLSpanElement} view.span
    * @param {Model} model
    */
   constructor(view, model) {
+
+    if (new.target === Presenter) {
+      throw new TypeError('Cannot instantiate abstract class.');
+    }
+
     this.view = view;
     this.model = model;
-
-    // view -notifies-> presenter -updates-> model
-    this.view.input.addEventListener('keyup', event => {
-      this.model.update({ value: event.target.value });
-    });
-
-    // model -notifies-> presenter -updates-> view
-    this.model.addListener(model => {
-      this.view.span.textContent = model.value;
-      this.view.input.value = model.value;
-    });
-
   }
 
 }
