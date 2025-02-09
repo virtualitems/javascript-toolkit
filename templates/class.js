@@ -8,40 +8,22 @@
 
 // Lower Layers
 
-// Types
-
 // Constants
 
 
 /**
  * @description 
  */
-export default class __CLASS__ extends __DECLARE_FIRST__OVERRIDE_SECOND__ABSTRACT_LAST__ {
+export default class __CLASS__ // extends __DECLARE_FIRST__OVERRIDE_SECOND__ABSTRACT_LAST__ {
+{
+  // attributes
 
-  // public ATTRIBUTES
-
-  // protected ATTRIBUTES
-
-  // private ATTRIBUTES
-
-  // public static ATTRIBUTES
-
-  // protected static ATTRIBUTES
-
-  // private static ATTRIBUTES
+  // static attributes
 
   // Constructor, Getters, Setters
 
-  // public METHODS
+  // methods
 
-  // protected METHODS
-
-  // private METHODS
-
-  // public static METHODS
-
-  // protected static METHODS
-
-  // private static METHODS
+  // static methods
 
 } //:: class
