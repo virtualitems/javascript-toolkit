@@ -9,11 +9,12 @@ class WebComponent extends HTMLElement {
 
     // shadow
     this.attachShadow({ mode: 'open' });
+    this.shadowRoot.innerHTML = this.html;
 
     // css
-    const style = new CSSStyleSheet();
-    style.replaceSync(this.css);
-    this.shadowRoot.adoptedStyleSheets.push(style);
+    const styles = new CSSStyleSheet();
+    styles.replaceSync(this.css);
+    this.shadowRoot.adoptedStyleSheets.push(styles);
 
   }
 
@@ -22,46 +23,31 @@ class WebComponent extends HTMLElement {
   }
 
   get html() {
-    return '<h1><slot></slot></h1>';
+    return '<h1><slot></slot></h1>' + '<p><slot name="text"></slot></p>';
   }
 
   get css() {
     return 'h1 { color: darkred; }';
   }
 
-  render() {
-    console.log('ƒ render');
-    this.shadowRoot.innerHTML = this.html;
-  }
-
-  dispose() {
-    console.log('ƒ dispose');
-    // stop intervals
-    // remove event listeners
-    // dispose DOM elements
-    // nullify references
-  }
-
   connectedCallback() {
     console.log('ƒ connectedCallback');
-    this.render();
   }
 
   attributeChangedCallback(attributeName, oldValue, newValue) {
     console.log('ƒ attributeChangedCallback', attributeName, oldValue, newValue);
-    this.dispose();
-    this.render();
   }
 
   adoptedCallback() {
     console.log('ƒ adoptedCallback');
-    this.dispose();
-    this.render();
   }
 
   disconnectedCallback() {
     console.log('ƒ disconnectedCallback');
-    this.dispose();
+    // stop intervals
+    // remove event listeners
+    // dispose DOM elements
+    // nullify references
   }
 }
 
