@@ -3,22 +3,13 @@
  * @param {Array} args
  * @returns {unknown}
  */
-const coalesce = function(...args) {
+function coalesce(...args) {
 
-  for(let i=0, end=args.length; i<end; i++) {
-
-    const arg = args[i];
-
-    if (
-      arg !== undefined &&
-      arg !== null &&
-      !Object.is(arg, NaN)
-    ) {
+  for(const arg in args) {
+    if (arg !== undefined && arg !== null && !Number.isNaN(arg)) {
       return arg;
     }
-
   }
 
   return null;
-
-};
+}

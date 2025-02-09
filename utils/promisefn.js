@@ -4,7 +4,7 @@
  * @param {Function} fn
  * @returns {Function}
  */
-const promisefn = function(fn) {
+function promisefn(fn) {
 
   if (! (fn instanceof Function) ) {
     throw new TypeError('PromiseFunction argument must be a function');
@@ -26,4 +26,4 @@ const promisefn = function(fn) {
   }
 
   return wrapper;
-};
+}

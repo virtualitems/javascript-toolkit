@@ -5,7 +5,7 @@
  * @param {Number} delay
  * @returns {Function}
  */
-const debounce = function(fn, delay) {
+function debounce(fn, delay) {
 
   let timeout = null;
   let callback = null;
@@ -23,4 +23,4 @@ const debounce = function(fn, delay) {
   };
 
   return wrapper;
-};
+}
