@@ -18,7 +18,7 @@
   }
 
   // prepare phase
-  const requestTarget = new URL(`https://reqres.in/api/users`);
+  const requestTarget = new URL('https://reqres.in/api/users');
 
   const headers = new Headers({
     'Cache-Control': 'no-store',
