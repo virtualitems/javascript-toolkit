@@ -1,17 +1,17 @@
 // iterables
 const list = [1, 2, 3, 4];
-const object = {one: 1, two: 2, three: 3, four: 4};
+const object = { one: 1, two: 2, three: 3, four: 4 };
 
 
 // for
 (function () {
 
-console.warn('for');
+  console.warn('for');
 
-for (let i = 0, end = list.length; i < end; i++) {
-  const element = list[i];
-  console.log(element);
-}
+  for (let i = 0, end = list.length; i < end; i += 1) {
+    const element = list[i];
+    console.log(element);
+  }
 
 })();
 
@@ -19,11 +19,11 @@ for (let i = 0, end = list.length; i < end; i++) {
 // for of
 (function () {
 
-console.warn('for of');
+  console.warn('for of');
 
-for (const element of list) {
-  console.log(element);
-}
+  for (const element of list) {
+    console.log(element);
+  }
 
 })();
 
@@ -31,12 +31,12 @@ for (const element of list) {
 // for in
 (function () {
 
-console.warn('for in');
+  console.warn('for in');
 
-for (const key in object) {
-  const element = object[key];
-  console.log(element);
-}
+  for (const key in object) {
+    const element = object[key];
+    console.log(element);
+  }
 
 })();
 
@@ -44,16 +44,16 @@ for (const key in object) {
 // while
 (function () {
 
-console.warn('while');
+  console.warn('while');
 
-let index = 0;
-const end = list.length;
+  let index = 0;
+  const end = list.length;
 
-while (index < end) {
-  const element = list[index];
-  console.log(element);
-  index++;
-}
+  while (index < end) {
+    const element = list[index];
+    console.log(element);
+    index += 1;
+  }
 
 })();
 
@@ -61,16 +61,16 @@ while (index < end) {
 // do while
 (function () {
 
-console.warn('do while');
+  console.warn('do while');
 
-let index = 0;
-const end = list.length;
+  let index = 0;
+  const end = list.length;
 
-do {
-  const element = list[index];
-  console.log(element);
-  index++;
-} while (index < end);
+  do {
+    const element = list[index];
+    console.log(element);
+    index += 1;
+  } while (index < end);
 
 })();
 
@@ -78,10 +78,10 @@ do {
 // forEach
 (function () {
 
-console.warn('forEach');
+  console.warn('forEach');
 
-list.forEach((element) => {
-  console.log(element);
-});
+  list.forEach((element) => {
+    console.log(element);
+  });
 
 })();
