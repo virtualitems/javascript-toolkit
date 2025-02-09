@@ -1,123 +1,68 @@
-/**
- * @fileoverview Model View Presenter (MVP) architecture
- *
- * @example
- *
- * [html]
- *
- * <input id="one" type="text">
- * <input id="two" type="text">
- * <span></span>
- *
- * [javascript]
- *
- * const model = Model.create();
- *
- * const view = new View(document.getElementById('one'), document.querySelector('span'));
- * const presenter = new Presenter(view, model);
- *
- * const view2 = new View(document.getElementById('two'), document.querySelector('span'));
- * const presenter2 = new Presenter(view2, model);
- */
-
-
-class Publisher {
+/** @class */
+class Model {
 
   constructor() {
-    this.observers = new Set();
-  }
-
-  subscribe(observer) {
-    this.observers.add(observer);
-  }
-
-  unsubscribe(observer) {
-    this.observers.delete(observer);
-  }
-
-  notify() {
-    for (const fn of this.observers) {
-      fn(this);
+    if (new.target === Model) {
+      throw new TypeError('Cannot instantiate abstract class.');
     }
+
+    this._listeners = new Set();
+  }
+
+  /**
+   * Adds a listener function to the set of listeners.
+   *
+   * @param {Function} fn - The listener function to be added.
+   */
+  addListener(fn) {
+    this._listeners.add(fn);
+  }
+
+  /**
+   * Removes a listener function from the listeners set.
+   *
+   * @param {Function} fn - The listener function to be removed.
+   */
+  removeListener(fn) {
+    this._listeners.delete(fn);
+  }
+
+  /**
+   * Notifies all registered listeners by calling each listener function
+   * with the current context (`this`).
+   */
+  notify() {
+    for (const fn of this._listeners) fn(this);
+  }
+
+  /**
+   * Updates the current object with the provided values and notifies listeners.
+   *
+   * @param {Object} values - An object containing the new values to update.
+   */
+  update(values) {
+    Object.assign(this, values);
+    this.notify();
   }
 
 }
 
 
-class Model extends Publisher {
-
-  constructor() {
-    super();
-    this.value = null;
-  }
-
-  static create() {
-    return new Proxy(new Model(), {
-      set: (target, key, value) => {
-        target[key] = value;
-        target.notify();
-        return true;
-      }
-    });
-  }
-
-}
-
-
-class View {
-
-  constructor(input, span) {
-    this.input = input;
-    this.span = span;
-  }
-
-  setSpanTextContent(value) {
-    this.span.textContent = value;
-  }
-
-  getInputValue() {
-    return this.input.value;
-  }
-
-  setInputValue(value) {
-    this.input.value = value;
-  }
-
-  addInputKeyUpListener(cb) {
-    this.input.addEventListener('keyup', cb);
-  }
-
-};
-
-
+/** @class */
 class Presenter {
 
   /**
-   * @param {View} view
+   * @param {object} view
    * @param {Model} model
    */
   constructor(view, model) {
+
+    if (new.target === Presenter) {
+      throw new TypeError('Cannot instantiate abstract class.');
+    }
+
     this.view = view;
     this.model = model;
-
-    // view -notifies-> presenter -updates-> model
-    this.view.addInputKeyUpListener(e => this.onKeyUp(e));
-
-    // model -notifies-> presenter -updates-> view
-    this.model.subscribe(m => this.onModelChange(m));
-
   }
 
-  /**
-   * @param {Event} event
-   */
-  async onKeyUp(event) {
-    this.model.value = event.target.value;
-  }
-
-  async onModelChange(model) {
-    this.view.setSpanTextContent(model.value);
-    this.view.setInputValue(model.value);
-  }
-
-};
+}
