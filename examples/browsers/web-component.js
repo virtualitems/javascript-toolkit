@@ -16,6 +16,21 @@ class WebComponent extends HTMLElement {
     styles.replaceSync(this.css);
     this.shadowRoot.adoptedStyleSheets.push(styles);
 
+    // state
+    const attrs = {};
+
+    for (let attr of this.attributes) {
+      attrs[attr.name] = attr.value;
+    }
+
+    this.state = new Proxy(attrs, {
+      set: (target, key, value) => {
+        target[key] = value;
+        ('object' !== typeof value) && this.setAttribute(key, value);
+        return true;
+      }
+    });
+
   }
 
   static get observedAttributes() {
