@@ -5,95 +5,80 @@
  *
  * [html]
  *
- * <input id="one" type="text">
- * <input id="two" type="text">
+ * <input id="input-1" type="text">
+ * <input id="input-2" type="text">
  * <span></span>
  *
  * [javascript]
  *
- * const model = Model.create();
+ * const input1 = document.getElementById('input-1');
+ * const input2 = document.getElementById('input-2');
+ * const span = document.querySelector('span');
  *
- * const view = new View(document.getElementById('one'), document.querySelector('span'));
- * const presenter = new Presenter(view, model);
+ * const model = new Model();
  *
- * const view2 = new View(document.getElementById('two'), document.querySelector('span'));
- * const presenter2 = new Presenter(view2, model);
+ * const presenter1 = new Presenter({input: input1, span}, model);
+ * const presenter2 = new Presenter({input: input2, span}, model);
  */
 
 
+/**
+ * The Publisher class is responsible for managing a set of listener functions.
+ * It allows adding, removing, and notifying listeners.
+ */
 class Publisher {
 
+  /**
+   * Creates an instance of Publisher.
+   */
   constructor() {
-    this.observers = new Set();
+    this._listeners = new Set();
   }
 
-  subscribe(observer) {
-    this.observers.add(observer);
+  /**
+   * Adds a listener function to the set of listeners.
+   *
+   * @param {Function} fn - The listener function to be added.
+   */
+  addListener(fn) {
+    this._listeners.add(fn);
   }
 
-  unsubscribe(observer) {
-    this.observers.delete(observer);
+  /**
+   * Removes a listener function from the listeners set.
+   *
+   * @param {Function} fn - The listener function to be removed.
+   */
+  removeListener(fn) {
+    this._listeners.delete(fn);
   }
 
+
+  /**
+   * Notifies all registered listeners by calling each listener function
+   * with the current context (`this`).
+   */
   notify() {
-    for (const fn of this.observers) {
-      fn(this);
-    }
+    for (const fn of this._listeners) fn(this);
   }
 
 }
 
 
 class Model extends Publisher {
-
   constructor() {
     super();
     this.value = null;
   }
-
-  static create() {
-    return new Proxy(new Model(), {
-      set: (target, key, value) => {
-        target[key] = value;
-        target.notify();
-        return true;
-      }
-    });
-  }
-
 }
-
-
-class View {
-
-  constructor(input, span) {
-    this.input = input;
-    this.span = span;
-  }
-
-  setSpanTextContent(value) {
-    this.span.textContent = value;
-  }
-
-  getInputValue() {
-    return this.input.value;
-  }
-
-  setInputValue(value) {
-    this.input.value = value;
-  }
-
-  addInputKeyUpListener(cb) {
-    this.input.addEventListener('keyup', cb);
-  }
-
-};
 
 
 class Presenter {
 
   /**
-   * @param {View} view
+   * @param {object} view
+   * @param {HTMLInputElement} view.input
+   * @param {HTMLSpanElement} view.span
    * @param {Model} model
    */
   constructor(view, model) {
@@ -101,23 +86,17 @@ class Presenter {
     this.model = model;
 
     // view -notifies-> presenter -updates-> model
-    this.view.addInputKeyUpListener(e => this.onKeyUp(e));
+    this.view.input.addEventListener('keyup', event => {
+      this.model.value = event.target.value;
+      this.model.notify();
+    });
 
     // model -notifies-> presenter -updates-> view
-    this.model.subscribe(m => this.onModelChange(m));
+    this.model.addListener(model => {
+      this.view.span.textContent = model.value;
+      this.view.input.value = model.value;
+    });
 
   }
 
-  /**
-   * @param {Event} event
-   */
-  async onKeyUp(event) {
-    this.model.value = event.target.value;
-  }
-
-  async onModelChange(model) {
-    this.view.setSpanTextContent(model.value);
-    this.view.setInputValue(model.value);
-  }
-
-};
+}
