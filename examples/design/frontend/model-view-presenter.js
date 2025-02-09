@@ -5,9 +5,9 @@
  *
  * [html]
  *
- * <input id="input-1" type="text">
- * <input id="input-2" type="text">
- * <span></span>
+ * <input type="text" id="input-1">
+ * <input type="text" id="input-2">
+ * <span id="span"></span>
  *
  * [javascript]
  *
@@ -68,7 +68,12 @@ class Publisher {
 class Model extends Publisher {
   constructor() {
     super();
-    this.value = null;
+    this._value = null;
+  }
+
+  set value(value) {
+    this._value = value;
+    this.notify();
   }
 }
 
@@ -88,7 +93,6 @@ class Presenter {
     // view -notifies-> presenter -updates-> model
     this.view.input.addEventListener('keyup', event => {
       this.model.value = event.target.value;
-      this.model.notify();
     });
 
     // model -notifies-> presenter -updates-> view
