@@ -61,10 +61,22 @@ class Publisher {
 
 /** @class */
 class Model extends Publisher {
+
   constructor() {
     super();
     this.value = null;
   }
+
+  /**
+   * Updates the current object with the provided values and notifies listeners.
+   *
+   * @param {Object} values - An object containing the new values to update.
+   */
+  update(values) {
+    Object.assign(this, values);
+    this.notify();
+  }
+
 }
 
 
@@ -73,6 +85,8 @@ class Presenter {
 
   /**
    * @param {object} view
+   * @param {HTMLInputElement} view.input
+   * @param {HTMLSpanElement} view.span
    * @param {Model} model
    */
   constructor(view, model) {
@@ -81,8 +95,7 @@ class Presenter {
 
     // view -notifies-> presenter -updates-> model
     this.view.input.addEventListener('keyup', event => {
-      this.model.value = event.target.value;
-      this.model.notify();
+      this.model.update({ value: event.target.value });
     });
 
     // model -notifies-> presenter -updates-> view
