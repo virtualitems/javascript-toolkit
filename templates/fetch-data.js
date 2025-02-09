@@ -1,5 +1,6 @@
 (async () => {
 
+  /** @class */
   class UserModel {
 
     constructor() {
@@ -16,6 +17,7 @@
 
   }
 
+  // prepare phase
   const requestTarget = new URL(`https://reqres.in/api/users`);
 
   const headers = new Headers({
