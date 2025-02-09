@@ -22,15 +22,9 @@
  */
 
 
-/**
- * The Publisher class is responsible for managing a set of listener functions.
- * It allows adding, removing, and notifying listeners.
- */
+/** @class */
 class Publisher {
 
-  /**
-   * Creates an instance of Publisher.
-   */
   constructor() {
     this._listeners = new Set();
   }
@@ -65,19 +59,16 @@ class Publisher {
 }
 
 
+/** @class */
 class Model extends Publisher {
   constructor() {
     super();
-    this._value = null;
-  }
-
-  set value(value) {
-    this._value = value;
-    this.notify();
+    this.value = null;
   }
 }
 
 
+/** @class */
 class Presenter {
 
   /**
@@ -93,6 +84,7 @@ class Presenter {
     // view -notifies-> presenter -updates-> model
     this.view.input.addEventListener('keyup', event => {
       this.model.value = event.target.value;
+      this.model.notify();
     });
 
     // model -notifies-> presenter -updates-> view
