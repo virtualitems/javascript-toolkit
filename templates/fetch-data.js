@@ -33,7 +33,7 @@
   // request phase
   const response = await fetch(requestTarget, requestOptions);
 
-  if (!response.ok) {
+  if (!response.ok || response.status === 404) {
     throw new Error(response.status);
   }
 
