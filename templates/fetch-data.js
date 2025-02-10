@@ -30,7 +30,7 @@
 
   const requestOptions = {
     method: 'GET',
-    cors: 'no-cors',
+    cors: 'cors',
     headers,
   };
 
