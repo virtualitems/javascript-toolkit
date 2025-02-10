@@ -60,7 +60,7 @@
   // use phase
 
   // use as raw data
-  let pElement = document.body.appendChild(document.createElement('p'));
+  const pElement = document.body.appendChild(document.createElement('p'));
   pElement.innerHTML = `Page: ${page}<br>Per Page: ${perPage}<br>Total: ${total}<br>Total Pages: ${totalPages}`;
 
   // use as models
