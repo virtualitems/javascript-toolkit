@@ -23,7 +23,9 @@
   const headers = new Headers({
     'Cache-Control': 'no-store',
     'Content-Type': 'application/json',
+    'Content-Language': 'en-US',
     'Accept': 'application/json',
+    'Accept-Language': 'en-US',
   });
 
   const requestOptions = {
