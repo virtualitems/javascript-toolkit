@@ -28,11 +28,7 @@
     'Accept-Language': 'en-US',
   });
 
-  const requestOptions = {
-    method: 'GET',
-    cors: 'cors',
-    headers,
-  };
+  const requestOptions = { method: 'GET', cors: 'cors', headers };
 
   // request phase
   const response = await fetch(requestTarget, requestOptions);
