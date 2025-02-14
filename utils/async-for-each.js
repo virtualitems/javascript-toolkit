@@ -15,14 +15,11 @@ function asyncForEach(iterable, callback) {
         throw new Error('callback param must be a function');
     }
 
-    const iterator = iterable[Symbol.iterator]();
     const promises = new Set();
     let i = 0;
 
-    while (true) {
-        const { done, value } = iterator.next();
-        if (done) break;
-        promises.add(callback(value, i));
+    for (const item of iterable) {
+        promises.add(callback(item, i));
         i += 1;
     }
 
