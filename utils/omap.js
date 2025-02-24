@@ -1,14 +1,13 @@
 /**
  * Map the values of an object to an array
  *
- * @param {object} obj - The object to map
+ * @param {object} target - The object to map
  * @param {function} mapfn - The function to call on each value
- * @param {object} thisArg - The value to use as this when executing mapfn
- * @returns {array} - An array of the results of calling mapfn on each value
+ * @returns {object} - An iterable object
  */
-function omap(obj, mapfn, thisArg) {
+export function omap(target, mapfn) {
 
-  if ('object' !== typeof obj || null === obj) {
+  if ('object' !== typeof target || null === target) {
     throw new TypeError('objectAsArray called on non-object');
   }
 
@@ -16,16 +15,12 @@ function omap(obj, mapfn, thisArg) {
     throw new TypeError('mapfn must be a function');
   }
 
-  if (thisArg === undefined) {
-    thisArg = obj;
-  }
+  return {
+    [Symbol.iterator]: function* () {
+      for (const key in target) {
+        yield mapfn.call(target, target[key], key);
+      }
+    }
+  };
 
-  const result = [];
-
-  for (const key in obj) {
-    const value = obj[key];
-    result.push(mapfn.call(thisArg, value, key));
-  }
-
-  return result;
 }
