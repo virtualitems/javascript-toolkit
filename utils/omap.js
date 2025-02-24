@@ -17,12 +17,12 @@ function omap(obj, mapfn, thisArg) {
   }
 
   if (thisArg === undefined) {
-    thisArg = null;
+    thisArg = obj;
   }
 
   const result = [];
 
-  for (key in obj) {
+  for (const key in obj) {
     const value = obj[key];
     result.push(mapfn.call(thisArg, value, key));
   }
