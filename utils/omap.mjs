@@ -7,7 +7,7 @@
  */
 export function omap(target, mapfn) {
 
-  if ('object' !== typeof target || null === target) {
+  if ('object' !== typeof target || target === null) {
     throw new TypeError('objectAsArray called on non-object');
   }
 
