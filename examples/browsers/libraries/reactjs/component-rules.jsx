@@ -53,6 +53,7 @@ function App() {
 
 
 // los elementos visuales son stateless
+// los elementos visuales se caracterizan por renderizar componentes no controlados
 function Table({ headers, contents, updateItem, removeItem }) {
   return (
     <table style={{ width: '100%' }}>
