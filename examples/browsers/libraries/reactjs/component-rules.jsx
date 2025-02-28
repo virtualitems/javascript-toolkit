@@ -11,7 +11,7 @@ function Table() {
     'Email',
     'First Name',
     'Last Name',
-    'Delete',
+    'Buttons',
   ];
 
   // efectos va tercero
@@ -31,6 +31,14 @@ function Table() {
     setContents([...contents]);
   });
 
+  const updateItem = React.useCallback((idx) => {
+    // los elementos del estado se modifican accediendo directamente
+    // el índice lo da el método map al renderizar
+    // solución O(1)
+    contents[idx].email = contents[idx].email + ' (updated)';
+    setContents([...contents]);
+  });
+
   // el renderizado va al final
   // el componente que crea el estado no es el que consume el estado
   // el componente que crea el estado envía el estado a consumir a otros componentes
@@ -38,7 +46,7 @@ function Table() {
   return (
     <table style={{ width: '100%' }}>
       <TableHdeaders headers={headers} />
-      <TableContents contents={contents} removeItem={removeItem} />
+      <TableContents contents={contents} updateItem={updateItem} removeItem={removeItem} />
     </table>
   );
 
@@ -61,7 +69,7 @@ function TableHdeaders({ headers }) {
 
 
 // no pueden haber iteraciones anidadas
-function TableContents({ contents, removeItem }) {
+function TableContents({ contents, updateItem, removeItem }) {
   return (
     <tbody>
       {contents.map((content, idx) => (
@@ -70,6 +78,7 @@ function TableContents({ contents, removeItem }) {
           <td>{content.email}</td>
           <td>{content.first_name}</td>
           <td>{content.last_name}</td>
+          <td><button onClick={() => updateItem(idx)}>Update</button></td>
           <td><button onClick={() => removeItem(idx)}>Delete</button></td>
         </tr>
       ))}
