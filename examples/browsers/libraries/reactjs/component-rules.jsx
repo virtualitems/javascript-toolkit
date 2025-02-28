@@ -7,56 +7,52 @@ function Table() {
   // el estado va primero
   const [contents, setContents] = React.useState([]);
 
-  // efectos va segundo
-  React.useEffect(() => {
-    fetch('https://reqres.in/api/users')
-      .then(response => response.json())
-      .then(json => {
-        const users = json.data;
-        const contents = users.map((user) => [
-          user.id,
-          user.email,
-          user.first_name,
-          user.last_name
-        ]);
-        setContents(contents);
-      });
-  }, []);
-
-  // las funciones van tercero
-  // funciones dentro de funciones con arrow functions
-  const handleClieck = React.useCallback((event) => {
-    console.log(event.target);
-  });
-
-  // los datos estáticos van cuarto
+  // los datos estáticos segundo
   const headers = [
     'ID',
     'Email',
     'First Name',
-    'Last Name'
+    'Last Name',
+    'Delete',
   ];
+
+  // efectos va tercero
+  React.useEffect(() => {
+    fetch('https://reqres.in/api/users')
+      .then(response => response.json())
+      .then(json => setContents(json.data));
+  }, []);
+
+  // las funciones van cuarto
+  // funciones dentro de funciones con arrow functions
+  const removeItem = React.useCallback((idx) => {
+    // los elementos del estado se eliminan con splice, no con filter
+    // el índice lo da el método map al renderizar
+    // solución O(1)
+    contents.splice(idx, 1);
+    setContents([...contents]);
+  });
 
   // el renderizado va al final
   return (
-    <table style={{ width: '100%' }} onClick={handleClieck}>
+    <table style={{ width: '100%' }}>
       <TableHdeaders headers={headers} />
-      <TableContents contents={contents} />
+      <TableContents contents={contents} removeItem={removeItem} />
     </table>
   );
+
 }
 
 
 // los elementos visuales son stateless
 // las iteraciones se hacen en un componente aparte
-// callbacks con arrow functions
-function TableHdeaders({ headers = [] }) {
+// no pueden haber iteraciones anidadas, en ese caso se crean componentes aparte
+// los callbacks se hacen con arrow functions
+function TableHdeaders({ headers }) {
   return (
     <thead>
       <tr>
-        {headers.map(
-          (header, index) => <th key={index}>{header}</th>
-        )}
+        {headers.map((text, idx) => <th key={idx}>{text}</th>)}
       </tr>
     </thead>
   );
@@ -64,33 +60,21 @@ function TableHdeaders({ headers = [] }) {
 
 
 // no pueden haber iteraciones anidadas
-function TableContents({ contents = [] }) {
+function TableContents({ contents, removeItem }) {
   return (
     <tbody>
-      {contents.map(
-        (content, index) => <TableContentRow key={index} content={content} />
-      )}
+      {contents.map((content, idx) => (
+        <tr key={content.id}>
+          <td>{content.id}</td>
+          <td>{content.email}</td>
+          <td>{content.first_name}</td>
+          <td>{content.last_name}</td>
+          <td><button onClick={() => removeItem(idx)}>Delete</button></td>
+        </tr>
+      ))}
     </tbody>
   );
 }
 
 
-function TableContentRow({ content = [] }) {
-  return (
-    <tr>
-      {content.map(
-        (data, index) => <td key={index}>{data}</td>
-      )}
-    </tr>
-  );
-}
-
-
-const rootElement = document.getElementById('root');
-
-// siempre validar si el elemento existe
-if (rootElement === null) {
-  throw new Error('No existe el elemento con id "root"');
-}
-
-ReactDOM.createRoot(rootElement).render(<Table />);
+ReactDOM.createRoot(document.getElementById('root')).render(<Table />);
