@@ -53,8 +53,6 @@ function App() {
 
 
 // los elementos visuales son stateless
-// las iteraciones se hacen en un componente aparte con su correspondiente componente raíz
-// no pueden haber iteraciones anidadas, en ese caso se crean componentes aparte
 function Table({ headers, contents, updateItem, removeItem }) {
   return (
     <table style={{ width: '100%' }}>
@@ -65,6 +63,8 @@ function Table({ headers, contents, updateItem, removeItem }) {
 }
 
 
+// las iteraciones se hacen en un componente aparte con su correspondiente componente raíz
+// no pueden haber iteraciones anidadas, en ese caso se crean componentes aparte
 // los callbacks se hacen con arrow functions
 function TableHdeaders({ headers }) {
   return (
