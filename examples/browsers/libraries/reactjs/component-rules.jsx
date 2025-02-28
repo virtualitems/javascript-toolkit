@@ -45,7 +45,7 @@ function App() {
   // el componente que crea el estado no es el que consume el estado
   // el componente que crea el estado envía el estado a consumir a otros componentes
   // para modificar el estado, se crean funciones y se envían como props
-  // los elementos que crean estados no usan componentes no controlados
+  // los elementos que crean estados nunca renderizan en componentes no controlados
   return (
     <Table headers={headers} contents={contents} updateItem={updateItem} removeItem={removeItem} />
   );
@@ -53,7 +53,7 @@ function App() {
 
 
 // los elementos visuales son stateless
-// las iteraciones se hacen en un componente aparte
+// las iteraciones se hacen en un componente aparte con su correspondiente componente raíz
 // no pueden haber iteraciones anidadas, en ese caso se crean componentes aparte
 function Table({ headers, contents, updateItem, removeItem }) {
   return (
