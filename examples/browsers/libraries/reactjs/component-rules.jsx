@@ -1,7 +1,5 @@
 // los componentes se crean con la palabra function
 // los export siempre sin default
-// el componente que crea el estado no es el que consume el estado
-// el componente que crea el estado envía el estado a consumir a otros componentes
 function Table() {
 
   // el estado va primero
@@ -34,6 +32,8 @@ function Table() {
   });
 
   // el renderizado va al final
+  // el componente que crea el estado no es el que consume el estado
+  // el componente que crea el estado envía el estado a consumir a otros componentes
   return (
     <table style={{ width: '100%' }}>
       <TableHdeaders headers={headers} />
