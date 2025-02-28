@@ -34,6 +34,7 @@ function Table() {
   // el renderizado va al final
   // el componente que crea el estado no es el que consume el estado
   // el componente que crea el estado envía el estado a consumir a otros componentes
+  // para modificar el estado, se crean funciones y se envían como props
   return (
     <table style={{ width: '100%' }}>
       <TableHdeaders headers={headers} />
