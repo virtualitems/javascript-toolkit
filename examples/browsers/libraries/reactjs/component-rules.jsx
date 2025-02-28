@@ -1,6 +1,6 @@
 // los componentes se crean con la palabra function
 // los export siempre sin default
-function Table() {
+function App() {
 
   // el estado va primero
   const [contents, setContents] = React.useState([]);
@@ -45,19 +45,26 @@ function Table() {
   // el componente que crea el estado no es el que consume el estado
   // el componente que crea el estado envía el estado a consumir a otros componentes
   // para modificar el estado, se crean funciones y se envían como props
+  // los elementos que crean estados no usan componentes no controlados
   return (
-    <table style={{ width: '100%' }}>
-      <TableHdeaders headers={headers} />
-      <TableContents contents={contents} updateItem={updateItem} removeItem={removeItem} />
-    </table>
+    <Table headers={headers} contents={contents} updateItem={updateItem} removeItem={removeItem} />
   );
-
 }
 
 
 // los elementos visuales son stateless
 // las iteraciones se hacen en un componente aparte
 // no pueden haber iteraciones anidadas, en ese caso se crean componentes aparte
+function Table({ headers, contents, updateItem, removeItem }) {
+  return (
+    <table style={{ width: '100%' }}>
+      <TableHdeaders headers={headers} />
+      <TableContents contents={contents} updateItem={updateItem} removeItem={removeItem} />
+    </table>
+  );
+}
+
+
 // los callbacks se hacen con arrow functions
 function TableHdeaders({ headers }) {
   return (
@@ -90,4 +97,4 @@ function TableContents({ contents, updateItem, removeItem }) {
 }
 
 
-ReactDOM.createRoot(document.getElementById('root')).render(<Table />);
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
