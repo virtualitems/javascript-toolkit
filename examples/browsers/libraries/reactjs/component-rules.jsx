@@ -68,7 +68,8 @@ function TableHdeaders({ headers }) {
 }
 
 
-// no pueden haber iteraciones anidadas
+// no se crea un estado en un componente que consume un estado
+// los componentes que consumen un estado, pueden recibir funciones para modificarlo
 function TableContents({ contents, updateItem, removeItem }) {
   return (
     <tbody>
