@@ -23,6 +23,7 @@ function Table() {
 
   // las funciones van cuarto
   // funciones dentro de funciones con arrow functions
+  // las funciones para modificar el estado se declaran en el mismo componente que crea el estado
   const removeItem = React.useCallback((idx) => {
     // los elementos del estado se eliminan con splice, no con filter
     // el índice lo da el método map al renderizar
@@ -31,11 +32,12 @@ function Table() {
     setContents([...contents]);
   });
 
+  // las funciones para modificar el estado se declaran en el mismo componente que crea el estado
   const updateItem = React.useCallback((idx) => {
     // los elementos del estado se modifican accediendo directamente
     // el índice lo da el método map al renderizar
     // solución O(1)
-    contents[idx].email += ' (updated)'
+    contents[idx].email += ' (updated)';
     setContents([...contents]);
   });
 
