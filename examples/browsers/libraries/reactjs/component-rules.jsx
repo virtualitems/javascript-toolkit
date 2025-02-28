@@ -35,7 +35,7 @@ function Table() {
     // los elementos del estado se modifican accediendo directamente
     // el índice lo da el método map al renderizar
     // solución O(1)
-    contents[idx].email = contents[idx].email + ' (updated)';
+    contents[idx].email += ' (updated)'
     setContents([...contents]);
   });
 
