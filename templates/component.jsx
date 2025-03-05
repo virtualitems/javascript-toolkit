@@ -25,9 +25,7 @@ import React from 'react';
  */
 export default function __COMPONENT__(props) {
 
-  // MODEL -----------------------------
-
-  // VIEW MODEL ------------------------
+  // STATE ------------------------
 
   // EFFECTS ---------------------------
 
