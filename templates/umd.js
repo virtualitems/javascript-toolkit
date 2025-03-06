@@ -13,11 +13,13 @@
   // browser
   else {
 
-    if (global.UMD !== 'undefined') {
-      throw new Error('UMD is already defined');
+    const namespace = 'UMD';
+
+    if (global[namespace] !== 'undefined') {
+      throw new Error(namespace + ' is already defined');
     }
 
-    global.UMD = factory(/* send dependencies */);
+    global[namespace] = factory(/* send dependencies */);
   }
 
 })((typeof globalThis !== 'undefined' ? globalThis : typeof self !== 'undefined' ? self : this), (function () {
@@ -27,13 +29,13 @@
 
   const exports = {};
 
+  Object.defineProperty(exports, '__esModule', { value: true });
+
   // ----------------------------------------
 
   // ... your code here
 
   // ----------------------------------------
-
-  Object.defineProperty(exports, '__esModule', { value: true });
 
   return exports;
 
