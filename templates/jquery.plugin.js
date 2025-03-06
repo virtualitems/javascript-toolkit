@@ -5,7 +5,7 @@
   $.fn.myPlugin = function (options) {
 
     // Default settings
-    var settings = $.extend({ /* default settings go here */ }, options);
+    let settings = $.extend({ /* default settings go here */ }, options);
 
     // Plugin logic will go here, if needed
     console.log('running with settings', settings);
