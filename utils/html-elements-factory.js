@@ -39,7 +39,7 @@ window[namespace] = (function (window) {
   function appendChildren(parent, children) {
 
     if (!(parent instanceof Node)) {
-      throw new Error('Parent must be a Node');
+      throw new TypeError('Parent must be a Node');
     }
 
     for (const child of children) {
@@ -86,7 +86,7 @@ window[namespace] = (function (window) {
     }
 
     if ('string' !== typeof tagName) {
-      throw new Error('Type must be a string');
+      throw new TypeError('Type must be a string');
     }
 
     if (!/^[a-zA-Z0-9-]*$/.test(tagName)) {
@@ -96,7 +96,7 @@ window[namespace] = (function (window) {
     const thereAreProps = (props !== null) && (props !== undefined);
 
     if (thereAreProps && props.constructor !== Object) {
-      throw new Error('Props must be a plain object or null.');
+      throw new TypeError('Props must be a plain object or null.');
     }
 
     let element = document.createElement(tagName);
@@ -113,7 +113,12 @@ window[namespace] = (function (window) {
 
     for (const key in props) {
 
-      if (props[key]?.constructor === Object) {
+      if ('object' === typeof props[key]) {
+
+        if (!(key in element)) {
+          element[key] = {};
+        }
+
         Object.assign(element[key], props[key]);
         continue;
       }
@@ -137,7 +142,7 @@ window[namespace] = (function (window) {
   function createClone(template, deep=true) {
 
     if (!(template instanceof HTMLTemplateElement)) {
-      throw new Error('template param must be an HTMLTemplateElement');
+      throw new TypeError('template param must be an HTMLTemplateElement');
     }
 
     const fragment = template.content.cloneNode(Boolean(deep));
