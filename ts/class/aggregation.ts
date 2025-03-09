@@ -1,31 +1,47 @@
-class LicensePlate {
-    public readonly code: string;
+class Employee {
+    public readonly name: string;
 
-    constructor(code: string) {
-        this.code = code;
+    constructor(name: string) {
+        this.name = name;
     }
+
 }
 
-class Car {
-    public plate: LicensePlate | null;
-
+class Company {
+    protected employees: Employee[];
     constructor() {
-        this.plate = null;
+        this.employees = [];
     }
 
-    public identify() {
-        if (this.plate === null) {
-            console.log('No plate');
-        }
+    addEmployee(employee: Employee) {
+        this.employees.push(employee);
+    }
 
-        console.log(`Plate: ${this.plate?.code}`);
+    showEmployees() {
+        for (let i = 0; i < this.employees.length; i++) {
+            console.log('employee', i + 1, '->', this.employees[i].name);
+        }
     }
 }
 
-// the car does not depend on the license plate to exist
-// it can be created without it and set it later
-const car = new Car();
+function startCompany(employees: Employee[]) {
+    const company = new Company();
+    employees.forEach(employee => company.addEmployee(employee));
+    return company;
+}
 
-car.plate = new LicensePlate('ABC-123');
+const emp1 = new Employee('John');
+const emp2 = new Employee('Jane');
+const emp3 = new Employee('Mark');
+const emp4 = new Employee('Sara');
 
-car.identify();
+let company: Company | null;
+
+company = startCompany([emp1, emp2, emp3, emp4]);
+company.showEmployees();
+company = null;
+
+// the Employee instances can exist without the Company instance
+company = startCompany([emp1, emp2, emp3, emp4]);
+company.showEmployees();
+company = null;

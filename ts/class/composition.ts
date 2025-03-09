@@ -1,23 +1,21 @@
-class Engine {
-    public start() {
-        console.log('Engine is starting...');
+class Contact {
+    constructor(
+        protected name: string,
+        protected email: string,
+    ) { }
+}
+
+class ContactBook {
+    protected contacts: Contact[];
+
+    public register(name: string, email: string) {
+        this.contacts.push(new Contact(name, email));
     }
 }
 
-class Car {
-    protected engine: Engine;
+let contactBook: ContactBook | null = new ContactBook();
 
-    // the Car depends on the Engine to exist
-    constructor(engine: Engine) {
-        this.engine = engine;
-    }
+contactBook.register('John', 'john@example.com');
+contactBook.register('Jane', 'jane@example.com');
 
-    public start() {
-        console.log('Car is starting...');
-        this.engine.start();
-    }
-}
-
-const engine = new Engine();
-const car = new Car(engine);
-car.start();
+contactBook = null; // the Contact instances are destroyed as well

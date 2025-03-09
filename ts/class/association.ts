@@ -8,6 +8,7 @@ class Employee {
 }
 
 class Department {
+    // 1 to many relationship
     protected employees: Employee[];
     constructor() {
         this.employees = [];
@@ -31,6 +32,8 @@ const emp3 = new Employee('Mark');
 const emp4 = new Employee('Sara');
 
 const department = new Department();
+
+// the Department class has associated Employee classes
 department.addEmployee(emp1);
 department.addEmployee(emp2);
 department.addEmployee(emp3);
