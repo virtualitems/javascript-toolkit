@@ -9,7 +9,7 @@
  *
  * @throws {TypeError} - If the value is not of the specified type.
  */
-function arg(value, defaultv, type) {
+function arg(value, type, defaultv) {
 
   if (value === undefined) {
     return defaultv;
