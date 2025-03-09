@@ -57,43 +57,51 @@ function App() {
 function Table({ headers, contents, updateItem, removeItem }) {
   return (
     <table style={{ width: '100%' }}>
-      <TableHdeaders headers={headers} />
-      <TableContents contents={contents} updateItem={updateItem} removeItem={removeItem} />
+      <thead>
+        <tr>
+          {/*
+          // las iteraciones se hacen en el componente que recibe el iterable
+          // los callbacks se hacen con arrow functions
+          // la función map retorna siempre un único elemento
+          // no pueden haber iteraciones anidadas, en ese caso se crean componentes aparte
+          */}
+          {headers.map((text, idx) => <th key={idx}>{text}</th>)}
+        </tr>
+      </thead>
+      <tbody>
+        {/*
+        // la función map retorna siempre un único elemento
+        // si el elemento es complejo, se crea un componente aparte
+        // el estado es una lista por lo que cada elemento tiene un índice
+        // se usa el índice para modificar o eliminar un elemento
+        // los eventos empiezan con el prefijo "on"
+        */}
+        {contents.map((content, idx) => (
+          <UserRow
+            key={content.id}
+            content={content}
+            onUpdate={() => updateItem(idx)}
+            onRemove={() => removeItem(idx)}
+          />
+        ))}
+      </tbody>
     </table>
-  );
-}
-
-
-// las iteraciones se hacen en un componente aparte con su correspondiente componente raíz
-// no pueden haber iteraciones anidadas, en ese caso se crean componentes aparte
-// los callbacks se hacen con arrow functions
-function TableHdeaders({ headers }) {
-  return (
-    <thead>
-      <tr>
-        {headers.map((text, idx) => <th key={idx}>{text}</th>)}
-      </tr>
-    </thead>
   );
 }
 
 
 // no se crea un estado en un componente que consume un estado
 // los componentes que consumen un estado, pueden recibir funciones para modificarlo
-function TableContents({ contents, updateItem, removeItem }) {
+function UserRow({ content, onUpdate, onRemove }) {
   return (
-    <tbody>
-      {contents.map((content, idx) => (
-        <tr key={content.id}>
-          <td>{content.id}</td>
-          <td>{content.email}</td>
-          <td>{content.first_name}</td>
-          <td>{content.last_name}</td>
-          <td><button onClick={() => updateItem(idx)}>Update</button></td>
-          <td><button onClick={() => removeItem(idx)}>Delete</button></td>
-        </tr>
-      ))}
-    </tbody>
+    <tr>
+      <td>{content.id}</td>
+      <td>{content.email}</td>
+      <td>{content.first_name}</td>
+      <td>{content.last_name}</td>
+      <td><button onClick={onUpdate}>Update</button></td>
+      <td><button onClick={onRemove}>Delete</button></td>
+    </tr>
   );
 }
 
