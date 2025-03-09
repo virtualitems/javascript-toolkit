@@ -42,3 +42,25 @@ function arg(value, type, defaultv) {
   return value;
 
 }
+
+
+/**
+ * Checks if the given value is of the specified constructor type.
+ *
+ * @param {any} value - The value to check.
+ * @param {Function} constructor - The constructor function to check against.
+ * @returns {boolean} - Returns true if the value is of the specified constructor type, otherwise false.
+ */
+function type(value, constructor) {
+  if (value === undefined && value !== constructor) {
+    throw new TypeError('The data type is not correct');
+  }
+
+  if (value === null && value !== constructor) {
+    throw new TypeError('The data type is not correct');
+  }
+
+  if (value.constructor !== constructor) {
+    throw new TypeError('The data type is not correct');
+  }
+}
