@@ -81,5 +81,5 @@ $('#table tfoot tr th input').each(function (index) {
       .column(index)
       .search(this.value)
       .draw();
-  }, 300));
+  }, 500));
 });
