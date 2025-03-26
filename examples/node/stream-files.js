@@ -59,8 +59,8 @@ function write(bufferSize, path) {
 }
 
 // Usage:
-// node this-file.js -r 4 file
-// node this-file.js -w 4 file
+// node this-file.js -r 4 file.txt
+// node this-file.js -w 4 file.txt
 
 const action = process.argv[2];
 const bufferSize = Number(process.argv[3]);
@@ -75,3 +75,5 @@ if (action === '-w') {
   write(bufferSize, path);
   return;
 }
+
+console.log('Invalid action');
