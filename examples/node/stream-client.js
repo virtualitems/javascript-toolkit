@@ -56,7 +56,7 @@ async function list(options) {
 }
 
 new Promise((resolve) => {
-  const titles = 'name,timestamp\n';
+  const titles = 'id,name\n';
   const names = [
     'John Doe',
     'Jane Smith',
@@ -79,7 +79,7 @@ new Promise((resolve) => {
     'Ruby Scott',
     'Sam Green',
   ];
-  resolve([titles].concat(names.map((name, i) => `${name},${Date.now() + i}\n`)));
+  resolve([titles].concat(names.map((name, i) => `${i + 1},${name}\n`)));
 })
   .then((data) => store({
     hostname: 'localhost',
