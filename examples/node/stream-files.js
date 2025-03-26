@@ -29,6 +29,11 @@ function write(bufferSize, path) {
     console.error(err);
   });
 
+  stream.on('drain', () => {
+    process.stdin.resume(); // Resume stdin when the buffer is drained
+    console.log('>> resume');
+  });
+
   process.stdin.on('data', (chunk) => {
     const canWrite = stream.write(chunk);
     if (!canWrite) {
@@ -37,13 +42,19 @@ function write(bufferSize, path) {
     }
   });
 
-  stream.on('drain', () => {
-    process.stdin.resume(); // Resume stdin when the buffer is drained
-    console.log('>> resume');
-  });
-
   process.stdin.on('end', () => {
     stream.end();
+    console.log('-- end --');
+  });
+
+  process.stdin.on('error', (err) => {
+    stream.end();
+    console.error(err);
+  });
+
+  process.stdin.on('close', () => {
+    stream.end();
+    console.log('-- close --');
   });
 }
 
