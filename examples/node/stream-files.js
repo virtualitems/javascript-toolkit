@@ -1,4 +1,5 @@
 const fs = require('fs');
+const readline = require('node:readline');
 
 function read(bufferSize, path) {
   const stream = fs.createReadStream(path, {
@@ -58,13 +59,45 @@ function write(bufferSize, path) {
   });
 }
 
+function readLines(path) {
+  const stream = fs.createReadStream(path, {
+    encoding: 'utf8',
+  });
+
+  const laner = readline.createInterface({
+    input: stream,
+    crlfDelay: Infinity, // Handles both Windows (\r\n) and Unix (\n) line endings
+  });
+
+  laner.on('line', (line) => {
+    console.log('·', line); // Process each line
+  });
+
+  laner.on('close', () => {
+    console.log('-- end --');
+  });
+
+  laner.on('pause', () => {
+    console.log('>> pause');
+  });
+
+  laner.on('resume', () => {
+    console.log('>> resume');
+  });
+
+  laner.on('error', (err) => {
+    console.error(err);
+  });
+}
+
 // Usage:
-// node this-file.js -r 4 file.txt
-// node this-file.js -w 4 file.txt
+// node this-file.js -r file.txt 4
+// node this-file.js -w file.txt 4
+// node this-file.js -l file.txt
 
 const action = process.argv[2];
-const bufferSize = Number(process.argv[3]);
-const path = process.argv[4];
+const path = process.argv[3];
+const bufferSize = Number(process.argv[4]);
 
 if (action === '-r') {
   read(bufferSize, path);
@@ -73,6 +106,11 @@ if (action === '-r') {
 
 if (action === '-w') {
   write(bufferSize, path);
+  return;
+}
+
+if (action === '-l') {
+  readLines(path);
   return;
 }
 
