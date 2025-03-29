@@ -28,6 +28,7 @@ async function store(options, data) {
   for (const item of data) { // Send chunks
     await delay(500); // simulate heavy processing
     req.write(item);
+    console.log('chunk sent:', item);
   }
 
   req.end();
@@ -40,7 +41,7 @@ async function list(options) {
 
   const req = http.request(options, (res) => {
     res.on('data', (chunk) => {
-      console.log(chunk.toString());
+      console.log('chunk received:', chunk.toString());
     });
 
     res.on('end', () => {

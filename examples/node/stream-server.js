@@ -17,7 +17,7 @@ function delay(ms) {
 async function get(req, res) {
   res.writeHead(200, {
     'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Methods': 'POST, GET, HEAD, OPTIONS',
+    'Access-Control-Allow-Methods': 'POST,GET,HEAD,OPTIONS',
     'Access-Control-Allow-Headers': 'Content-Type',
     'Cache-Control': 'no-store',
     'Connection': 'keep-alive',
@@ -57,7 +57,7 @@ async function post(req, res) {
   req.on('end', () => {
     res.writeHead(201, {
       'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Methods': 'POST, GET, HEAD, OPTIONS',
+      'Access-Control-Allow-Methods': 'POST,GET,HEAD,OPTIONS',
       'Access-Control-Allow-Headers': 'Content-Type',
       'accept': 'text/csv',
       'connection': 'keep-alive',
@@ -66,6 +66,15 @@ async function post(req, res) {
 }
 
 const server = http.createServer(async (req, res) => {
+
+  if (req.method === 'OPTIONS' || req.method === 'HEAD') {
+    res.writeHead(204, {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'POST,GET,HEAD,OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type',
+    }).end();
+    return;
+  }
 
   if (req.method === 'GET') {
     await get(req, res);
