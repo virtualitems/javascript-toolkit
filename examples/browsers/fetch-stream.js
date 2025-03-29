@@ -1,7 +1,7 @@
 async function listWithReader(url) {
   const response = await fetch(url);
   const reader = response.body.getReader();
-  const decoder = new TextDecoder("utf-8");
+  const decoder = new TextDecoder('utf-8');
 
   while (true) {
     const { done, value } = await reader.read();
@@ -9,20 +9,24 @@ async function listWithReader(url) {
     if (done) break;
 
     const text = decoder.decode(value, { stream: true });
-    console.log("Received chunk:", text);
+    console.log('Received chunk:', text);
 
     chunk = await reader.read();
   }
 
-  console.log("--- end ---");
+  console.log('--- end ---');
 }
 
 async function listWithIterator(url) {
   const response = await fetch(url);
   const body = response.body;
 
+  const decoder = new TextDecoder('utf-8');
+
+  // // alternative way
   // for await (const chunk of body) {
-  // ...
+  //   const text = decoder.decode(chunk, { stream: true });
+  //   console.log('Received chunk:', text);
   // }
 
   const iterator = body[Symbol.asyncIterator]();
@@ -32,13 +36,13 @@ async function listWithIterator(url) {
 
     if (done) break;
 
-    const text = new TextDecoder("utf-8").decode(value, { stream: true });
-    console.log("Received chunk:", text);
+    const text = decoder.decode(value, { stream: true });
+    console.log('Received chunk:', text);
   }
 
-  console.log("--- end ---");
+  console.log('--- end ---');
 }
 
-const url = new URL("http://localhost");
+const url = new URL('http://localhost');
 // listWithReader(url);
 listWithIterator(url);
