@@ -26,15 +26,18 @@ const html = (text) => `
 </html>
 `;
 
+// Etag es un identificador único para la versión del recurso (simula un hash)
 let etag = Buffer.from(Date.now().toString()).toString("base64");
 
 setInterval(() => {
+  // cada 30 segundos cambia el etag (simulando un cambio en el recurso)
   etag = Buffer.from(Date.now().toString()).toString("base64");
   console.log("ETag:", etag);
 }, 30 * 1000);
 
 const server = http.createServer((req, res) => {
   if (req.headers["if-none-match"] === etag) {
+    // esto debería hacerlo el servidor de aplicaciones
     res.writeHead(304);
     res.end();
     console.log("304 Not Modified");
