@@ -7,6 +7,48 @@ const guid = '258EAFA5-E914-47DA-95CA-C5AB0DC85B11';
 
 const server = http.createServer();
 
+const sockets = {
+  frames: {
+    optCodes: Object.freeze({
+      CONTINUATION: 0,
+      TEXT: 1,
+      BINARY: 2,
+      CLOSE: 8,
+      PING: 9,
+      PONG: 10,
+    }),
+    decode: {
+      segments: frame => {
+        const byte1 = frame[0]; // 1 byte
+        const byte2 = frame[1]; // 1 byte
+        const maskKey = frame.slice(2, 6); // 4 bytes
+        const payload = frame.slice(6); // remaining bytes
+
+        return {
+          isFIN: byte1 & 0x80 ? true : false, // 0x80 = 0b10000000
+          opcode: byte1 & 0x0f, // 0x0f = 0b00001111
+          maskKey: maskKey,
+          hasMask: byte2 & 0x80 ? true : false, // 0x80 = 0b10000000
+          payload: {
+            length: byte2 & 0x7f, // 0x7f = 0b01111111
+            data: payload,
+          },
+        };
+      },
+      text: (maskKey, length, data, textEncoding = 'utf8') => {
+        const buff = Buffer.alloc(length);
+
+        for (let i = 0; i < length; i++) {
+          buff[i] = data[i] ^ maskKey[i % 4];
+        }
+
+        return buff.toString(textEncoding);
+      },
+    },
+  },
+};
+
+// HTTP requests
 server.on('request', (req, res) => {
   const html = `
   <!DOCTYPE html>
@@ -42,6 +84,7 @@ server.on('request', (req, res) => {
   res.end(html);
 });
 
+// WebSocket upgrade requests
 server.on('upgrade', (req, socket, head) => {
   const key = req.headers['sec-websocket-key'];
 
@@ -64,81 +107,18 @@ server.on('upgrade', (req, socket, head) => {
   );
 
   socket.on('data', buffer => {
-    const parseFrame = buffer => {
-      const firstByte = buffer[0];
-      const opcode = firstByte & 0x0f;
+    const frameSegments = sockets.frames.decode.segments(buffer);
 
-      const secondByte = buffer[1];
-      const masked = (secondByte & 0x80) === 0x80;
-      let payloadLength = secondByte & 0x7f;
+    const { opcode, payload, maskKey } = frameSegments;
+    const { length, data } = payload;
 
-      let offset = 2;
+    let decoded = null;
 
-      if (payloadLength === 126) {
-        payloadLength = buffer.readUInt16BE(offset);
-        offset += 2;
-      } else if (payloadLength === 127) {
-        payloadLength = Number(buffer.readBigUInt64BE(offset));
-        offset += 8;
-      }
-
-      if (masked) {
-        const maskingKey = buffer.slice(offset, offset + 4);
-        offset += 4;
-
-        const payload = buffer.slice(offset, offset + payloadLength);
-        const unmaskedPayload = Buffer.alloc(payloadLength);
-
-        for (let i = 0; i < payloadLength; i++) {
-          unmaskedPayload[i] = payload[i] ^ maskingKey[i % 4];
-        }
-
-        return { opcode, payload: unmaskedPayload.toString() };
-      } else {
-        return {
-          opcode,
-          payload: buffer.slice(offset, offset + payloadLength).toString(),
-        };
-      }
-    };
-
-    let messageBuffer = Buffer.alloc(0);
-
-    messageBuffer = Buffer.concat([messageBuffer, buffer]);
-
-    while (messageBuffer.length > 2) {
-      const secondByte = messageBuffer[1];
-      let payloadLength = secondByte & 0x7f;
-      let headerLength = 2;
-
-      if (payloadLength === 126) {
-        headerLength += 2;
-      } else if (payloadLength === 127) {
-        headerLength += 8;
-      }
-
-      if (messageBuffer.length < headerLength) break;
-
-      if (payloadLength === 126) {
-        payloadLength = messageBuffer.readUInt16BE(2);
-      } else if (payloadLength === 127) {
-        payloadLength = Number(messageBuffer.readBigUInt64BE(2));
-      }
-
-      const totalFrameLength = headerLength + (secondByte & 0x80 ? 4 : 0) + payloadLength;
-
-      if (messageBuffer.length < totalFrameLength) break;
-
-      const frame = parseFrame(messageBuffer.slice(0, totalFrameLength));
-      messageBuffer = messageBuffer.slice(totalFrameLength);
-
-      if (frame.opcode === 0x8) {
-        socket.end();
-        return;
-      } else if (frame.opcode === 0x1) {
-        console.log('Payload:', frame.payload);
-      }
+    if (opcode === sockets.frames.optCodes.TEXT) {
+      decoded = sockets.frames.decode.text(maskKey, length, data);
     }
+
+    console.log('Decoded message:', decoded);
   });
 
   socket.on('error', err => {
@@ -146,8 +126,10 @@ server.on('upgrade', (req, socket, head) => {
   });
 });
 
+// Server error handling
 server.on('error', err => {
   console.error('Server error:', err);
 });
 
+// Start the server
 server.listen(port, () => console.log(`http://localhost:${port}`));
