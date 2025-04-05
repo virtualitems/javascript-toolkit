@@ -122,8 +122,26 @@ server.on('upgrade', (req, socket, head) => {
   });
 
   socket.on('error', err => {
-    console.error('Socket error:', err);
+    console.error(err);
   });
+
+  socket.on('close', () => {
+    console.log('Socket closed');
+  });
+
+  socket.on('end', () => {
+    console.log('Socket ended');
+  });
+
+  setInterval(() => {
+    socket.write(
+      Buffer.from([
+        0b10000001, // FIN=1 + opcode=1 (text)
+        0b00001010, // length=10 (bytes)
+        ...Buffer.from('Greetings!', 'utf8')
+      ]),
+    )
+  }, 2000);
 });
 
 // Server error handling
