@@ -64,6 +64,7 @@ server.on('request', (req, res) => {
       const socket = new WebSocket('ws://localhost:${port}');
       socket.addEventListener('open', event => {
         console.log('WebSocket connection opened');
+        socket.send('Hello from client!');
       });
       socket.addEventListener('message', event => {
         console.log('Message from server:', event.data);
@@ -72,7 +73,7 @@ server.on('request', (req, res) => {
         console.log('WebSocket connection closed');
       });
       socket.addEventListener('error', error => {
-        console.error('WebSocket error:', error);
+        console.error(error);
       });
     </script>
   </body>
