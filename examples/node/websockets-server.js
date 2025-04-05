@@ -64,7 +64,81 @@ server.on('upgrade', (req, socket, head) => {
   );
 
   socket.on('data', buffer => {
-    console.log('buffer', buffer);
+    const parseFrame = buffer => {
+      const firstByte = buffer[0];
+      const opcode = firstByte & 0x0f;
+
+      const secondByte = buffer[1];
+      const masked = (secondByte & 0x80) === 0x80;
+      let payloadLength = secondByte & 0x7f;
+
+      let offset = 2;
+
+      if (payloadLength === 126) {
+        payloadLength = buffer.readUInt16BE(offset);
+        offset += 2;
+      } else if (payloadLength === 127) {
+        payloadLength = Number(buffer.readBigUInt64BE(offset));
+        offset += 8;
+      }
+
+      if (masked) {
+        const maskingKey = buffer.slice(offset, offset + 4);
+        offset += 4;
+
+        const payload = buffer.slice(offset, offset + payloadLength);
+        const unmaskedPayload = Buffer.alloc(payloadLength);
+
+        for (let i = 0; i < payloadLength; i++) {
+          unmaskedPayload[i] = payload[i] ^ maskingKey[i % 4];
+        }
+
+        return { opcode, payload: unmaskedPayload.toString() };
+      } else {
+        return {
+          opcode,
+          payload: buffer.slice(offset, offset + payloadLength).toString(),
+        };
+      }
+    };
+
+    let messageBuffer = Buffer.alloc(0);
+
+    messageBuffer = Buffer.concat([messageBuffer, buffer]);
+
+    while (messageBuffer.length > 2) {
+      const secondByte = messageBuffer[1];
+      let payloadLength = secondByte & 0x7f;
+      let headerLength = 2;
+
+      if (payloadLength === 126) {
+        headerLength += 2;
+      } else if (payloadLength === 127) {
+        headerLength += 8;
+      }
+
+      if (messageBuffer.length < headerLength) break;
+
+      if (payloadLength === 126) {
+        payloadLength = messageBuffer.readUInt16BE(2);
+      } else if (payloadLength === 127) {
+        payloadLength = Number(messageBuffer.readBigUInt64BE(2));
+      }
+
+      const totalFrameLength = headerLength + (secondByte & 0x80 ? 4 : 0) + payloadLength;
+
+      if (messageBuffer.length < totalFrameLength) break;
+
+      const frame = parseFrame(messageBuffer.slice(0, totalFrameLength));
+      messageBuffer = messageBuffer.slice(totalFrameLength);
+
+      if (frame.opcode === 0x8) {
+        socket.end();
+        return;
+      } else if (frame.opcode === 0x1) {
+        console.log('Payload:', frame.payload);
+      }
+    }
   });
 
   socket.on('error', err => {
@@ -77,104 +151,3 @@ server.on('error', err => {
 });
 
 server.listen(port, () => console.log(`http://localhost:${port}`));
-
-/*
-
-// Handle Upgrade requests for WebSocket.
-server.on('upgrade', (req, socket, head) => {
-  // Verify that the necessary header is present.
-  const key = req.headers['sec-websocket-key'];
-  if (!key) {
-    socket.end('HTTP/1.1 400 Bad Request\r\n\r\n');
-    return;
-  }
-
-  // Create the Sec-WebSocket-Accept key using SHA-1.
-  const hash = crypto.createHash('sha1');
-  hash.update(key + '258EAFA5-E914-47DA-95CA-C5AB0DC85B11');
-  const acceptKey = hash.digest('base64');
-
-  // Send back the switching protocols response.
-  const responseHeaders = [
-    'HTTP/1.1 101 Switching Protocols',
-    'Upgrade: websocket',
-    'Connection: Upgrade',
-    `Sec-WebSocket-Accept: ${acceptKey}`,
-  ];
-
-  socket.write(responseHeaders.join('\r\n') + '\r\n\r\n');
-
-  // Now that the connection is upgraded, handle incoming data frames.
-  socket.on('data', buffer => {
-    // This simple example assumes the incoming message is a single, unfragmented text frame.
-    const firstByte = buffer[0];
-    const opCode = firstByte & 0x0f;
-    const secondByte = buffer[1];
-    let payloadLength = secondByte & 0x7f;
-    let offset = 2;
-
-    // Handle extended payload lengths.
-    if (payloadLength === 126) {
-      payloadLength = buffer.readUInt16BE(2);
-      offset += 2;
-    } else if (payloadLength === 127) {
-      // For brevity, this example doesn't support 64-bit length payloads.
-      payloadLength = buffer.readUInt32BE(2);
-      offset += 8;
-    }
-
-    // Retrieve mask key and payload.
-    const mask = buffer.slice(offset, offset + 4);
-    offset += 4;
-    const payload = buffer.slice(offset, offset + payloadLength);
-
-    // Unmask the payload.
-    let decoded = Buffer.alloc(payload.length);
-    for (let i = 0; i < payload.length; i++) {
-      decoded[i] = payload[i] ^ mask[i % 4];
-    }
-
-    console.log('Received:', decoded.toString());
-
-    // Prepare a simple echo response.
-    const response = `Echo: ${decoded.toString()}`;
-    const responseBuffer = createFrame(response);
-    socket.write(responseBuffer);
-  });
-});
-
-function createFrame(data) {
-  // Create a WebSocket frame for text data.
-  const payload = Buffer.from(data);
-  const payloadLength = payload.length;
-  let frame = [];
-
-  // Set FIN bit and opcode for text frame.
-  const firstByte = 0x80 | 0x1; // FIN + text frame opcode
-  frame.push(firstByte);
-
-  // Handle payload length.
-  if (payloadLength < 126) {
-    frame.push(payloadLength);
-  } else if (payloadLength < 65536) {
-    frame.push(126, (payloadLength >> 8) & 0xff, payloadLength & 0xff);
-  } else {
-    // Not handling payloads > 65535 in this simple example.
-    frame.push(127);
-    frame.push(0, 0, 0, 0);
-    frame.push(
-      (payloadLength >> 24) & 0xff,
-      (payloadLength >> 16) & 0xff,
-      (payloadLength >> 8) & 0xff,
-      payloadLength & 0xff,
-    );
-  }
-
-  // Combine frame header and payload.
-  return Buffer.concat([Buffer.from(frame), payload]);
-}
-
-server.listen(8080, () => {
-  console.log('Server listening on port 8080');
-});
-*/
