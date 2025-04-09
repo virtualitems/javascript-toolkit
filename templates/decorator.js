@@ -2,10 +2,9 @@
  * Wraps a function with a decorator
  *
  * @param {Function} fn
- * @param  {Array} args
  * @returns {Function}
  */
-const decorator = function(fn, ...args) {
+const decorator = function(fn) {
   const context = this;
 
   const wrapper = function() {
