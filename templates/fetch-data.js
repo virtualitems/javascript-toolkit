@@ -1,8 +1,6 @@
 (async () => {
-
   /** @class */
   class UserModel {
-
     constructor() {
       this.id = null;
       this.email = null;
@@ -14,7 +12,6 @@
     get fullName() {
       return [this.firstName, this.lastName].filter(Boolean).join(' ');
     }
-
   }
 
   // prepare phase
@@ -24,7 +21,7 @@
     'Cache-Control': 'no-store',
     'Content-Type': 'application/json',
     'Content-Language': 'en-US',
-    'Accept': 'application/json',
+    Accept: 'application/json',
     'Accept-Language': 'en-US',
   });
 
@@ -34,7 +31,7 @@
   const response = await fetch(requestTarget, requestOptions);
 
   if (!response.ok) {
-    throw new Error(response.status);
+    throw new Error(response.statusText);
   }
 
   // decode phase
@@ -76,5 +73,4 @@
     const p2 = div.appendChild(document.createElement('p'));
     p2.textContent = user.email;
   }
-
 })();
