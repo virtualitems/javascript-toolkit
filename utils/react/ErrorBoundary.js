@@ -4,7 +4,7 @@ import React from 'react';
  * @typedef Props
  * @type {import('react').PropsWithChildren<HTMLElement> & {
  *   fallback: React.ReactElement,
- *   onError: (error: Error, errorInfo: React.ErrorInfo) => void
+ *   onError: (error: Error, info: React.ErrorInfo) => void
  * }}
  */
 
