@@ -1,4 +1,4 @@
-import { createServer } from 'http';
+import { createServer } from 'node:http';
 import { createElement } from 'react';
 import { renderToPipeableStream } from 'react-dom/server';
 
