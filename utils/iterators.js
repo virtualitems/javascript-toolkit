@@ -1,10 +1,57 @@
 /**
+ * Generates a sequence of numbers within a specified range.
+ *
+ * @generator
+ *
+ * @param {number} start - The starting number of the range.
+ * @param {number} end - The ending number of the range (exclusive).
+ * @param {number} [step=1] - The step value to increment or decrement by.
+ *
+ * @throws {Error} Throws an error if any of the arguments are not numbers.
+ * @throws {Error} Throws an error if the step is zero.
+ * @throws {Error} Throws an error if the step is positive and start is greater than end.
+ * @throws {Error} Throws an error if the step is negative and start is less than end.
+ *
+ * @returns {IterableIterator<number>} An iterator that yields numbers in the specified range.
+ */
+function* range(start, end, step = 1) {
+  if ('number' !== typeof start || 'number' !== typeof end || 'number' !== typeof step) {
+    throw new Error('Arguments must be numbers');
+  }
+
+  if (step === 0) {
+    throw new Error('Step must not be zero');
+  }
+
+  if (start > end && step > 0) {
+    throw new Error('Step must be negative when start is greater than end');
+  }
+
+  if (start < end && step < 0) {
+    throw new Error('Step must be positive when start is less than end');
+  }
+
+  if (start === end) {
+    return start;
+  }
+
+  if (start < end) {
+    for (let i = start; i < end; i += step) {
+      yield i;
+    }
+  } else {
+    for (let i = start; i > end; i += step) {
+      yield i;
+    }
+  }
+}
+
+/**
  * @param {object} iterable
  * @param {number} start
  * @returns {Generator}
  */
-function * count(iterable, start=1) {
-
+function* count(iterable, start = 1) {
   if (!iterable[Symbol.iterator]) {
     throw new Error('Argument must be an iterable object');
   }
@@ -15,7 +62,7 @@ function * count(iterable, start=1) {
 
   for (const val of iterable) {
     yield count;
-    count+=1;
+    count += 1;
   }
 }
 
@@ -23,8 +70,7 @@ function * count(iterable, start=1) {
  * @param {object} iterable
  * @returns {Generator}
  */
-function * cycle(iterable) {
-
+function* cycle(iterable) {
   if (!iterable[Symbol.iterator]) {
     throw new Error('Argument must be an iterable object');
   }
@@ -41,8 +87,7 @@ function * cycle(iterable) {
  * @param {number} start
  * @returns {Generator}
  */
-function * enumerate(iterable, start=1) {
-
+function* enumerate(iterable, start = 1) {
   if (!iterable[Symbol.iterator]) {
     throw new Error('Argument must be an iterable object');
   }
@@ -55,7 +100,7 @@ function * enumerate(iterable, start=1) {
 
   for (const val of iterable) {
     yield [val, idx];
-    idx+=1;
+    idx += 1;
   }
 }
 
@@ -63,12 +108,10 @@ function * enumerate(iterable, start=1) {
  * @param {Array<object>} iterables
  * @returns {Generator}
  */
-function * zip(...iterables) {
-
+function* zip(...iterables) {
   const iterators = [];
 
-  for (let i=0; i<iterables.length; i++) {
-
+  for (let i = 0; i < iterables.length; i++) {
     if (!iterables[i][Symbol.iterator]) {
       throw new Error('All arguments must be iterable objects');
     }
@@ -87,14 +130,12 @@ function * zip(...iterables) {
   }
 }
 
-
 /**
  * @param {object} iterable
  * @param {number} size
  * @returns {Generator}
  */
-function * pack(iterable, size=2) {
-
+function* pack(iterable, size = 2) {
   if (!iterable[Symbol.iterator]) {
     throw new Error('Argument must be an iterable object');
   }
