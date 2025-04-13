@@ -14,7 +14,7 @@
  *
  * @returns {IterableIterator<number>} An iterator that yields numbers in the specified range.
  */
-function* range(start, end, step = 1) {
+export function* range(start, end, step = 1) {
   if ('number' !== typeof start || 'number' !== typeof end || 'number' !== typeof step) {
     throw new Error('Arguments must be numbers');
   }
@@ -61,7 +61,7 @@ function* range(start, end, step = 1) {
  *
  * @returns {IterableIterator<Date>} An iterator that yields Date objects in the specified range.
  */
-function* dateRange(start, end, step = 1000) {
+export function* dateRange(start, end, step = 1000) {
   if (!(start instanceof Date) || !(end instanceof Date)) {
     throw new Error('Arguments must be Date objects');
   }
@@ -97,7 +97,7 @@ function* dateRange(start, end, step = 1000) {
  * @param {number} start
  * @returns {Generator}
  */
-function* count(iterable, start = 1) {
+export function* count(iterable, start = 1) {
   if (!iterable[Symbol.iterator]) {
     throw new Error('Argument must be an iterable object');
   }
@@ -116,7 +116,7 @@ function* count(iterable, start = 1) {
  * @param {object} iterable
  * @returns {Generator}
  */
-function* cycle(iterable) {
+export function* cycle(iterable) {
   if (!iterable[Symbol.iterator]) {
     throw new Error('Argument must be an iterable object');
   }
@@ -133,7 +133,7 @@ function* cycle(iterable) {
  * @param {number} start
  * @returns {Generator}
  */
-function* enumerate(iterable, start = 1) {
+export function* enumerate(iterable, start = 1) {
   if (!iterable[Symbol.iterator]) {
     throw new Error('Argument must be an iterable object');
   }
@@ -154,7 +154,7 @@ function* enumerate(iterable, start = 1) {
  * @param {Array<object>} iterables
  * @returns {Generator}
  */
-function* zip(...iterables) {
+export function* zip(...iterables) {
   const iterators = [];
 
   for (let i = 0; i < iterables.length; i++) {
@@ -181,7 +181,7 @@ function* zip(...iterables) {
  * @param {number} size
  * @returns {Generator}
  */
-function* pack(iterable, size = 2) {
+export function* pack(iterable, size = 2) {
   if (!iterable[Symbol.iterator]) {
     throw new Error('Argument must be an iterable object');
   }
