@@ -47,6 +47,52 @@ function* range(start, end, step = 1) {
 }
 
 /**
+ * Generates a range of Date objects between a start and end date, with a specified step.
+ *
+ * @generator
+ *
+ * @param {Date} start - The starting date of the range.
+ * @param {Date} end - The ending date of the range.
+ * @param {number} [step=1000] - The step in milliseconds to increment or decrement between dates.
+ *                               Defaults to 1000 milliseconds (1 second).
+ * @throws {Error} Throws an error if `start` or `end` is not a Date object.
+ * @throws {Error} Throws an error if `step` is positive and `start` is greater than `end`.
+ * @throws {Error} Throws an error if `step` is negative and `start` is less than `end`.
+ *
+ * @returns {IterableIterator<Date>} An iterator that yields Date objects in the specified range.
+ */
+function* dateRange(start, end, step = 1000) {
+  if (!(start instanceof Date) || !(end instanceof Date)) {
+    throw new Error('Arguments must be Date objects');
+  }
+
+  const startTime = start.getTime();
+  const endTime = end.getTime();
+
+  if (startTime > endTime && step > 0) {
+    throw new Error('Step must be negative when start is greater than end');
+  }
+
+  if (startTime < endTime && step < 0) {
+    throw new Error('Step must be positive when start is less than end');
+  }
+
+  if (startTime === endTime) {
+    return start;
+  }
+
+  if (startTime < endTime) {
+    for (let i = startTime; i < endTime; i += step) {
+      yield new Date(i);
+    }
+  } else {
+    for (let i = startTime; i > endTime; i += step) {
+      yield new Date(i);
+    }
+  }
+}
+
+/**
  * @param {object} iterable
  * @param {number} start
  * @returns {Generator}
