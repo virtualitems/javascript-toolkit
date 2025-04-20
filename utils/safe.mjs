@@ -29,8 +29,15 @@ export function safe(target, args = [], thisArg = null) {
 
   if (isFunction) {
     try {
-      const value = target.apply(thisArg, args);
-      return [null, value];
+      const result = target.apply(thisArg, args);
+
+      if (result instanceof Promise) {
+        return result
+          .then((value) => [null, value])
+          .catch((error) => [error, undefined]);
+      }
+
+      return [null, result];
     } catch (error) {
       return [error, undefined];
     }
