@@ -1,3 +1,8 @@
+const defaults = {
+  args: [],
+  thisArg: null,
+};
+
 /**
  * Safely execute a Promise or invoke a function with error handling.
  *
@@ -9,11 +14,6 @@
  *                                  a tuple [error, value] if target is a function.
  * @throws {Error} Throws an error if the target is neither a Promise nor a Function, or if args is not an array.
  */
-const defaults = {
-  args: [],
-  thisArg: null,
-};
-
 export function safe(target, args = defaults.args, thisArg = defaults.thisArg) {
   const isPromise = target instanceof Promise;
   const isFunction = target instanceof Function;
