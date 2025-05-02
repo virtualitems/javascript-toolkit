@@ -23,7 +23,7 @@ export function safe(promise) {
  * and the second element is the return value of the function (or `undefined` if an error occurred).
  * @throws {Error} If `fn` is not a function or `args` is not an array.
  */
-export function safeExec(fn, args = [], thisArg = undefined) {
+export function safeExec(fn, thisArg = undefined, args = []) {
   if (!(fn instanceof Function)) {
     throw new Error('Input must be a Function');
   }
