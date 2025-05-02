@@ -5,7 +5,7 @@ const { createElement: ce, useState } = React;
 
 ReactDOMClient.createRoot(document.getElementById('root')).render(ce(App));
 
-function maker(fn) {
+function createFactory(fn) {
   let fnCache = null;
   let depsCache = [];
 
@@ -23,14 +23,14 @@ function maker(fn) {
   };
 }
 
-const makeOnClick = maker(setCount => _event => setCount(prev => prev + 1));
+const OnClickFactory = createFactory(setCount => _event => setCount(prev => prev + 1));
 
 const stack = [];
 
 function App() {
   const [count, setCount] = useState(0);
 
-  const onClick = makeOnClick(setCount);
+  const onClick = OnClickFactory(setCount);
 
   stack.push(onClick);
 
