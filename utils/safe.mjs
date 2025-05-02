@@ -1,6 +1,6 @@
 const defaults = {
   args: [],
-  thisArg: null,
+  thisArg: undefined,
 };
 
 /**
