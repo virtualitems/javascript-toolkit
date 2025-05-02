@@ -5,7 +5,11 @@ const { createElement: ce, useState } = React;
 
 ReactDOMClient.createRoot(document.getElementById('root')).render(ce(App));
 
-function createFactory(fn) {
+/**
+ * @param {Function} fn - The function to be memoized.
+ * @returns {Function} - A memoized version of the function.
+ */
+function functionFactory(fn) {
   let fnCache = null;
   let depsCache = [];
 
@@ -13,7 +17,7 @@ function createFactory(fn) {
     if (
       fnCache === null ||
       depsCache.length !== args.length ||
-      args.some((dep, i) => dep !== depsCache[i])
+      !args.every((dep, i) => Object.is(dep, depsCache[i]))
     ) {
       fnCache = fn.apply(undefined, args);
       depsCache = args;
@@ -23,14 +27,14 @@ function createFactory(fn) {
   };
 }
 
-const OnClickFactory = createFactory(setCount => _event => setCount(prev => prev + 1));
+const onClickFactory = functionFactory(setCount => _event => setCount(prev => prev + 1));
 
 const stack = [];
 
 function App() {
   const [count, setCount] = useState(0);
 
-  const onClick = OnClickFactory(setCount);
+  const onClick = onClickFactory(setCount);
 
   stack.push(onClick);
 
