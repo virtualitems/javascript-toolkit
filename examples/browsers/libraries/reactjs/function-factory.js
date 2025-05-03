@@ -1,9 +1,4 @@
-import React from 'https://esm.sh/react@19/?dev';
-import ReactDOMClient from 'https://esm.sh/react-dom@19/client?dev';
-
-const { createElement: ce, useState } = React;
-
-ReactDOMClient.createRoot(document.getElementById('root')).render(ce(App));
+ReactDOM.createRoot(document.getElementById('root')).render(React.createElement(App));
 
 /**
  * @param {Function} fn - The function to be memoized.
@@ -29,20 +24,14 @@ function functionFactory(fn) {
 
 const onClickFactory = functionFactory(setCount => _event => setCount(prev => prev + 1));
 
-const stack = [];
-
 function App() {
-  const [count, setCount] = useState(0);
-
+  const [count, setCount] = React.useState(0);
   const onClick = onClickFactory(setCount);
 
-  stack.push(onClick);
-
-  console.log(
-    'stack',
-    stack.length,
-    stack.every(fn => fn === onClick),
+  return (
+    <div>
+      <button onClick={onClick}>Increment</button>
+      <p>{count}</p>
+    </div>
   );
-
-  return ce('div', null, ce('button', { onClick }, 'Increment'), ce('p', null, count));
 }
