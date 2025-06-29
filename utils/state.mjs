@@ -1,32 +1,29 @@
 const vals = new WeakMap();
 const subs = new WeakMap();
 
-export class State {
-  constructor(init) {
-    vals.set(this, init);
-    subs.set(this, new Set());
-  }
+export function state(initialValue) {
+  const key = {};
+  vals.set(key, initialValue);
+  subs.set(key, new Set());
 
-  get() {
-    return vals.get(this);
-  }
+  return {
+    get: () => vals.get(key),
+    set: (arg) => {
+      const prev = vals.get(key);
+      const next = typeof arg === 'function' ? arg(prev) : arg;
 
-  set(arg) {
-    const prev = vals.get(this);
-    const next = typeof arg === 'function' ? arg(prev) : arg;
+      if (Object.is(prev, next)) {
+        return;
+      }
 
-    if (Object.is(prev, next)) {
-      return;
+      vals.set(key, next);
+      subs.get(key).forEach(fn => fn(next, prev));
+    },
+    subscribe: (fn) => {
+      const group = subs.get(key);
+      group.add(fn);
+
+      return () => group.delete(fn);
     }
-
-    vals.set(this, next);
-    subs.get(this).forEach(fn => fn(next, prev));
-  }
-
-  subscribe(fn) {
-    const group = subs.get(this);
-    group.add(fn);
-
-    return () => group.delete(fn);
   }
 }
