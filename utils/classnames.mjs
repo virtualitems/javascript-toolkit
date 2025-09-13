@@ -1,6 +1,9 @@
 /**
  * Function to join class names together.
  * @param  {unknown[]} args - The class names to join.
+ *
+ * @example
+ * classNames('foo', new Set(['bar']), undefined, { baz: true, qux: false }, [null, 'quux']);
  */
 export function classNames(...args) {
   const classNames = new Set();
