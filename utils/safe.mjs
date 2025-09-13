@@ -7,7 +7,7 @@
  */
 export function safe(promise) {
   if ((promise instanceof Promise) === false) {
-    throw new Error('Input must be a Promise');
+    throw new TypeError('Input must be a Promise');
   }
 
   return promise
@@ -27,11 +27,11 @@ export function safe(promise) {
  */
 export function safeExec(fn, thisArg = undefined, args = []) {
   if ((fn instanceof Function) === false) {
-    throw new Error('Input must be a Function');
+    throw new TypeError('Input must be a Function');
   }
 
   if (Array.isArray(args) === false) {
-    throw new Error('Arguments must be an array');
+    throw new TypeError('Arguments must be an array');
   }
 
   try {
