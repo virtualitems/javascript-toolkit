@@ -1,24 +1,23 @@
-export class WebComponent extends HTMLElement {
+export class BaseCustomElement extends HTMLElement {
 
-  static tagName = 'web-component';
-
-  static eventNames = {
-    statechange: this.tagName + '.statechange'
-  };
+  static tagName = null;
 
   static htmlString = null;
 
   static cssString = null;
 
+  static eventNames = Object.freeze({
+    statechange: 'ce.statechange',
+  });
+
   #state = null;
 
-  /**
-   * @property {NamedNodeMap} attributes
-   * @property {ShadowRoot} shadowRoot
-   */
   constructor() {
     super();
-    console.log('ƒ constructor', this);
+
+    if (new.target === BaseCustomElement) {
+      throw new TypeError('BaseCustomElement is an abstract class and cannot be instantiated directly.');
+    }
 
     // shadow
     this.attachShadow({ mode: 'open' });
@@ -29,10 +28,6 @@ export class WebComponent extends HTMLElement {
     styles.replaceSync(this.constructor.cssString);
     this.shadowRoot.adoptedStyleSheets.push(styles);
 
-  }
-
-  static get observedAttributes() {
-    return ['class', 'id', 'lang', 'style', 'title'];
   }
 
   get state() {
@@ -51,12 +46,29 @@ export class WebComponent extends HTMLElement {
       this.#state = data;
     }
 
-    const name = WebComponent.eventNames.statechange;
+    const name = this.constructor.eventNames.statechange;
     const detail = { element: this, state: this.#state };
     const payload = { detail, bubbles: true, composed: true };
     const event = new CustomEvent(name, payload);
     this.dispatchEvent(event);
   };
+}
+
+export class WebComponent extends BaseCustomElement {
+
+  /**
+   * @property {NamedNodeMap} attributes
+   * @property {ShadowRoot} shadowRoot
+   * @property {Object|null} state
+   */
+  constructor() {
+    super();
+    console.log('ƒ constructor', this);
+  }
+
+  static get observedAttributes() {
+    return ['class', 'id', 'lang', 'style', 'title'];
+  }
 
   connectedCallback() {
     console.log('ƒ connectedCallback');
@@ -78,6 +90,8 @@ export class WebComponent extends HTMLElement {
     // nullify references
   }
 }
+
+WebComponent.tagName = 'web-component';
 
 /**
  * HTML template as string
