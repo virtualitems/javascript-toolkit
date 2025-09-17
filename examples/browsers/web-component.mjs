@@ -10,12 +10,15 @@ export class WebComponent extends HTMLElement {
 
   static cssString = null;
 
+  #state = null;
+
   /**
    * @property {NamedNodeMap} attributes
    * @property {ShadowRoot} shadowRoot
    */
   constructor() {
     super();
+    console.log('ƒ constructor', this);
 
     // shadow
     this.attachShadow({ mode: 'open' });
@@ -26,29 +29,27 @@ export class WebComponent extends HTMLElement {
     styles.replaceSync(this.constructor.cssString);
     this.shadowRoot.adoptedStyleSheets.push(styles);
 
-    // state
-    let _state = null;
-
-    this.setState = function (newState) {
-      if (typeof newState !== 'object') throw new TypeError(' State must be an object or null.');
-
-      _state = newState;
-
-      const name = WebComponent.eventNames.statechange;
-      const detail = { element: this, state: _state };
-      const payload = { detail, bubbles: true, composed: true };
-      const event = new CustomEvent(name, payload);
-      this.dispatchEvent(event);
-    };
-
-    this.state = function() {
-      return _state;
-    };
   }
 
   static get observedAttributes() {
     return ['class', 'id', 'lang', 'style', 'title'];
   }
+
+  get state() {
+    return this.#state;
+  }
+
+  set state(newState) {
+    if (typeof newState !== 'object') throw new TypeError(' State must be an object or null.');
+
+    this.#state = newState;
+
+    const name = WebComponent.eventNames.statechange;
+    const detail = { element: this, state: this.#state };
+    const payload = { detail, bubbles: true, composed: true };
+    const event = new CustomEvent(name, payload);
+    this.dispatchEvent(event);
+  };
 
   connectedCallback() {
     console.log('ƒ connectedCallback');
