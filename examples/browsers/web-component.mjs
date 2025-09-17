@@ -49,6 +49,15 @@ class WebComponent extends HTMLElement {
   }
 }
 
+WebComponent.htmlString = `
+  <h1>
+    <slot></slot>
+  </h1>
+  <p>
+    <slot name="text"></slot>
+  </p>
+`;
+
 WebComponent.cssString = `
   :host {
     display: block;
@@ -70,15 +79,6 @@ WebComponent.cssString = `
   h1 {
     color: blue;
   }
-`;
-
-WebComponent.htmlString = `
-  <h1>
-    <slot></slot>
-  </h1>
-  <p>
-    <slot name="text"></slot>
-  </p>
 `;
 
 customElements.define('web-component', WebComponent);
