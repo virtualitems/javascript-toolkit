@@ -36,10 +36,6 @@ export class BaseCustomElement extends HTMLElement {
 
   set state(newState) {
 
-    if (newState !== undefined && (newState !== null && newState.constructor !== Object)) {
-      throw new TypeError(' State must be a plain object or null.');
-    }
-
     if (Object.is(this.#state, newState)) {
       // no change, no event
       return;
@@ -50,11 +46,15 @@ export class BaseCustomElement extends HTMLElement {
       this.#state = null;
     }
 
-    else {
+    else if (newState.constructor === Object) {
       // update state
       const data = Object.assign({}, newState);
       Object.freeze(data);
       this.#state = data;
+    }
+
+    else {
+      throw new TypeError(' State must be a plain object or null.');
     }
 
     const name = this.constructor.eventNames.statechange;
