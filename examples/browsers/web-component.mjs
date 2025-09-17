@@ -43,7 +43,7 @@ export class WebComponent extends HTMLElement {
 
     this.state = function() {
       return _state;
-    }
+    };
   }
 
   static get observedAttributes() {
