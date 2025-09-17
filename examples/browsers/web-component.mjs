@@ -1,5 +1,9 @@
 class WebComponent extends HTMLElement {
 
+  static htmlString = null;
+
+  static cssString = null;
+
   /**
    * @property {NamedNodeMap} attributes
    * @property {ShadowRoot} shadowRoot
@@ -9,11 +13,11 @@ class WebComponent extends HTMLElement {
 
     // shadow
     this.attachShadow({ mode: 'open' });
-    this.shadowRoot.innerHTML = this.html;
+    this.shadowRoot.innerHTML = this.constructor.htmlString;
 
     // css
     const styles = new CSSStyleSheet();
-    styles.replaceSync(this.css);
+    styles.replaceSync(this.constructor.cssString);
     this.shadowRoot.adoptedStyleSheets.push(styles);
 
     // state
@@ -22,14 +26,6 @@ class WebComponent extends HTMLElement {
 
   static get observedAttributes() {
     return ['class', 'id', 'lang', 'style', 'title'];
-  }
-
-  get html() {
-    return '<h1><slot></slot></h1>' + '<p><slot name="text"></slot></p>';
-  }
-
-  get css() {
-    return 'h1 { color: darkred; }';
   }
 
   connectedCallback() {
@@ -52,5 +48,37 @@ class WebComponent extends HTMLElement {
     // nullify references
   }
 }
+
+WebComponent.cssString = `
+  :host {
+    display: block;
+    border: 1px dashed black;
+    padding: 1rem;
+    margin: 1rem;
+    font-family: sans-serif;
+    text-align: center;
+    user-select: none;
+    transition: background-color 0.3s ease;
+  }
+  :host(.active),
+  :host(:hover) {
+    background-color: beige;
+  }
+  ::slotted(span) {
+    color: magenta;
+  }
+  h1 {
+    color: blue;
+  }
+`;
+
+WebComponent.htmlString = `
+  <h1>
+    <slot></slot>
+  </h1>
+  <p>
+    <slot name="text"></slot>
+  </p>
+`;
 
 customElements.define('web-component', WebComponent);
