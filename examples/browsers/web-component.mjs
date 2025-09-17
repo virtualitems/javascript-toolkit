@@ -75,6 +75,8 @@ export class WebComponent extends BaseCustomElement {
   constructor() {
     super();
     console.log('ƒ constructor', this);
+
+    this.addEventListener('click', this.handleClick);
   }
 
   static get observedAttributes() {
@@ -97,8 +99,14 @@ export class WebComponent extends BaseCustomElement {
     console.log('ƒ disconnectedCallback');
     // stop intervals
     // remove event listeners
+    this.removeEventListener('click', this.handleClick);
     // dispose DOM elements
     // nullify references
+  }
+
+  handleClick() {
+    console.log('ƒ handleClick');
+    this.classList.toggle('active');
   }
 }
 
@@ -130,6 +138,7 @@ WebComponent.cssString = `
     font-family: sans-serif;
     text-align: center;
     user-select: none;
+    cursor: pointer;
     transition: background-color 0.3s ease;
   }
   :host(.active),
