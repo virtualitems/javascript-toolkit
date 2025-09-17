@@ -27,16 +27,22 @@ export class WebComponent extends HTMLElement {
     this.shadowRoot.adoptedStyleSheets.push(styles);
 
     // state
-    this.state = new Proxy({}, {
-      set: (target, prop, value) => {
-        target[prop] = value;
-        const name = this.constructor.eventNames.statechange;
-        const detail = { element: this, prop, value };
+    let _state = null;
+
+    Object.defineProperty(WebComponent.prototype, 'state', {
+      get: () => _state,
+      set: (newState) => {
+        if (typeof newState !== 'object') throw new TypeError(' State must be an object or null.');
+
+        _state = newState;
+        const name = WebComponent.eventNames.statechange;
+        const detail = { element: this, state: _state };
         const payload = { detail, bubbles: true, composed: true };
         const event = new CustomEvent(name, payload);
         this.dispatchEvent(event);
-        return true;
-      }
+      },
+      enumerable: true,
+      configurable: true
     });
   }
 
