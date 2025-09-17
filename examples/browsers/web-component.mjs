@@ -46,15 +46,15 @@ export class BaseCustomElement extends HTMLElement {
       this.#state = null;
     }
 
-    else if (newState.constructor === Object) {
+    else if (newState === undefined || newState.constructor !== Object) {
+      throw new TypeError(' State must be a plain object or null.');
+    }
+
+    else {
       // update state
       const data = Object.assign({}, newState);
       Object.freeze(data);
       this.#state = data;
-    }
-
-    else {
-      throw new TypeError(' State must be a plain object or null.');
     }
 
     const name = this.constructor.eventNames.statechange;
