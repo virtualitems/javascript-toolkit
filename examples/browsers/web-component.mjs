@@ -91,8 +91,6 @@ export class WebComponent extends BaseCustomElement {
   }
 }
 
-WebComponent.tagName = 'web-component';
-
 /**
  * HTML template as string
  *
@@ -134,3 +132,5 @@ WebComponent.cssString = `
     color: blue;
   }
 `;
+
+WebComponent.tagName = 'web-component';
