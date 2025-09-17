@@ -40,9 +40,16 @@ export class WebComponent extends HTMLElement {
   }
 
   set state(newState) {
-    if (typeof newState !== 'object') throw new TypeError(' State must be an object or null.');
 
-    this.#state = newState;
+    if (newState !== undefined && (newState !== null && newState.constructor !== Object)) {
+      throw new TypeError(' State must be a plain object or null.');
+    }
+
+    if ((newState !== null) && (Object.is(this.#state, newState) === false)) {
+      const data = Object.assign({}, newState);
+      Object.freeze(data);
+      this.#state = data;
+    }
 
     const name = WebComponent.eventNames.statechange;
     const detail = { element: this, state: this.#state };
