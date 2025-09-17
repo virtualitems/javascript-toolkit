@@ -1,4 +1,10 @@
-class WebComponent extends HTMLElement {
+export class WebComponent extends HTMLElement {
+
+  static tagName = 'web-component';
+
+  static eventNames = {
+    statechange: this.tagName + '.statechange'
+  };
 
   static htmlString = null;
 
@@ -21,7 +27,17 @@ class WebComponent extends HTMLElement {
     this.shadowRoot.adoptedStyleSheets.push(styles);
 
     // state
-    this.state = {};
+    this.state = new Proxy({}, {
+      set: (target, prop, value) => {
+        target[prop] = value;
+        const name = this.constructor.eventNames.statechange;
+        const detail = { element: this, prop, value };
+        const payload = { detail, bubbles: true, composed: true };
+        const event = new CustomEvent(name, payload);
+        this.dispatchEvent(event);
+        return true;
+      }
+    });
   }
 
   static get observedAttributes() {
@@ -49,6 +65,11 @@ class WebComponent extends HTMLElement {
   }
 }
 
+/**
+ * HTML template as string
+ *
+ * @type {string}
+ */
 WebComponent.htmlString = `
   <h1>
     <slot></slot>
@@ -58,6 +79,11 @@ WebComponent.htmlString = `
   </p>
 `;
 
+/**
+ * CSS styles as string
+ *
+ * @type {string}
+ */
 WebComponent.cssString = `
   :host {
     display: block;
@@ -80,5 +106,3 @@ WebComponent.cssString = `
     color: blue;
   }
 `;
-
-customElements.define('web-component', WebComponent);
