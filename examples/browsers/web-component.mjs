@@ -29,21 +29,21 @@ export class WebComponent extends HTMLElement {
     // state
     let _state = null;
 
-    Object.defineProperty(WebComponent.prototype, 'state', {
-      get: () => _state,
-      set: (newState) => {
-        if (typeof newState !== 'object') throw new TypeError(' State must be an object or null.');
+    this.setState = function (newState) {
+      if (typeof newState !== 'object') throw new TypeError(' State must be an object or null.');
 
-        _state = newState;
-        const name = WebComponent.eventNames.statechange;
-        const detail = { element: this, state: _state };
-        const payload = { detail, bubbles: true, composed: true };
-        const event = new CustomEvent(name, payload);
-        this.dispatchEvent(event);
-      },
-      enumerable: true,
-      configurable: true
-    });
+      _state = newState;
+
+      const name = WebComponent.eventNames.statechange;
+      const detail = { element: this, state: _state };
+      const payload = { detail, bubbles: true, composed: true };
+      const event = new CustomEvent(name, payload);
+      this.dispatchEvent(event);
+    };
+
+    this.state = function() {
+      return _state;
+    }
   }
 
   static get observedAttributes() {
