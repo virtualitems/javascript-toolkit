@@ -6,11 +6,7 @@ export class BaseCustomElement extends HTMLElement {
 
   static cssString = null;
 
-  static eventNames = Object.freeze({
-    statechange: 'ce.statechange',
-  });
-
-  #state = null;
+  static eventNames = Object.freeze({});
 
   constructor() {
     super();
@@ -29,40 +25,6 @@ export class BaseCustomElement extends HTMLElement {
     this.shadowRoot.adoptedStyleSheets.push(styles);
 
   }
-
-  get state() {
-    return this.#state;
-  }
-
-  set state(newState) {
-
-    if (Object.is(this.#state, newState)) {
-      // no change, no event
-      return;
-    }
-
-    else if (newState === null) {
-      // nullify state
-      this.#state = null;
-    }
-
-    else if (newState === undefined || newState.constructor !== Object) {
-      throw new TypeError(' State must be a plain object or null.');
-    }
-
-    else {
-      // update state
-      const data = Object.assign({}, newState);
-      Object.freeze(data);
-      this.#state = data;
-    }
-
-    const name = this.constructor.eventNames.statechange;
-    const detail = { element: this, state: this.#state };
-    const payload = { detail, bubbles: true, composed: true };
-    const event = new CustomEvent(name, payload);
-    this.dispatchEvent(event);
-  };
 }
 
 export class WebComponent extends BaseCustomElement {
@@ -70,7 +32,6 @@ export class WebComponent extends BaseCustomElement {
   /**
    * @property {NamedNodeMap} attributes
    * @property {ShadowRoot} shadowRoot
-   * @property {Object|null} state
    */
   constructor() {
     super();
