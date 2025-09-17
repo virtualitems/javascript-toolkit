@@ -133,4 +133,9 @@ WebComponent.cssString = `
   }
 `;
 
+/**
+ * Custom element tag name
+ *
+ * @type {string}
+ */
 WebComponent.tagName = 'web-component';
