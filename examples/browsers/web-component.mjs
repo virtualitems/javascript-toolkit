@@ -40,7 +40,18 @@ export class BaseCustomElement extends HTMLElement {
       throw new TypeError(' State must be a plain object or null.');
     }
 
-    if ((newState !== null) && (Object.is(this.#state, newState) === false)) {
+    if (Object.is(this.#state, newState)) {
+      // no change, no event
+      return;
+    }
+
+    else if (newState === null) {
+      // nullify state
+      this.#state = null;
+    }
+
+    else {
+      // update state
       const data = Object.assign({}, newState);
       Object.freeze(data);
       this.#state = data;
