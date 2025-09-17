@@ -107,6 +107,20 @@ export class WebComponent extends BaseCustomElement {
   handleClick() {
     console.log('ƒ handleClick');
     this.classList.toggle('active');
+    const targetSelector = this.getAttribute('data-target');
+
+    if (typeof targetSelector !== 'string' || targetSelector.length === 0) {
+      return;
+    }
+
+    const target = document.querySelector(targetSelector);
+
+    if (target === null) {
+      console.warn(`No element matches selector "${targetSelector}".`);
+      return;
+    }
+
+    target.remove();
   }
 }
 
