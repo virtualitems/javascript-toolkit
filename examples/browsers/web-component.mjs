@@ -1,33 +1,34 @@
-export class BaseCustomElement extends HTMLElement {
+export class ClickHandler {
 
-  static tagName = null;
+  /**
+   * Handle click event
+   *
+   * @param {PointerEvent} event
+   * @returns {void}
+   */
+  handleEvent(event) {
+    console.debug('ƒ handleEvent', event.type);
 
-  static htmlString = null;
-
-  static cssString = null;
-
-  static eventNames = Object.freeze({});
-
-  constructor() {
-    super();
-
-    if (new.target === BaseCustomElement) {
-      throw new TypeError('BaseCustomElement is an abstract class and cannot be instantiated directly.');
-    }
-
-    // shadow
-    this.attachShadow({ mode: 'open' });
-    this.shadowRoot.innerHTML = this.constructor.htmlString;
-
-    // css
-    const styles = new CSSStyleSheet();
-    styles.replaceSync(this.constructor.cssString);
-    this.shadowRoot.adoptedStyleSheets.push(styles);
-
+    event.currentTarget?.classList?.toggle?.('active');
   }
 }
 
-export class WebComponent extends BaseCustomElement {
+export class WebComponent extends HTMLElement {
+
+  /**
+   * @type {string|null}
+   */
+  static htmlString = null;
+
+  /**
+   * @type {string|null}
+   */
+  static cssString = null;
+
+  /**
+   * @type {ClickHandler}
+   */
+  static clickHandler = new ClickHandler();
 
   /**
    * @property {NamedNodeMap} attributes
@@ -35,53 +36,71 @@ export class WebComponent extends BaseCustomElement {
    */
   constructor() {
     super();
-    console.log('ƒ constructor', this);
+    console.debug('ƒ constructor', this);
 
-    this.addEventListener('click', this.handleClick);
+    // html
+    this.attachShadow({ mode: 'open' });
+    this.shadowRoot.innerHTML = this.constructor.htmlString;
+
+    // css
+    const stylesheet = new CSSStyleSheet();
+    stylesheet.replace(this.constructor.cssString);
+    this.shadowRoot.adoptedStyleSheets.push(stylesheet);
   }
 
+  /**
+   * Names of all attributes for which the element needs to change
+   */
   static get observedAttributes() {
     return ['class', 'id', 'lang', 'style', 'title'];
   }
 
+  /**
+   * Called each time the element is added to the document
+   */
   connectedCallback() {
-    console.log('ƒ connectedCallback');
+    console.debug('ƒ connectedCallback');
+
+    this.addEventListener('click', this.constructor.clickHandler);
   }
 
-  attributeChangedCallback(attributeName, oldValue, newValue) {
-    console.log('ƒ attributeChangedCallback', attributeName, oldValue, newValue);
-  }
-
-  adoptedCallback() {
-    console.log('ƒ adoptedCallback');
-  }
-
+  /**
+   * Called each time the element is removed from the document
+   * - dispose DOM elements
+   * - nullify references
+   * - remove event listeners
+   * - stop intervals
+   * - stop observers
+   */
   disconnectedCallback() {
-    console.log('ƒ disconnectedCallback');
-    // stop intervals
-    // remove event listeners
-    this.removeEventListener('click', this.handleClick);
-    // dispose DOM elements
-    // nullify references
+    console.debug('ƒ disconnectedCallback');
+
+    this.removeEventListener('click', this.constructor.clickHandler);
   }
 
-  handleClick() {
-    console.log('ƒ handleClick');
-    this.classList.toggle('active');
-    const targetSelector = this.getAttribute('data-target');
+  /**
+   * Called each time the element is moved by using Element.moveBefore()
+   */
+  connectedMoveCallback() {
+    console.debug('ƒ connectedMoveCallback');
+  }
 
-    if (typeof targetSelector !== 'string' || targetSelector.length === 0) {
-      return;
-    }
+  /**
+   * Called each time the element is moved to a new document
+   */
+  adoptedCallback() {
+    console.debug('ƒ adoptedCallback');
+  }
 
-    const target = document.querySelector(targetSelector);
-
-    if (target === null) {
-      console.warn(`No element matches selector "${targetSelector}".`);
-      return;
-    }
-
-    target.remove();
+  /**
+   * Called when attributes are changed, added, removed, or replaced
+   *
+   * @param {string} attributeName
+   * @param {string|null} oldValue
+   * @param {string|null} newValue
+   */
+  attributeChangedCallback(attributeName, oldValue, newValue) {
+    console.debug('ƒ attributeChangedCallback', attributeName, oldValue, newValue);
   }
 }
 
@@ -116,9 +135,11 @@ WebComponent.cssString = `
     cursor: pointer;
     transition: background-color 0.3s ease;
   }
-  :host(.active),
   :host(:hover) {
     background-color: beige;
+  }
+  :host(.active) {
+    background-color: lightblue;
   }
   ::slotted(span) {
     color: magenta;
@@ -127,10 +148,3 @@ WebComponent.cssString = `
     color: blue;
   }
 `;
-
-/**
- * Custom element tag name
- *
- * @type {string}
- */
-WebComponent.tagName = 'web-component';
