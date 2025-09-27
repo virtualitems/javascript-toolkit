@@ -106,8 +106,6 @@ export class WebComponent extends HTMLElement {
 
 /**
  * HTML template as string
- *
- * @type {string}
  */
 WebComponent.htmlString = `
   <h1>
@@ -120,8 +118,6 @@ WebComponent.htmlString = `
 
 /**
  * CSS styles as string
- *
- * @type {string}
  */
 WebComponent.cssString = `
   :host {
