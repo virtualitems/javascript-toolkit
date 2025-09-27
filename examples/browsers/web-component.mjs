@@ -8,8 +8,11 @@ export class ClickHandler {
    */
   handleEvent(event) {
     console.debug('ƒ handleEvent', event.type);
+    const element = event.currentTarget;
 
-    event.currentTarget?.classList?.toggle?.('active');
+    if ((element instanceof HTMLElement) === false) return;
+
+    element.classList.toggle('active');
   }
 }
 
