@@ -1,22 +1,101 @@
+export class Model extends EventTarget {
+
+  /**
+   * @type {unknown}
+   * @private
+   */
+  #state = { active: false };
+
+  get state() {
+    return this.#state;
+  }
+
+  set state(value) {
+    this.#state = value;
+    this.#dispatch('model.change', this.#state);
+  }
+
+  #dispatch(eventName, detail = {}) {
+    const payload = { detail };
+    this.dispatchEvent(new CustomEvent(eventName, payload));
+  }
+}
+
+export class ModelChangeHandler {
+
+  /**
+   * @param {WebComponent} element
+   */
+  constructor(element) {
+    if ((element instanceof WebComponent) === false) {
+      throw new Error('element must be an instance of WebComponent');
+    }
+    this.element = element;
+  }
+
+  /**
+   * Handle model change event
+   *
+   * @param {CustomEvent} event
+   */
+  handleEvent(event) {
+    console.debug('ƒ handleEvent', event.type);
+
+    const active = event?.detail?.active;
+
+    if (active === undefined) return;
+
+    if (active) {
+      this.element.classList.add('active');
+    } else {
+      this.element.classList.remove('active');
+    }
+
+  }
+}
+
 export class ClickHandler {
+
+  /**
+   * @param {WebComponent} element
+   */
+  constructor(element) {
+    if ((element instanceof WebComponent) === false) {
+      throw new Error('element must be an instance of WebComponent');
+    }
+    this.element = element;
+  }
 
   /**
    * Handle click event
    *
    * @param {PointerEvent} event
-   * @returns {void}
    */
   handleEvent(event) {
     console.debug('ƒ handleEvent', event.type);
-    const element = event.currentTarget;
 
-    if ((element instanceof HTMLElement) === false) return;
+    const state = this.element.model.state;
 
-    element.classList.toggle('active');
+    this.element.model.state = Object.assign({}, state, { active: !state.active });
   }
 }
 
 export class WebComponent extends HTMLElement {
+
+  /**
+   * @type {ClickHandler}
+   */
+  clickHandler;
+
+  /**
+   * @type {Model}
+   */
+  model;
+
+  /**
+   * @type {ModelChangeHandler}
+   */
+  modelChangeHandler;
 
   /**
    * @type {string|null}
@@ -29,17 +108,16 @@ export class WebComponent extends HTMLElement {
   static cssString = null;
 
   /**
-   * @type {ClickHandler}
-   */
-  static clickHandler = new ClickHandler();
-
-  /**
    * @property {NamedNodeMap} attributes
    * @property {ShadowRoot} shadowRoot
    */
   constructor() {
     super();
     console.debug('ƒ constructor', this);
+
+    this.model = new Model();
+    this.modelChangeHandler = new ModelChangeHandler(this);
+    this.clickHandler = new ClickHandler(this);
 
     // html
     this.attachShadow({ mode: 'open' });
@@ -64,7 +142,8 @@ export class WebComponent extends HTMLElement {
   connectedCallback() {
     console.debug('ƒ connectedCallback');
 
-    this.addEventListener('click', this.constructor.clickHandler);
+    this.addEventListener('click', this.clickHandler);
+    this.model.addEventListener('model.change', this.modelChangeHandler);
   }
 
   /**
@@ -78,7 +157,8 @@ export class WebComponent extends HTMLElement {
   disconnectedCallback() {
     console.debug('ƒ disconnectedCallback');
 
-    this.removeEventListener('click', this.constructor.clickHandler);
+    this.removeEventListener('click', this.clickHandler);
+    this.model.removeEventListener('model.change', this.modelChangeHandler);
   }
 
   /**
