@@ -1,0 +1,40 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  min-height: 100vh;
+  min-width: 100%;
+}
+
+body {
+  line-height: 1.15;
+  font-family: sans-serif;
+  font-size: 16px;
+}
+
+.grid-layout {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+}
+
+.grid-layout header {
+  padding: 1rem;
+  background-color: lightblue;
+  text-align: center;
+}
+
+.grid-layout main {
+  padding: 1rem;
+  background-color: lightgreen;
+  text-align: center;
+}
+
+.grid-layout footer {
+  padding: 1rem;
+  background-color: lightsalmon;
+  text-align: center;
+}
