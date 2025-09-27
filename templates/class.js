@@ -20,7 +20,11 @@ export default class __CLASS__ // extends __DECLARE_FIRST__OVERRIDE_SECOND__ABST
 
   // static attributes
 
-  // Constructor, Getters, Setters
+  // Constructor
+
+  // getters/setters
+
+  // static getters/setters
 
   // methods
 
