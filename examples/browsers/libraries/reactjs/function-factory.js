@@ -1,37 +1,55 @@
-ReactDOM.createRoot(document.getElementById('root')).render(React.createElement(App));
-
 /**
- * @param {Function} fn - The function to be memoized.
- * @returns {Function} - A memoized version of the function.
+ * Function factory with dependency tracking to memoize function definitions.
+ *
+ * @param {(...args: unknown[]) => (...args: unknown[]) => unknown} fn
+ * @returns {(...args: unknown[]) => unknown}
  */
-function functionFactory(fn) {
-  let fnCache = null;
+export function factory(fn) {
+  if (typeof fn !== 'function') {
+    throw new TypeError('First argument must be a function');
+  }
+
+  /** @type {(...args: unknown[]) => unknown} */
+  let fnCache;
+
+  /** @type {unknown[]} */
   let depsCache = [];
 
   return (...args) => {
     if (
-      fnCache === null ||
+      fnCache === undefined ||
       depsCache.length !== args.length ||
-      !args.every((dep, i) => Object.is(dep, depsCache[i]))
+      args.some((dep, i) => Object.is(dep, depsCache[i]) === false)
     ) {
       fnCache = fn.apply(undefined, args);
       depsCache = args;
+    }
+
+    if (typeof fnCache !== 'function') {
+      throw new TypeError('First argument function must return a function');
     }
 
     return fnCache;
   };
 }
 
-const onClickFactory = functionFactory(setCount => _event => setCount(prev => prev + 1));
+const handleClick = factory(
+  (setCount) => // Definition Args
+    (event) => { // Call Args
+      console.debug(event.type);
+      setCount(prev => prev + 1);
+    }
+);
 
 function App() {
   const [count, setCount] = React.useState(0);
-  const onClick = onClickFactory(setCount);
 
   return (
     <div>
-      <button onClick={onClick}>Increment</button>
+      <button onClick={handleClick(setCount)}>Increment</button>
       <p>{count}</p>
     </div>
   );
 }
+
+ReactDOM.createRoot(document.getElementById('root')).render(React.createElement(App));
