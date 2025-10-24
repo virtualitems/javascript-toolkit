@@ -2,6 +2,7 @@ import http from 'http';
 
 const port = process.argv[2] ?? 80;
 
+// create server
 const server = http.createServer((req, res) => {
 
   if (req.method !== 'GET') {
@@ -38,4 +39,5 @@ const server = http.createServer((req, res) => {
   res.end(timeString);
 });
 
+// start server
 server.listen(port, () => console.log(`http://localhost:${port}`));
