@@ -73,7 +73,7 @@ export function difference(setA, setB) {
  * const b = new Set([3, 4, 5]);
  * symmetricDifference(a, b); // Set([1, 2, 4, 5])
  */
-export function symmetricDifference(setA, setB) {
+export function symmetricDiff(setA, setB) {
   const result = new Set();
 
   for (const item of setA) {
