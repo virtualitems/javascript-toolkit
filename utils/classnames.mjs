@@ -40,6 +40,19 @@ export function classNames(...args) {
       continue;
     }
 
+    // is map
+    if (arg.constructor === Map) {
+      for (const [key, value] of arg) {
+        if (value && 'string' === typeof key) {
+          const txt = key.trim();
+          if (txt.length) {
+            classNames.add(txt);
+          }
+        }
+      }
+      continue;
+    }
+
     // is iterable
     if ('function' === typeof arg[Symbol.iterator]) {
       remaining.push(...arg);
