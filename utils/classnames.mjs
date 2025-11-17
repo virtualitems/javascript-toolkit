@@ -8,33 +8,45 @@
 export function classNames(...args) {
   const classNames = new Set();
 
-  for (const arg of args) {
+  const remaining = Array.from(args);
+
+  while(remaining.length) {
+    const arg = remaining.shift();
+
+    // skip null/undefined values
     if (arg === null || arg === undefined) {
       continue;
     }
 
+    // is string
     if (arg.constructor === String) {
-      classNames.add(arg);
+      const txt = arg.trim();
+      if (txt.length) {
+        classNames.add(txt);
+      }
       continue;
     }
 
+    // is object
     if (arg.constructor === Object) {
       for (const key in arg) {
         if (arg[key] && 'string' === typeof key) {
-          classNames.add(key);
+          const txt = key.trim();
+          if (txt.length) {
+            classNames.add(txt);
+          }
         }
       }
       continue;
     }
 
+    // is iterable
     if ('function' === typeof arg[Symbol.iterator]) {
-      for (const item of arg) {
-        if ('string' === typeof item) {
-          classNames.add(item);
-        }
-      }
+      remaining.push(...arg);
       continue;
     }
+
+    // otherwise, ignore
   }
 
   return Array.from(classNames).join(' ');
