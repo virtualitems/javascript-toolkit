@@ -11,26 +11,28 @@ export function classNames(...args) {
   const remaining = Array.from(args);
 
   while(remaining.length) {
-    const arg = remaining.shift();
+    const current = remaining.shift();
 
     // skip null/undefined values
-    if (arg === null || arg === undefined) {
+    if (current === null || current === undefined) {
       continue;
     }
 
     // is string
-    if (arg.constructor === String) {
-      const txt = arg.trim();
-      if (txt.length) {
-        classNames.add(txt);
-      }
+    if (current.constructor === String) {
+      const trimmed = current.trim();
+
+      if (trimmed.length === 0) continue;
+
+      classNames.add(trimmed);
+
       continue;
     }
 
-// is object
-    if (arg.constructor === Object) {
-      for (const key in arg) {
-        const value = arg[key];
+    // is object
+    if (current.constructor === Object) {
+      for (const key in current) {
+        const value = current[key];
 
         if ('string' !== typeof key) continue;
 
@@ -42,24 +44,29 @@ export function classNames(...args) {
 
         classNames.add(trimmed);
       }
+      continue;
     }
 
     // is map
-    if (arg.constructor === Map) {
-      for (const [key, value] of arg) {
-        if (value && 'string' === typeof key) {
-          const txt = key.trim();
-          if (txt.length) {
-            classNames.add(txt);
-          }
-        }
+    if (current.constructor === Map) {
+      for (const [key, value] of current) {
+        if ('string' !== typeof key) continue;
+
+        if (!value) continue;
+
+        const trimmed = key.trim();
+
+        if (trimmed.length === 0) continue;
+
+        classNames.add(trimmed);
       }
+
       continue;
     }
 
     // is iterable
-    if ('function' === typeof arg[Symbol.iterator]) {
-      remaining.push(...arg);
+    if ('function' === typeof current[Symbol.iterator]) {
+      remaining.push(...current);
       continue;
     }
 
