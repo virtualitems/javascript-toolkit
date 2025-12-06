@@ -27,17 +27,21 @@ export function classNames(...args) {
       continue;
     }
 
-    // is object
+// is object
     if (arg.constructor === Object) {
       for (const key in arg) {
-        if (arg[key] && 'string' === typeof key) {
-          const txt = key.trim();
-          if (txt.length) {
-            classNames.add(txt);
-          }
-        }
+        const value = arg[key];
+
+        if ('string' !== typeof key) continue;
+
+        if (!value) continue;
+
+        const trimmed = key.trim();
+
+        if (trimmed.length === 0) continue;
+
+        classNames.add(trimmed);
       }
-      continue;
     }
 
     // is map
