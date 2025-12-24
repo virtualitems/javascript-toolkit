@@ -136,6 +136,14 @@ export class Vector {
     return new Vector(...components);
   }
 
+  scalarComponent(index) {
+    if (typeof index !== 'number') throw new TypeError('Index must be a number');
+
+    if (index < 0 || index >= this.dimension()) throw new RangeError('Index out of bounds');
+
+    return this.components[index];
+  }
+
   add(other) {
     if (!(other instanceof Vector)) throw new TypeError('Argument must be a Vector');
 
