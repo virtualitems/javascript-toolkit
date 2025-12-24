@@ -1,4 +1,4 @@
-export class Vector {
+export class Vector extends Float64Array {
 
   /**
    * Creates a new Vector instance.
@@ -6,36 +6,32 @@ export class Vector {
    * @param  {...number} components
    */
   constructor(...components) {
-    this.components = new Float64Array(components);
+    super(components);
   }
 
   [Symbol.iterator]() {
-    return this.components[Symbol.iterator]();
-  }
-
-  dimension() {
-    return this.components.length;
+    return super[Symbol.iterator]();
   }
 
   toArray() {
-    return Array.from(this.components);
+    return Array.from(this);
   }
 
   toString() {
-    return `Vector(${Array.from(this.components).join(', ')})`;
+    return `Vector(${Array.from(this).join(', ')})`;
   }
 
   isEqual(other) {
     if (!(other instanceof Vector)) throw new TypeError('Argument must be a Vector');
 
-    const vec1Length = this.dimension();
-    const vec2Length = other.dimension();
+    const vec1Length = this.length;
+    const vec2Length = other.length;
 
     if (vec1Length !== vec2Length) return false;
 
     for (let current = 0; current < vec1Length; current += 1) {
-      const vec1Value = this.components[current];
-      const vec2Value = other.components[current];
+      const vec1Value = this[current];
+      const vec2Value = other[current];
 
       if (vec1Value !== vec2Value) return false;
     }
@@ -46,14 +42,14 @@ export class Vector {
   isParallel(other) {
     if (!(other instanceof Vector)) throw new TypeError('Argument must be a Vector');
 
-    if (this.dimension() !== other.dimension()) throw new Error('Vectors must have the same dimension');
+    if (this.length !== other.length) throw new Error('Vectors must have the same dimension');
 
-    const length = this.dimension();
+    const length = this.length;
     let ratio = null;
 
     for (let current = 0; current < length; current += 1) {
-      const a = this.components[current];
-      const b = other.components[current];
+      const a = this[current];
+      const b = other[current];
 
       if (a === 0 && b === 0) {
         // ambos mantienen la proporción al ser cero
@@ -87,7 +83,7 @@ export class Vector {
   isPerpendicular(other) {
     if (!(other instanceof Vector)) throw new TypeError('Argument must be a Vector');
 
-    if (this.dimension() !== other.dimension()) throw new Error('Vectors must have the same dimension');
+    if (this.length !== other.length) throw new Error('Vectors must have the same dimension');
 
     return this.dot(other) === 0;
   }
@@ -95,13 +91,13 @@ export class Vector {
   isOpposite(other) {
     if (!(other instanceof Vector)) throw new TypeError('Argument must be a Vector');
 
-    if (this.dimension() !== other.dimension()) throw new Error('Vectors must have the same dimension');
+    if (this.length !== other.length) throw new Error('Vectors must have the same dimension');
 
-    const length = this.dimension();
+    const length = this.length;
 
     for (let current = 0; current < length; current += 1) {
-      const vec1Value = this.components[current];
-      const vec2Value = other.components[current];
+      const vec1Value = this[current];
+      const vec2Value = other[current];
 
       if (vec1Value !== (vec2Value * -1)) {
         return false;
@@ -121,7 +117,7 @@ export class Vector {
     const components = Array(newDimension);
 
     for (let current = 0; current < newDimension; current += 1) {
-      const value = this.components[current] ?? 0;
+      const value = this[current] ?? 0;
       components[current] = value;
     }
 
@@ -131,11 +127,11 @@ export class Vector {
   vectorComponent(index) {
     if (typeof index !== 'number') throw new TypeError('Index must be a number');
 
-    if (index < 0 || index >= this.dimension()) throw new RangeError('Index out of bounds');
+    if (index < 0 || index >= this.length) throw new RangeError('Index out of bounds');
 
-    const components = Array(this.dimension()).fill(0);
+    const components = Array(this.length).fill(0);
 
-    components[index] = this.components[index];
+    components[index] = this[index];
 
     return new Vector(...components);
   }
@@ -143,22 +139,22 @@ export class Vector {
   scalarComponent(index) {
     if (typeof index !== 'number') throw new TypeError('Index must be a number');
 
-    if (index < 0 || index >= this.dimension()) throw new RangeError('Index out of bounds');
+    if (index < 0 || index >= this.length) throw new RangeError('Index out of bounds');
 
-    return this.components[index];
+    return this[index];
   }
 
   add(other) {
     if (!(other instanceof Vector)) throw new TypeError('Argument must be a Vector');
 
-    if (this.dimension() !== other.dimension()) throw new Error('Vectors must have the same dimension');
+    if (this.length !== other.length) throw new Error('Vectors must have the same dimension');
 
-    const length = this.dimension();
+    const length = this.length;
     const components = Array(length);
 
     for (let current = 0; current < length; current += 1) {
-      const vec1Value = this.components[current];
-      const vec2Value = other.components[current];
+      const vec1Value = this[current];
+      const vec2Value = other[current];
       components[current] = vec1Value + vec2Value;
     }
 
@@ -168,14 +164,14 @@ export class Vector {
   sub(other) {
     if (!(other instanceof Vector)) throw new TypeError('Argument must be a Vector');
 
-    if (this.dimension() !== other.dimension()) throw new Error('Vectors must have the same dimension');
+    if (this.length !== other.length) throw new Error('Vectors must have the same dimension');
 
-    const length = this.dimension();
+    const length = this.length;
     const components = Array(length);
 
     for (let current = 0; current < length; current += 1) {
-      const vec1Value = this.components[current];
-      const vec2Value = other.components[current];
+      const vec1Value = this[current];
+      const vec2Value = other[current];
       components[current] = vec1Value - vec2Value;
     }
 
@@ -185,12 +181,12 @@ export class Vector {
   scale(scalar) {
     if ('number' !== typeof scalar) throw new TypeError('Argument must be a number');
 
-    const length = this.dimension();
+    const length = this.length;
 
     let result = 0;
 
     for (let current = 0; current < length; current += 1) {
-      const value = this.components[current];
+      const value = this[current];
       result += value * scalar;
     }
 
@@ -200,14 +196,14 @@ export class Vector {
   dot(other) {
     if (!(other instanceof Vector)) throw new TypeError('Argument must be a Vector');
 
-    if (this.dimension() !== other.dimension()) throw new Error('Vectors must have the same dimension');
+    if (this.length !== other.length) throw new Error('Vectors must have the same dimension');
 
-    const length = this.dimension();
+    const length = this.length;
     let result = 0;
 
     for (let current = 0; current < length; current += 1) {
-      const vec1Value = this.components[current];
-      const vec2Value = other.components[current];
+      const vec1Value = this[current];
+      const vec2Value = other[current];
       result += vec1Value * vec2Value;
     }
 
@@ -217,15 +213,15 @@ export class Vector {
   cross(other) {
     if (!(other instanceof Vector)) throw new TypeError('Argument must be a Vector');
 
-    if (this.dimension() !== 3 || other.dimension() !== 3) throw new Error('Cross product is only defined for 3-dimensional vectors');
+    if (this.length !== 3 || other.length !== 3) throw new Error('Cross product is only defined for 3-dimensional vectors');
 
-    const x1 = this.components[0];
-    const x2 = this.components[1];
-    const x3 = this.components[2];
+    const x1 = this[0];
+    const x2 = this[1];
+    const x3 = this[2];
 
-    const y1 = other.components[0];
-    const y2 = other.components[1];
-    const y3 = other.components[2];
+    const y1 = other[0];
+    const y2 = other[1];
+    const y3 = other[2];
 
     const i = x2 * y3 - x3 * y2;
     const j = x3 * y1 - x1 * y3;
