@@ -272,4 +272,19 @@ export class Vector extends Float64Array {
 
     return difference.magnitude();
   }
+
+  hadamard(other) {
+    if (!(other instanceof Vector)) throw new TypeError('Argument must be a Vector');
+
+    if (this.length !== other.length) throw new Error('Vectors must have the same dimension');
+
+    const length = this.length;
+    const components = Array(length);
+
+    for (let current = 0; current < length; current += 1) {
+      components[current] = this[current] * other[current];
+    }
+
+    return new Vector(...components);
+  }
 }
