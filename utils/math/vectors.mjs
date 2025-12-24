@@ -21,6 +21,10 @@ export class Vector {
     return Array.from(this.components);
   }
 
+  toString() {
+    return `Vector(${Array.from(this.components).join(', ')})`;
+  }
+
   isEqual(other) {
     if (!(other instanceof Vector)) throw new TypeError('Argument must be a Vector');
 
