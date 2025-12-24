@@ -262,4 +262,14 @@ export class Vector extends Float64Array {
 
     return angle;
   }
+
+  distanceTo(other) {
+    if (!(other instanceof Vector)) throw new TypeError('Argument must be a Vector');
+
+    if (this.dimension !== other.dimension) throw new Error('Vectors must have the same dimension');
+
+    const difference = this.sub(other);
+
+    return difference.magnitude();
+  }
 }
