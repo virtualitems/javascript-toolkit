@@ -242,4 +242,24 @@ export class Vector extends Float64Array {
     const crossProduct = this.cross(other);
     return crossProduct.magnitude();
   }
+
+  angle(other, inDegrees = false) {
+    if (!(other instanceof Vector)) throw new TypeError('Argument must be a Vector');
+
+    if (this.dimension !== other.dimension) throw new Error('Vectors must have the same dimension');
+
+    const dotProduct = this.dot(other);
+    const magnitudeA = this.magnitude();
+    const magnitudeB = other.magnitude();
+
+    const cosTheta = dotProduct / (magnitudeA * magnitudeB);
+
+    const angle = Math.acos(cosTheta);
+
+    if (inDegrees) {
+      return angle * (180 / Math.PI);
+    }
+
+    return angle;
+  }
 }
