@@ -158,7 +158,7 @@ export class Vector {
     return new Vector(...components);
   }
 
-  scaleMul(scalar) {
+  scale(scalar) {
     if ('number' !== typeof scalar) throw new TypeError('Argument must be a number');
 
     const length = this.dimension();
