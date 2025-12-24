@@ -9,6 +9,10 @@ export class Vector extends Float64Array {
     super(components);
   }
 
+  get dimension() {
+    return this.length;
+  }
+
   [Symbol.iterator]() {
     return super[Symbol.iterator]();
   }
@@ -24,8 +28,8 @@ export class Vector extends Float64Array {
   isEqual(other) {
     if (!(other instanceof Vector)) throw new TypeError('Argument must be a Vector');
 
-    const vec1Length = this.length;
-    const vec2Length = other.length;
+    const vec1Length = this.dimension;
+    const vec2Length = other.dimension;
 
     if (vec1Length !== vec2Length) return false;
 
@@ -42,9 +46,9 @@ export class Vector extends Float64Array {
   isParallel(other) {
     if (!(other instanceof Vector)) throw new TypeError('Argument must be a Vector');
 
-    if (this.length !== other.length) throw new Error('Vectors must have the same dimension');
+    if (this.dimension !== other.dimension) throw new Error('Vectors must have the same dimension');
 
-    const length = this.length;
+    const length = this.dimension;
     let ratio = null;
 
     for (let current = 0; current < length; current += 1) {
@@ -83,7 +87,7 @@ export class Vector extends Float64Array {
   isPerpendicular(other) {
     if (!(other instanceof Vector)) throw new TypeError('Argument must be a Vector');
 
-    if (this.length !== other.length) throw new Error('Vectors must have the same dimension');
+    if (this.dimension !== other.dimension) throw new Error('Vectors must have the same dimension');
 
     return this.dot(other) === 0;
   }
@@ -91,9 +95,9 @@ export class Vector extends Float64Array {
   isOpposite(other) {
     if (!(other instanceof Vector)) throw new TypeError('Argument must be a Vector');
 
-    if (this.length !== other.length) throw new Error('Vectors must have the same dimension');
+    if (this.dimension !== other.dimension) throw new Error('Vectors must have the same dimension');
 
-    const length = this.length;
+    const length = this.dimension;
 
     for (let current = 0; current < length; current += 1) {
       const vec1Value = this[current];
@@ -127,9 +131,9 @@ export class Vector extends Float64Array {
   vectorComponent(index) {
     if (typeof index !== 'number') throw new TypeError('Index must be a number');
 
-    if (index < 0 || index >= this.length) throw new RangeError('Index out of bounds');
+    if (index < 0 || index >= this.dimension) throw new RangeError('Index out of bounds');
 
-    const components = Array(this.length).fill(0);
+    const components = Array(this.dimension).fill(0);
 
     components[index] = this[index];
 
@@ -139,7 +143,7 @@ export class Vector extends Float64Array {
   scalarComponent(index) {
     if (typeof index !== 'number') throw new TypeError('Index must be a number');
 
-    if (index < 0 || index >= this.length) throw new RangeError('Index out of bounds');
+    if (index < 0 || index >= this.dimension) throw new RangeError('Index out of bounds');
 
     return this[index];
   }
@@ -147,9 +151,9 @@ export class Vector extends Float64Array {
   add(other) {
     if (!(other instanceof Vector)) throw new TypeError('Argument must be a Vector');
 
-    if (this.length !== other.length) throw new Error('Vectors must have the same dimension');
+    if (this.dimension !== other.dimension) throw new Error('Vectors must have the same dimension');
 
-    const length = this.length;
+    const length = this.dimension;
     const components = Array(length);
 
     for (let current = 0; current < length; current += 1) {
@@ -164,9 +168,9 @@ export class Vector extends Float64Array {
   sub(other) {
     if (!(other instanceof Vector)) throw new TypeError('Argument must be a Vector');
 
-    if (this.length !== other.length) throw new Error('Vectors must have the same dimension');
+    if (this.dimension !== other.dimension) throw new Error('Vectors must have the same dimension');
 
-    const length = this.length;
+    const length = this.dimension;
     const components = Array(length);
 
     for (let current = 0; current < length; current += 1) {
@@ -181,7 +185,7 @@ export class Vector extends Float64Array {
   scale(scalar) {
     if ('number' !== typeof scalar) throw new TypeError('Argument must be a number');
 
-    const length = this.length;
+    const length = this.dimension;
 
     let result = 0;
 
@@ -196,9 +200,9 @@ export class Vector extends Float64Array {
   dot(other) {
     if (!(other instanceof Vector)) throw new TypeError('Argument must be a Vector');
 
-    if (this.length !== other.length) throw new Error('Vectors must have the same dimension');
+    if (this.dimension !== other.dimension) throw new Error('Vectors must have the same dimension');
 
-    const length = this.length;
+    const length = this.dimension;
     let result = 0;
 
     for (let current = 0; current < length; current += 1) {
@@ -213,7 +217,7 @@ export class Vector extends Float64Array {
   cross(other) {
     if (!(other instanceof Vector)) throw new TypeError('Argument must be a Vector');
 
-    if (this.length !== 3 || other.length !== 3) throw new Error('Cross product is only defined for 3-dimensional vectors');
+    if (this.dimension !== 3 || other.dimension !== 3) throw new Error('Cross product is only defined for 3-dimensional vectors');
 
     const x1 = this[0];
     const x2 = this[1];
