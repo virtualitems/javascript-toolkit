@@ -16,10 +16,6 @@ export class Vector extends Float64Array {
     return this.length;
   }
 
-  toArray() {
-    return Array.from(this);
-  }
-
   toString() {
     return `Vector(${Array.from(this).join(', ')})`;
   }
