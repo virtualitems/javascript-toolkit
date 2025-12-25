@@ -1,3 +1,6 @@
+/**
+ * @description A class representing a mathematical vector with n dimensions.
+ */
 export class Vector extends Float64Array {
 
   /**
