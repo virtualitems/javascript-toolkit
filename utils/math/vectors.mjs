@@ -233,12 +233,34 @@ export class Vector extends Float64Array {
     return Math.sqrt(this.dot(this));
   }
 
+  /**
+   * Returns the unit vector (normalized vector) in the same direction.
+   * The unit vector is calculated as v / ||v||
+   *
+   * @returns {Vector} A new Vector with magnitude 1
+   * @throws {Error} If the vector has zero magnitude
+   */
+  normalize() {
+    const magnitude = this.magnitude();
+
+    if (magnitude === 0) throw new Error('Cannot normalize a zero vector');
+
+    const length = this.dimension;
+    const components = Array(length);
+
+    for (let current = 0; current < length; current += 1) {
+      components[current] = this[current] / magnitude;
+    }
+
+    return new Vector(...components);
+  }
+
   parallelogramArea(other) {
     const crossProduct = this.cross(other);
     return crossProduct.magnitude();
   }
 
-  angle(other, inDegrees = false) {
+  angleBetween(other, inDegrees = false) {
     if (!(other instanceof Vector)) throw new TypeError('Argument must be a Vector');
 
     if (this.dimension !== other.dimension) throw new Error('Vectors must have the same dimension');
