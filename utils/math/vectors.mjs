@@ -16,10 +16,6 @@ export class Vector extends Float64Array {
     return this.length;
   }
 
-  [Symbol.iterator]() {
-    return super[Symbol.iterator]();
-  }
-
   toArray() {
     return Array.from(this);
   }
