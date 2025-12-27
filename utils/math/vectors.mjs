@@ -275,6 +275,14 @@ export class Vector extends Float64Array {
     return new Vector(...components);
   }
 
+  /**
+   * Computes the cross product of this vector with another vector.
+   *
+   * @param {Vector} other
+   * @returns {Vector}
+   *
+   * @throws {Error} If either vector is not 3-dimensional
+   */
   cross(other) {
     if (!(other instanceof Vector)) throw new TypeError('Argument must be a Vector');
 
