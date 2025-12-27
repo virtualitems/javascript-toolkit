@@ -20,6 +20,10 @@ export class Vector extends Float64Array {
     return `Vector(${Array.from(this).join(', ')})`;
   }
 
+  clone() {
+    return new Vector(...this);
+  }
+
   isEqual(other) {
     if (!(other instanceof Vector)) throw new TypeError('Argument must be a Vector');
 
@@ -324,5 +328,22 @@ export class Vector extends Float64Array {
     components[axisJ] = vi * sin + vj * cos;
 
     return new Vector(...components);
+  }
+
+  /**
+   * Projects this vector onto another vector.
+   * project(u) => ((u·v)/(v·v)) * v
+   *
+   * @param {Vector} other
+   * @returns {Vector} The projection of this vector onto the other vector
+   */
+  projectOnto(other) {
+    if (!(other instanceof Vector)) throw new TypeError('Argument must be a Vector');
+    if (this.dimension !== other.dimension) throw new Error('Vectors must have the same dimension');
+
+    const denom = other.dot(other);
+    if (denom === 0) throw new Error('Projection is undefined onto the zero vector');
+
+    return other.scale(this.dot(other) / denom);
   }
 }
