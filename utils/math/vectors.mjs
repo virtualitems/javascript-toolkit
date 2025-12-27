@@ -23,16 +23,14 @@ export class Vector extends Float64Array {
   isEqual(other) {
     if (!(other instanceof Vector)) throw new TypeError('Argument must be a Vector');
 
-    const vec1Length = this.dimension;
-    const vec2Length = other.dimension;
+    if (this.dimension !== other.dimension) {
+      throw new Error('Vectors must have the same dimension');
+    }
 
-    if (vec1Length !== vec2Length) return false;
+    const length = this.dimension;
 
-    for (let current = 0; current < vec1Length; current += 1) {
-      const vec1Value = this[current];
-      const vec2Value = other[current];
-
-      if (vec1Value !== vec2Value) return false;
+    for (let current = 0; current < length; current += 1) {
+      if (this[current] !== other[current]) return false;
     }
 
     return true;
@@ -43,6 +41,9 @@ export class Vector extends Float64Array {
 
     if (this.dimension !== other.dimension) throw new Error('Vectors must have the same dimension');
 
+    // En álgebra lineal: 0 es dependiente lineal de cualquier vector (misma dimensión)
+    if (this.magnitude() === 0 || other.magnitude() === 0) return true;
+
     const length = this.dimension;
     let ratio = null;
 
@@ -50,30 +51,15 @@ export class Vector extends Float64Array {
       const a = this[current];
       const b = other[current];
 
-      if (a === 0 && b === 0) {
-        // ambos mantienen la proporción al ser cero
-        continue;
-      }
+      if (a === 0 && b === 0) continue;
 
       if (ratio === null) {
-
-        if (b === 0 || a === 0) {
-          // alguno es cero y el otro no, no son proporcionales
-          return false;
-        }
-
-        ratio = a / b; // descubrir la proporción
-
+        if (b === 0 || a === 0) return false;
+        ratio = a / b;
         continue;
       }
 
-      if (a !== (ratio * b)) {
-        // a representa el valor del primer vector en la dimensión actual
-        // b representa el valor del segundo vector en la dimensión actual
-        // ratio representa la proporción descubierta entre los puntos del primer y segundo vector
-        // (ratio * b) redimensiona b al tamaño esperado de a
-        return false;
-      }
+      if (a !== (ratio * b)) return false;
     }
 
     return true;
@@ -152,9 +138,7 @@ export class Vector extends Float64Array {
     const components = Array(length);
 
     for (let current = 0; current < length; current += 1) {
-      const vec1Value = this[current];
-      const vec2Value = other[current];
-      components[current] = vec1Value + vec2Value;
+      components[current] = this[current] + other[current];
     }
 
     return new Vector(...components);
@@ -169,9 +153,7 @@ export class Vector extends Float64Array {
     const components = Array(length);
 
     for (let current = 0; current < length; current += 1) {
-      const vec1Value = this[current];
-      const vec2Value = other[current];
-      components[current] = vec1Value - vec2Value;
+      components[current] = this[current] - other[current];
     }
 
     return new Vector(...components);
@@ -181,15 +163,13 @@ export class Vector extends Float64Array {
     if ('number' !== typeof scalar) throw new TypeError('Argument must be a number');
 
     const length = this.dimension;
-
-    let result = 0;
+    const components = Array(length);
 
     for (let current = 0; current < length; current += 1) {
-      const value = this[current];
-      result += value * scalar;
+      components[current] = this[current] * scalar;
     }
 
-    return result;
+    return new Vector(...components);
   }
 
   dot(other) {
@@ -201,9 +181,7 @@ export class Vector extends Float64Array {
     let result = 0;
 
     for (let current = 0; current < length; current += 1) {
-      const vec1Value = this[current];
-      const vec2Value = other[current];
-      result += vec1Value * vec2Value;
+      result += this[current] * other[current];
     }
 
     return result;
@@ -265,13 +243,19 @@ export class Vector extends Float64Array {
 
     if (this.dimension !== other.dimension) throw new Error('Vectors must have the same dimension');
 
-    const dotProduct = this.dot(other);
     const magnitudeA = this.magnitude();
     const magnitudeB = other.magnitude();
 
-    const cosTheta = dotProduct / (magnitudeA * magnitudeB);
+    if (magnitudeA === 0 || magnitudeB === 0) {
+      throw new Error('Angle is undefined for the zero vector');
+    }
 
-    const angle = Math.acos(cosTheta);
+    const cosTheta = this.dot(other) / (magnitudeA * magnitudeB);
+
+    // Evita NaN por redondeo fuera de [-1, 1]
+    const clamped = Math.min(1, Math.max(-1, cosTheta));
+
+    const angle = Math.acos(clamped);
 
     if (inDegrees) {
       return angle * (180 / Math.PI);
@@ -293,9 +277,9 @@ export class Vector extends Float64Array {
   hadamard(other) {
     if (!(other instanceof Vector)) throw new TypeError('Argument must be a Vector');
 
-    if (this.length !== other.length) throw new Error('Vectors must have the same dimension');
+    if (this.dimension !== other.dimension) throw new Error('Vectors must have the same dimension');
 
-    const length = this.length;
+    const length = this.dimension;
     const components = Array(length);
 
     for (let current = 0; current < length; current += 1) {
