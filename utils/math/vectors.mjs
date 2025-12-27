@@ -24,6 +24,12 @@ export class Parallelogram {
   area() {
     return this.vectorA.cross(this.vectorB).magnitude();
   }
+
+  perimeter() {
+    const sideA = this.vectorA.magnitude();
+    const sideB = this.vectorB.magnitude();
+    return 2 * (sideA + sideB);
+  }
 }
 
 /**
