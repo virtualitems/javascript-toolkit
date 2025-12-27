@@ -69,7 +69,7 @@ export class Vector extends Float64Array {
     return true;
   }
 
-  isPerpendicular(other) {
+  isOrthogonal(other) {
     if (!(other instanceof Vector)) throw new TypeError('Argument must be a Vector');
 
     if (this.dimension !== other.dimension) throw new Error('Vectors must have the same dimension');
