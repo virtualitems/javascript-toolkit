@@ -288,4 +288,41 @@ export class Vector extends Float64Array {
 
     return new Vector(...components);
   }
+
+  /**
+   * Rotates the vector in the plane defined by two axes.
+   * Uses Givens rotation matrix for n-dimensional rotation.
+   *
+   * @param {number} axisI - First axis index (0-based)
+   * @param {number} axisJ - Second axis index (0-based)
+   * @param {number} angleInRadians - The angle to rotate
+   * @returns {Vector} A new rotated Vector
+   */
+  rotate(axisI, axisJ, angleInRadians) {
+    if (typeof axisI !== 'number') throw new TypeError('axisI must be a number');
+    if (typeof axisJ !== 'number') throw new TypeError('axisJ must be a number');
+    if (typeof angleInRadians !== 'number') throw new TypeError('angleInRadians must be a number');
+
+    if (!Number.isInteger(axisI) || !Number.isInteger(axisJ)) {
+      throw new TypeError('Axis indices must be integers');
+    }
+
+    if (axisI < 0 || axisI >= this.dimension) throw new RangeError('axisI out of bounds');
+    if (axisJ < 0 || axisJ >= this.dimension) throw new RangeError('axisJ out of bounds');
+    if (axisI === axisJ) throw new Error('Rotation axes must be different');
+
+    const cos = Math.cos(angleInRadians);
+    const sin = Math.sin(angleInRadians);
+
+    const components = Array.from(this);
+
+    const vi = this[axisI];
+    const vj = this[axisJ];
+
+    // Givens rotation: only affects components at axisI and axisJ
+    components[axisI] = vi * cos - vj * sin;
+    components[axisJ] = vi * sin + vj * cos;
+
+    return new Vector(...components);
+  }
 }
