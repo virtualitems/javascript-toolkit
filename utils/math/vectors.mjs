@@ -197,10 +197,6 @@ export class Vector extends Float64Array {
     return difference.magnitude();
   }
 
-  parallelogram(other) {
-    return new Parallelogram(this, other);
-  }
-
   // ─────────────────────────────────────────────────────────────────────────────
   // Vectors
   // ─────────────────────────────────────────────────────────────────────────────
@@ -398,5 +394,13 @@ export class Vector extends Float64Array {
     if (denom === 0) throw new Error('Projection is undefined onto the zero vector');
 
     return other.scale(this.dot(other) / denom);
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // Shapes
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  parallelogram(other) {
+    return new Parallelogram(this, other);
   }
 }
