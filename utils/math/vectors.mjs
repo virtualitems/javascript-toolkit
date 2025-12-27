@@ -20,9 +20,9 @@ export class Vector extends Float64Array {
     return `Vector(${Array.from(this).join(', ')})`;
   }
 
-  clone() {
-    return new Vector(...this);
-  }
+  // ─────────────────────────────────────────────────────────────────────────────
+  // Primitives
+  // ─────────────────────────────────────────────────────────────────────────────
 
   isEqual(other) {
     if (!(other instanceof Vector)) throw new TypeError('Argument must be a Vector');
@@ -96,6 +96,86 @@ export class Vector extends Float64Array {
     return true;
   }
 
+  // ─────────────────────────────────────────────────────────────────────────────
+  // Scalars
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  scalarComponent(index) {
+    if (typeof index !== 'number') throw new TypeError('Index must be a number');
+
+    if (index < 0 || index >= this.dimension) throw new RangeError('Index out of bounds');
+
+    return this[index];
+  }
+
+  magnitude() {
+    return Math.sqrt(this.dot(this));
+  }
+
+  dot(other) {
+    if (!(other instanceof Vector)) throw new TypeError('Argument must be a Vector');
+
+    if (this.dimension !== other.dimension) throw new Error('Vectors must have the same dimension');
+
+    const length = this.dimension;
+    let result = 0;
+
+    for (let current = 0; current < length; current += 1) {
+      result += this[current] * other[current];
+    }
+
+    return result;
+  }
+
+  angleBetween(other, inDegrees = false) {
+    if (!(other instanceof Vector)) throw new TypeError('Argument must be a Vector');
+
+    if (this.dimension !== other.dimension) throw new Error('Vectors must have the same dimension');
+
+    const magnitudeA = this.magnitude();
+    const magnitudeB = other.magnitude();
+
+    if (magnitudeA === 0 || magnitudeB === 0) {
+      throw new Error('Angle is undefined for the zero vector');
+    }
+
+    const cosTheta = this.dot(other) / (magnitudeA * magnitudeB);
+
+    // Evita NaN por redondeo fuera de [-1, 1]
+    const clamped = Math.min(1, Math.max(-1, cosTheta));
+
+    const angle = Math.acos(clamped);
+
+    if (inDegrees) {
+      return angle * (180 / Math.PI);
+    }
+
+    return angle;
+  }
+
+  distanceTo(other) {
+    if (!(other instanceof Vector)) throw new TypeError('Argument must be a Vector');
+
+    if (this.dimension !== other.dimension) throw new Error('Vectors must have the same dimension');
+
+    const difference = this.sub(other);
+
+    return difference.magnitude();
+  }
+
+  parallelogramArea(other) {
+    const crossProduct = this.cross(other);
+    return crossProduct.magnitude();
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // Vectors
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  clone() {
+    return new Vector(...this);
+  }
+
   resize(newDimension) {
     if ('number' !== typeof newDimension) throw new TypeError('Dimension must be a number');
 
@@ -123,14 +203,6 @@ export class Vector extends Float64Array {
     components[index] = this[index];
 
     return new Vector(...components);
-  }
-
-  scalarComponent(index) {
-    if (typeof index !== 'number') throw new TypeError('Index must be a number');
-
-    if (index < 0 || index >= this.dimension) throw new RangeError('Index out of bounds');
-
-    return this[index];
   }
 
   add(other) {
@@ -176,21 +248,6 @@ export class Vector extends Float64Array {
     return new Vector(...components);
   }
 
-  dot(other) {
-    if (!(other instanceof Vector)) throw new TypeError('Argument must be a Vector');
-
-    if (this.dimension !== other.dimension) throw new Error('Vectors must have the same dimension');
-
-    const length = this.dimension;
-    let result = 0;
-
-    for (let current = 0; current < length; current += 1) {
-      result += this[current] * other[current];
-    }
-
-    return result;
-  }
-
   cross(other) {
     if (!(other instanceof Vector)) throw new TypeError('Argument must be a Vector');
 
@@ -209,10 +266,6 @@ export class Vector extends Float64Array {
     const k = x1 * y2 - x2 * y1;
 
     return new Vector(i, j, k);
-  }
-
-  magnitude() {
-    return Math.sqrt(this.dot(this));
   }
 
   /**
@@ -235,47 +288,6 @@ export class Vector extends Float64Array {
     }
 
     return new Vector(...components);
-  }
-
-  parallelogramArea(other) {
-    const crossProduct = this.cross(other);
-    return crossProduct.magnitude();
-  }
-
-  angleBetween(other, inDegrees = false) {
-    if (!(other instanceof Vector)) throw new TypeError('Argument must be a Vector');
-
-    if (this.dimension !== other.dimension) throw new Error('Vectors must have the same dimension');
-
-    const magnitudeA = this.magnitude();
-    const magnitudeB = other.magnitude();
-
-    if (magnitudeA === 0 || magnitudeB === 0) {
-      throw new Error('Angle is undefined for the zero vector');
-    }
-
-    const cosTheta = this.dot(other) / (magnitudeA * magnitudeB);
-
-    // Evita NaN por redondeo fuera de [-1, 1]
-    const clamped = Math.min(1, Math.max(-1, cosTheta));
-
-    const angle = Math.acos(clamped);
-
-    if (inDegrees) {
-      return angle * (180 / Math.PI);
-    }
-
-    return angle;
-  }
-
-  distanceTo(other) {
-    if (!(other instanceof Vector)) throw new TypeError('Argument must be a Vector');
-
-    if (this.dimension !== other.dimension) throw new Error('Vectors must have the same dimension');
-
-    const difference = this.sub(other);
-
-    return difference.magnitude();
   }
 
   hadamard(other) {
