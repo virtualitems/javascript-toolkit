@@ -19,8 +19,10 @@ export class Parallelogram {
 
     this.vectorA = vectorA;
     this.vectorB = vectorB;
+  }
 
-    this.area = vectorA.cross(vectorB).magnitude();
+  area() {
+    return this.vectorA.cross(this.vectorB).magnitude();
   }
 }
 
