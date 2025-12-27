@@ -1,4 +1,30 @@
 /**
+ * @description A class representing a parallelogram defined by two free vectors.
+ */
+export class Parallelogram {
+
+  /**
+   * Creates a new Parallelogram instance.
+   *
+   * @param {Vector} vectorA
+   * @param {Vector} vectorB
+   */
+  constructor(vectorA, vectorB) {
+    if (!(vectorA instanceof Vector)) throw new TypeError('vectorA must be a Vector');
+    if (!(vectorB instanceof Vector)) throw new TypeError('vectorB must be a Vector');
+
+    if (vectorA.dimension !== vectorB.dimension) {
+      throw new Error('Vectors must have the same dimension to define a parallelogram');
+    }
+
+    this.vectorA = vectorA;
+    this.vectorB = vectorB;
+
+    this.area = vectorA.cross(vectorB).magnitude();
+  }
+}
+
+/**
  * @description A class representing a mathematical vector with n dimensions.
  */
 export class Vector extends Float64Array {
@@ -163,9 +189,8 @@ export class Vector extends Float64Array {
     return difference.magnitude();
   }
 
-  parallelogramArea(other) {
-    const crossProduct = this.cross(other);
-    return crossProduct.magnitude();
+  parallelogram(other) {
+    return new Parallelogram(this, other);
   }
 
   // ─────────────────────────────────────────────────────────────────────────────
