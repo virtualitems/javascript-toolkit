@@ -1,5 +1,16 @@
 const html = `<h1>DOM Parser Example</h1>`;
 
+const sheet = new CSSStyleSheet();
+
+sheet.replace(`
+h1 {
+  font-family: sans-serif;
+  text-align: center;
+}
+`);
+
+document.adoptedStyleSheets.push(sheet);
+
 function handleClick() {
   const parser = new DOMParser();
 
