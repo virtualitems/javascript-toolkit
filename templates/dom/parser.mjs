@@ -5,7 +5,14 @@ function handleClick() {
 
   const incoming = parser.parseFromString(html, 'text/html');
 
-  document.documentElement.replaceChild(incoming.body, document.body);
+  if (document.startViewTransition === undefined) {
+    document.documentElement.replaceChild(incoming.body, document.body);
+    return;
+  }
+
+  document.startViewTransition(() => {
+    document.documentElement.replaceChild(incoming.body, document.body);
+  });
 }
 
 document.addEventListener('click', handleClick, { once: true });
