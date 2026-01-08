@@ -1,4 +1,4 @@
-const html = `<html><head></head><body><h1>DOM Parser Example</h1></body></html>`;
+const html = `<h1>DOM Parser Example</h1>`;
 
 function handleClick() {
   const parser = new DOMParser();
