@@ -1,22 +1,4 @@
 /**
- * Checks if a value is a primitive type.
- *
- * @param {unknown} value
- * @returns {boolean}
- */
-function isPrimitive(value) {
-  const type = typeof value;
-  return (
-    value === null ||
-    type === 'string' ||
-    type === 'number' ||
-    type === 'boolean' ||
-    type === 'bigint' ||
-    type === 'symbol'
-  );
-}
-
-/**
  * @typedef {null | boolean | number | bigint | string | symbol } Primitive
  */
 
@@ -35,6 +17,24 @@ function isPrimitive(value) {
 /**
  * @typedef {JsonObject | JsonArray} Json
  */
+
+/**
+ * Checks if a value is a primitive type.
+ *
+ * @param {unknown} value
+ * @returns {boolean}
+ */
+function isPrimitive(value) {
+  const type = typeof value;
+  return (
+    value === null ||
+    type === 'string' ||
+    type === 'number' ||
+    type === 'boolean' ||
+    type === 'bigint' ||
+    type === 'symbol'
+  );
+}
 
 /**
  * @param {Json} json
