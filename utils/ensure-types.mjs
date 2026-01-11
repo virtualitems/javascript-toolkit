@@ -10,7 +10,10 @@
  * e([], {}, []); // false
  *
  * @example
- * const result = e(1, '2', 3) ? 1 + '2' + 3 : 0;
+ * const a = 1;
+ * const b = '2';
+ * const c = 3;
+ * const result = e(a, b, c) ? a + b + c : 0;
  * console.log(result); // 0
  */
 export function e(...operators) {
