@@ -1,5 +1,5 @@
 /**
- * @typedef {null | boolean | number | bigint | string | symbol } Primitive
+ * @typedef {null | boolean | number | bigint | string | symbol} Primitive
  */
 
 /**
@@ -7,11 +7,11 @@
  */
 
 /**
- * @typedef {Array<Primitive | JsonBinary | JsonObject | JsonArray>} JsonArray
+ * @typedef {{[key: string]: Primitive | JsonBinary | JsonObject | JsonArray}} JsonObject
  */
 
 /**
- * @typedef {{[key: string]: Primitive | JsonBinary | JsonObject | JsonArray}} JsonObject
+ * @typedef {Array<Primitive | JsonBinary | JsonObject | JsonArray>} JsonArray
  */
 
 /**
@@ -68,7 +68,6 @@ export function encode(json) {
           path: `${path}[${i}]`
         });
       }
-      //console.debug('is array', current);
       continue;
     }
 
@@ -80,28 +79,24 @@ export function encode(json) {
           path: `${path}[${key}]`
         });
       }
-      //console.debug('is object', current);
       continue;
     }
 
     // Si es File
     if (current instanceof File) {
       formData.append(path, current, current.name);
-      //console.debug('is file', current);
       continue;
     }
 
     // Si es Blob
     if (current instanceof Blob) {
       formData.append(path, current);
-      //console.debug('is blob', current);
       continue;
     }
 
     // Si es un valor primitivo
     if (isPrimitive(current)) {
       formData.append(path, current);
-      //console.debug('is primitive', current);
       continue;
     }
 
