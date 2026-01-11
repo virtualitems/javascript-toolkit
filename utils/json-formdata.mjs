@@ -117,7 +117,7 @@ export function encode(json) {
  * @returns {Record<string, unknown>}
  */
 export function decode(data) {
-  const result = new Map();
+  const result = {};
 
   for (const key in data) {
     if (!Object.prototype.hasOwnProperty.call(data, key)) continue;
@@ -132,15 +132,15 @@ export function decode(data) {
     for (let i = 0; i < keyParts.length - 1; i++) {
       const part = keyParts[i];
 
-      if (!current.has(part)) {
-        current.set(part, new Map());
+      if (current[part] === undefined) {
+        current[part] = {};
       }
 
-      current = current.get(part);
+      current = current[part];
     }
 
     const lastPart = keyParts[keyParts.length - 1];
-    current.set(lastPart, value);
+    current[lastPart] = value;
   }
 
   return result;
