@@ -18,6 +18,13 @@
  *
  * @example
  * const a = 1;
+ * const b = 2;
+ * const c = 3;
+ * const result = e(a, b, c) ? a + b + c : 0;
+ * console.log(result); // 6
+ *
+ * @example
+ * const a = 1;
  * const b = '2';
  * const c = 3;
  * if (e(a, b, c) === false) throw new TypeError();
