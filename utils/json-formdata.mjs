@@ -1,7 +1,7 @@
 /**
  * Checks if a value is a primitive type.
  *
- * @param {*} value
+ * @param {unknown} value
  * @returns {boolean}
  */
 function isPrimitive(value) {
