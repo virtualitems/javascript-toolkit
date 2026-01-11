@@ -1,5 +1,5 @@
 /**
- *  Ensures that all provided operators are of the same type.
+ * Ensures that all provided operators are of the same type.
  *
  * @param  {...unknown} operators
  * @returns {boolean}
