@@ -78,6 +78,9 @@ export function cn(...args) {
  *
  * @param {Record<string, string>} classDict
  * @returns {string}
+ *
+ * @example
+ * module({ foo: 'foo_abc123', bar: 'bar_def456' });
  */
 export function module(classDict) {
   return Object.values(classDict).join(' ');
