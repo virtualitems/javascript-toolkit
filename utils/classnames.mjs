@@ -3,9 +3,9 @@
  * @param  {unknown[]} args - The class names to join.
  *
  * @example
- * classNames('foo', new Set(['bar']), undefined, { baz: true, qux: false }, [null, 'quux']);
+ * cn('foo', new Set(['bar']), undefined, { baz: true, qux: false }, [null, 'quux']);
  */
-export function classNames(...args) {
+export function cn(...args) {
   const classNames = new Set();
 
   const remaining = Array.from(args);
@@ -13,8 +13,8 @@ export function classNames(...args) {
   while(remaining.length) {
     const current = remaining.shift();
 
-    // skip null/undefined values
-    if (current === null || current === undefined) {
+    // skip null undefined NaN values
+    if (current === undefined || current === null || Object.is(current, NaN)) {
       continue;
     }
 
@@ -34,11 +34,9 @@ export function classNames(...args) {
       for (const key in current) {
         const value = current[key];
 
-        if ('string' !== typeof key) continue;
+        if (Boolean(value) === false) continue;
 
-        if (!value) continue;
-
-        const trimmed = key.trim();
+        const trimmed = String(key).trim();
 
         if (trimmed.length === 0) continue;
 
@@ -50,11 +48,10 @@ export function classNames(...args) {
     // is map
     if (current.constructor === Map) {
       for (const [key, value] of current) {
-        if ('string' !== typeof key) continue;
 
-        if (!value) continue;
+        if (Boolean(value) === false) continue;
 
-        const trimmed = key.trim();
+        const trimmed = String(key).trim();
 
         if (trimmed.length === 0) continue;
 
@@ -66,7 +63,7 @@ export function classNames(...args) {
 
     // is iterable
     if ('function' === typeof current[Symbol.iterator]) {
-      remaining.push(...current);
+      for (const item of current) remaining.push(item);
       continue;
     }
 
@@ -74,4 +71,14 @@ export function classNames(...args) {
   }
 
   return Array.from(classNames).join(' ');
+}
+
+/**
+ * Function to map class names using a CSS module dictionary.
+ *
+ * @param {Record<string, string>} classDict
+ * @returns {string}
+ */
+export function module(classDict) {
+  return Object.values(classDict).join(' ');
 }
