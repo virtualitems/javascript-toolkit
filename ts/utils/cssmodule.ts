@@ -18,7 +18,7 @@ export class CSSModule {
   }
 
   public join(...classNames: string[]): string {
-    const result: Set<string> = new Set<string>();
+    const result: Set<string> = new Set();
 
     for (const className of classNames) {
       if (className in this.classDict) {
@@ -32,13 +32,12 @@ export class CSSModule {
   }
 
   public get(...classNames: string[]): string {
-    const result: Set<string> = new Set<string>();
+    const result: Set<string> = new Set();
 
     for (const className of classNames) {
-      if (!(className in this.classDict)) {
-        throw new Error(`Class name "${className}" not found in CSS module.`);
+      if (className in this.classDict) {
+        result.add(this.classDict[className]);
       }
-      result.add(this.classDict[className]);
     }
 
     return Array.from(result).join(' ');
