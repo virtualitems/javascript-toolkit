@@ -10,7 +10,7 @@ export function cn(...args) {
 
   const remaining = Array.from(args);
 
-  while(remaining.length) {
+  while (remaining.length) {
     const current = remaining.shift();
 
     // skip null undefined NaN values
@@ -64,6 +64,20 @@ export function cn(...args) {
     // is iterable
     if ('function' === typeof current[Symbol.iterator]) {
       for (const item of current) remaining.push(item);
+      continue;
+    }
+
+    // is async iterable
+    if ('function' === typeof current[Symbol.asyncIterator]) {
+      const iter = current[Symbol.asyncIterator]();
+
+      const resolve = ({ value, done }) => {
+        remaining.push(value);
+        if (done === false) iter.next().then(resolve);
+      };
+
+      iter.next().then(resolve);
+
       continue;
     }
 
