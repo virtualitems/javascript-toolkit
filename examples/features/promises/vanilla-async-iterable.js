@@ -9,13 +9,11 @@ const iterable = {
   }
 };
 
-const iterator = iterable[Symbol.asyncIterator]();
+const iter = iterable[Symbol.asyncIterator]();
 
 function resolve({ value, done }) {
   if (value !== undefined) console.log(value);
-  if (done === false) resolve.iterator.next().then(resolve);
+  if (done === false) iter.next().then(resolve);
 }
 
-resolve.iterator = iterator;
-
-iterator.next().then(resolve);
+iter.next().then(resolve);
