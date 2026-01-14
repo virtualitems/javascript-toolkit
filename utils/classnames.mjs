@@ -71,22 +71,6 @@ export function cn(...args) {
       continue;
     }
 
-    // is async iterable
-    if ('function' === typeof current[Symbol.asyncIterator]) {
-      const iter = current[Symbol.asyncIterator]();
-
-      const resolve = ({ item, done }) => {
-        if (item !== undefined && item !== null && Object.is(item, NaN) === false) {
-          remaining.push(item);
-        }
-        if (done === false) iter.next().then(resolve);
-      };
-
-      iter.next().then(resolve);
-
-      continue;
-    }
-
     // otherwise, ignore
   }
 
