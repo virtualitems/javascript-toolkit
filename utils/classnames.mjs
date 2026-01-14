@@ -63,7 +63,11 @@ export function cn(...args) {
 
     // is iterable
     if ('function' === typeof current[Symbol.iterator]) {
-      for (const item of current) remaining.push(item);
+      for (const item of current) {
+        if (item !== undefined && item !== null && Object.is(item, NaN) === false) {
+          remaining.push(item);
+        }
+      }
       continue;
     }
 
@@ -71,8 +75,10 @@ export function cn(...args) {
     if ('function' === typeof current[Symbol.asyncIterator]) {
       const iter = current[Symbol.asyncIterator]();
 
-      const resolve = ({ value, done }) => {
-        remaining.push(value);
+      const resolve = ({ item, done }) => {
+        if (item !== undefined && item !== null && Object.is(item, NaN) === false) {
+          remaining.push(item);
+        }
         if (done === false) iter.next().then(resolve);
       };
 
