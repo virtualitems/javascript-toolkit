@@ -71,15 +71,42 @@ is.not.primitive = (value) => {
 is.array = Array.isArray;
 is.not.array = value => Array.isArray(value) === false;
 
+is.int8Array = value => value instanceof Int8Array;
+is.not.int8Array = value => (value instanceof Int8Array) === false;
+
+is.uint8Array = value => value instanceof Uint8Array;
+is.not.uint8Array = value => (value instanceof Uint8Array) === false;
+
+is.uint8ClampedArray = value => value instanceof Uint8ClampedArray;
+is.not.uint8ClampedArray = value => (value instanceof Uint8ClampedArray) === false;
+
+is.int16Array = value => value instanceof Int16Array;
+is.not.int16Array = value => (value instanceof Int16Array) === false;
+
+is.uint16Array = value => value instanceof Uint16Array;
+is.not.uint16Array = value => (value instanceof Uint16Array) === false;
+
+is.int32Array = value => value instanceof Int32Array;
+is.not.int32Array = value => (value instanceof Int32Array) === false;
+
+is.uint32Array = value => value instanceof Uint32Array;
+is.not.uint32Array = value => (value instanceof Uint32Array) === false;
+
+is.bigInt64Array = value => value instanceof BigInt64Array;
+is.not.bigInt64Array = value => (value instanceof BigInt64Array) === false;
+
+is.bigUint64Array = value => value instanceof BigUint64Array;
+is.not.bigUint64Array = value => (value instanceof BigUint64Array) === false;
+
+is.float32Array = value => value instanceof Float32Array;
+is.not.float32Array = value => (value instanceof Float32Array) === false;
+
+is.float64Array = value => value instanceof Float64Array;
+is.not.float64Array = value => (value instanceof Float64Array) === false;
+
 // ====================
 // Object
 // ====================
-
-is.object = value => (value !== null) && ('object' === typeof value);
-is.not.object = value => (value === null) || ('object' !== typeof value);
-
-is.plain = value => (value !== undefined) && (value !== null) && (value.constructor === Object);
-is.not.plain = value => (value === undefined) || (value === null) || (value.constructor !== Object);
 
 is.instanceOf = (constructor, value) => value instanceof constructor;
 is.not.instanceOf = (constructor, value) => (value instanceof constructor) === false;
@@ -87,8 +114,26 @@ is.not.instanceOf = (constructor, value) => (value instanceof constructor) === f
 is.builtBy = (constructor, value) => (value !== undefined) && (value !== null) && (value.constructor === constructor);
 is.not.builtBy = (constructor, value) => (value === undefined) || (value === null) || (value.constructor !== constructor);
 
-is.ref = (value, other) => Object.is(value, other);
-is.not.ref = (value, other) => Object.is(value, other) === false;
+is.object = value => (value !== null) && ('object' === typeof value);
+is.not.object = value => (value === null) || ('object' !== typeof value);
+
+is.plain = value => (value !== undefined) && (value !== null) && (value.constructor === Object);
+is.not.plain = value => (value === undefined) || (value === null) || (value.constructor !== Object);
+
+is.date = value => value instanceof Date;
+is.not.date = value => (value instanceof Date) === false;
+
+is.regExp = value => value instanceof RegExp;
+is.not.regExp = value => (value instanceof RegExp) === false;
+
+is.weakMap = value => value instanceof WeakMap;
+is.not.weakMap = value => (value instanceof WeakMap) === false;
+
+is.weakSet = value => value instanceof WeakSet;
+is.not.weakSet = value => (value instanceof WeakSet) === false;
+
+is.promise = value => value instanceof Promise;
+is.not.promise = value => (value instanceof Promise) === false;
 
 // ====================
 // Iterable
@@ -100,9 +145,56 @@ is.not.iterable = value => (value === null) || ('object' !== typeof value) || ('
 is.asyncIterable = value => (value !== null) && ('object' === typeof value) && ('function' === typeof value[Symbol.asyncIterator]);
 is.not.asyncIterable = value => (value === null) || ('object' !== typeof value) || ('function' !== typeof value[Symbol.asyncIterator]);
 
+is.map = value => value instanceof Map;
+is.not.map = value => (value instanceof Map) === false;
+
+is.set = value => value instanceof Set;
+is.not.set = value => (value instanceof Set) === false;
+
+// ====================
+// Buffer
+// ====================
+
+is.arrayBuffer = value => value instanceof ArrayBuffer;
+is.not.arrayBuffer = value => (value instanceof ArrayBuffer) === false;
+
+is.sharedArrayBuffer = value => value instanceof SharedArrayBuffer;
+is.not.sharedArrayBuffer = value => (value instanceof SharedArrayBuffer) === false;
+
+is.dataView = value => value instanceof DataView;
+is.not.dataView = value => (value instanceof DataView) === false;
+
 // ====================
 // ES Module
 // ====================
 
 is.esModule = value => (value instanceof Object) && (value.__esModule === true);
 is.not.esModule = value => ((value instanceof Object) === false) || (value.__esModule !== true);
+
+// ====================
+// Reference
+// ====================
+
+is.ref = (value, other) => Object.is(value, other);
+is.not.ref = (value, other) => Object.is(value, other) === false;
+
+is.weakRef = (value) => value instanceof WeakRef;
+is.not.weakRef = (value) => (value instanceof WeakRef) === false;
+
+is.global = (value) => globalThis[value] !== undefined;
+is.not.global = (value) => globalThis[value] === undefined;
+
+// ====================
+// Error
+// ====================
+
+is.error = value => value instanceof Error;
+is.not.error = value => (value instanceof Error) === false;
+
+is.AggregateError = (value) => value?.constructor === AggregateError;
+is.EvalError = (value) => value?.constructor === EvalError;
+is.RangeError = (value) => value?.constructor === RangeError;
+is.ReferenceError = (value) => value?.constructor === ReferenceError;
+is.SyntaxError = (value) => value?.constructor === SyntaxError;
+is.TypeError = (value) => value?.constructor === TypeError;
+is.URIError = (value) => value?.constructor === URIError;
