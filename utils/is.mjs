@@ -191,10 +191,10 @@ is.not.global = (value) => globalThis[value] === undefined;
 is.error = value => value instanceof Error;
 is.not.error = value => (value instanceof Error) === false;
 
-is.AggregateError = (value) => value?.constructor === AggregateError;
-is.EvalError = (value) => value?.constructor === EvalError;
-is.RangeError = (value) => value?.constructor === RangeError;
-is.ReferenceError = (value) => value?.constructor === ReferenceError;
-is.SyntaxError = (value) => value?.constructor === SyntaxError;
-is.TypeError = (value) => value?.constructor === TypeError;
-is.URIError = (value) => value?.constructor === URIError;
+is.aggregateError = (value) => value?.constructor === AggregateError;
+is.evalError = (value) => value?.constructor === EvalError;
+is.rangeError = (value) => value?.constructor === RangeError;
+is.referenceError = (value) => value?.constructor === ReferenceError;
+is.syntaxError = (value) => value?.constructor === SyntaxError;
+is.typeError = (value) => value?.constructor === TypeError;
+is.uriError = (value) => value?.constructor === URIError;
