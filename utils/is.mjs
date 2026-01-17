@@ -198,3 +198,95 @@ is.referenceError = (value) => value?.constructor === ReferenceError;
 is.syntaxError = (value) => value?.constructor === SyntaxError;
 is.typeError = (value) => value?.constructor === TypeError;
 is.uriError = (value) => value?.constructor === URIError;
+
+// ====================
+// Grouping
+// ====================
+
+export function allAre(proto, ...objects) {
+  if (proto === undefined) {
+    return objects.every(obj => obj === undefined);
+  }
+
+  if (proto === null) {
+    return objects.every(obj => obj === null);
+  }
+
+  if (Object.is(proto, NaN)) {
+    return objects.every(obj => Object.is(obj, NaN));
+  }
+
+  return objects.every(obj =>
+    (obj === undefined || obj === null)
+      ? false
+      : obj.constructor === proto
+  );
+}
+
+/**
+ * Ensures that all provided operators are of the same type.
+ *
+ * @param  {...unknown} operators
+ * @returns {boolean}
+ *
+ * @example
+ * ensure(1, 2, 3); // true
+ * ensure('a', 'b', 'c'); // true
+ * ensure([], {}, []); // false
+ *
+ * @example
+ * const a = 1;
+ * const b = '2';
+ * const c = 3;
+ * const result = ensure(a, b, c) ? a + b + c : 0;
+ * console.log(result); // 0
+ *
+ * @example
+ * const a = 1;
+ * const b = 2;
+ * const c = 3;
+ * const result = ensure(a, b, c) ? a + b + c : 0;
+ * console.log(result); // 6
+ *
+ * @example
+ * const a = 1;
+ * const b = '2';
+ * const c = 3;
+ * if (ensure(a, b, c) === false) throw new TypeError();
+ */
+export function ensure(...values) {
+
+  if (values.length < 2) {
+    throw new Error('At least two values are required');
+  }
+
+  const length = values.length;
+  const firstElement = values[0];
+
+  if (firstElement === undefined) {
+    for (let i = 1; i < length; i++)
+      if (values[i] !== undefined)
+        return false;
+    return true;
+  }
+
+  if (firstElement === null) {
+    for (let i = 1; i < length; i++)
+      if (values[i] !== null)
+        return false;
+    return true;
+  }
+
+  if (Object.is(firstElement, NaN)) {
+    for (let i = 1; i < length; i++)
+      if (Object.is(values[i], NaN) === false)
+        return false;
+    return true;
+  }
+
+  for (let i = 1; i < length; i++)
+    if (values[i]?.constructor !== firstElement.constructor)
+      return false;
+
+  return true;
+};
