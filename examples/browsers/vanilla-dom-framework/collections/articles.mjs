@@ -16,11 +16,13 @@ export class Articles {
 
     for (const article of articles) {
       article.addEventListener('click', () => {
-        const event = new CustomEvent(events.deleteArticle, {
-          detail: article
-        })
-        DeleteArticleSubject.getInstance().dispatchEvent(event)
+        const payload = { detail: article }
+        const event = new CustomEvent(events.deleteArticle, payload)
+        const subject = DeleteArticleSubject.getInstance()
+        subject.dispatchEvent(event)
       })
+
+      article.style.cursor = 'pointer'
     }
   }
 }
