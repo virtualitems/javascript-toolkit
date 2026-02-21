@@ -5,7 +5,9 @@ export class ArticleTemplate {
     return document.getElementById(this.#id)
   }
 
-  static clone() {
-    return this.element().content.cloneNode(true)
+  static clone(text) {
+    const fragment = this.element().content.cloneNode(true)
+    fragment.querySelector('[data-text]').textContent = text
+    return fragment
   }
 }
