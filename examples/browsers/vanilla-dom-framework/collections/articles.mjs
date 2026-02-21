@@ -1,3 +1,9 @@
+import { DeleteArticleSubject, events } from '../subjects/delete-article.mjs'
+
+DeleteArticleSubject.getInstance().addEventListener(events.deleteArticle, (event) => {
+  if (event.detail instanceof HTMLElement) event.detail.remove()
+})
+
 export class Articles {
   static #query = 'article'
 
@@ -10,7 +16,10 @@ export class Articles {
 
     for (const article of articles) {
       article.addEventListener('click', () => {
-        article.remove()
+        const event = new CustomEvent(events.deleteArticle, {
+          detail: article
+        })
+        DeleteArticleSubject.getInstance().dispatchEvent(event)
       })
     }
   }
