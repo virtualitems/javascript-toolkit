@@ -333,8 +333,6 @@ export function time(element) {
 
   if (element.value === '') return null
 
-  console.log(element.value)
-
   const [hours, minutes] = element.value.split(':').map(Number)
 
   return { hours, minutes }
