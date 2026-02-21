@@ -1,10 +1,11 @@
 {
-  "arrowParens": "avoid",
+  "arrowParens": "always",
+  "bracketSameLine": false,
   "bracketSpacing": true,
   "editor.formatOnSave": true,
-  "endOfLine": "auto",
+  "endOfLine": "lf",
   "printWidth": 90,
+  "semi": false,
   "singleQuote": true,
-  "trailingComma": "all",
-  "semi": true
+  "trailingComma": "none"
 }
