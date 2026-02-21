@@ -278,5 +278,25 @@ export function week(element) {
 
   const [year, week] = element.value.split('-W').map(Number)
 
-  return { year, week }
+  // ISO 8601: The first week of the year is the one that contains the first Thursday of the year (January 4th).
+  const jan4 = new Date(Date.UTC(year, 0, 4))
+  const jan4Dow = (jan4.getUTCDay() + 6) % 7 // 0=Lun ... 6=Dom
+  const week1Mon = new Date(jan4)
+  week1Mon.setUTCDate(jan4.getUTCDate() - jan4Dow)
+
+  const start = new Date(week1Mon)
+  start.setUTCDate(week1Mon.getUTCDate() + (week - 1) * 7)
+
+  const end = new Date(start)
+  end.setUTCDate(start.getUTCDate() + 6)
+
+  return {
+    week,
+    startDay: start.getUTCDate(),
+    startMonth: start.getUTCMonth() + 1,
+    startYear: start.getUTCFullYear(),
+    endDay: end.getUTCDate(),
+    endMonth: end.getUTCMonth() + 1,
+    endYear: end.getUTCFullYear()
+  }
 }
