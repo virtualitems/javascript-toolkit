@@ -1,9 +1,5 @@
 import { DeleteArticleSubject, events } from '../subjects/delete-article.mjs'
 
-DeleteArticleSubject.getInstance().addEventListener(events.deleteArticle, (event) => {
-  if (event.detail instanceof HTMLElement) event.detail.remove()
-})
-
 export class Articles {
   static #query = 'article'
 
