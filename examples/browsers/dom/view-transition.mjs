@@ -1,8 +1,10 @@
 const ClickHandler = {
   handleEvent() {
     document.startViewTransition(() => {
-      const heading = document.body.querySelector('h1');
-      heading.className = (heading.classList.contains('left')) ? 'right' : 'left';
+      window.requestAnimationFrame(() => {
+        const heading = document.body.querySelector('h1');
+        heading.className = (heading.classList.contains('left')) ? 'right' : 'left';
+      });
     });
   }
 };
