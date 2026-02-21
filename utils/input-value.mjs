@@ -386,11 +386,8 @@ export function week(element) {
 
   return {
     week,
-    startDay: start.getUTCDate(),
-    startMonth: start.getUTCMonth() + 1,
-    startYear: start.getUTCFullYear(),
-    endDay: end.getUTCDate(),
-    endMonth: end.getUTCMonth() + 1,
-    endYear: end.getUTCFullYear()
+    year,
+    startDate: start,
+    endDate: end,
   }
 }
