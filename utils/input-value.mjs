@@ -29,16 +29,6 @@ const tagNames = {
   textarea: 'TEXTAREA'
 }
 
-const urlPattern = String.raw`
-  ^(https?):\/\/
-  (?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+
-  [a-z]{2,63}
-  (?::\d{2,5})?
-  (?:[\/?#][^\s]*)?
-`
-
-const urlRegExp = new RegExp(urlPattern, 'i')
-
 function validate(element, expectedType) {
   if (element.tagName !== tagNames.input || element.type !== expectedType) {
     throw new Error(`Element must be an input of type ${expectedType}`)
@@ -266,9 +256,11 @@ export function time(element) {
 export function url(element) {
   validate(element, types.url)
 
-  if (urlRegExp.test(element.value) === false) return null
-
-  return new URL(element.value)
+  try {
+    return new URL(element.value)
+  } catch {
+    return null
+  }
 }
 
 export function week(element) {
