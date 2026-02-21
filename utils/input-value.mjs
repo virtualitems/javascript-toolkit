@@ -29,12 +29,23 @@ const tagNames = {
   textarea: 'TEXTAREA'
 }
 
+/**
+ * Validates that the given element is an `<input>` of the expected type.
+ * @param {HTMLInputElement} element - The DOM element to validate.
+ * @param {string} expectedType - The expected value of `element.type`.
+ * @throws {Error} If the element is not an input or its type does not match.
+ */
 function validate(element, expectedType) {
   if (element.tagName !== tagNames.input || element.type !== expectedType) {
     throw new Error(`Element must be an input of type ${expectedType}`)
   }
 }
 
+/**
+ * Converts an ArrayBuffer to a lowercase hexadecimal string.
+ * @param {ArrayBuffer} buffer - The binary data to encode.
+ * @returns {string} Hexadecimal string representation of the buffer.
+ */
 function toHex(buffer) {
   const bytes = new Uint8Array(buffer)
   let out = ''
@@ -42,6 +53,11 @@ function toHex(buffer) {
   return out
 }
 
+/**
+ * Converts an ArrayBuffer to a Base64-encoded string.
+ * @param {ArrayBuffer} buffer - The binary data to encode.
+ * @returns {string} Base64 string representation of the buffer.
+ */
 function toBase64(buffer) {
   const bytes = new Uint8Array(buffer)
   let binary = ''
@@ -49,6 +65,12 @@ function toBase64(buffer) {
   return btoa(binary)
 }
 
+/**
+ * Reads the checked state of a checkbox input.
+ * Returns `null` if the checkbox is in an indeterminate state.
+ * @param {HTMLInputElement} element - A checkbox input element.
+ * @returns {boolean | null} `true` if checked, `false` if unchecked, `null` if indeterminate.
+ */
 export function checkbox(element) {
   validate(element, types.checkbox)
 
@@ -57,6 +79,12 @@ export function checkbox(element) {
   return element.checked
 }
 
+/**
+ * Reads the value of a color input and returns it in RGB, HSL, and hex formats.
+ * Returns `null` if the value is not a valid hex color.
+ * @param {HTMLInputElement} element - A color input element.
+ * @returns {{ rgb: { r: number, g: number, b: number }, hsl: { h: number, s: number, l: number }, hex: string } | null}
+ */
 export function color(element) {
   validate(element, types.color)
 
@@ -113,18 +141,36 @@ export function color(element) {
   }
 }
 
+/**
+ * Reads the value of a date input as a `Date` object (UTC midnight).
+ * Returns `null` if the input is empty.
+ * @param {HTMLInputElement} element - A date input element.
+ * @returns {Date | null} The selected date, or `null` if empty.
+ */
 export function date(element) {
   validate(element, types.date)
 
   return element.valueAsDate
 }
 
+/**
+ * Reads the value of a datetime-local input as a `Date` object.
+ * Returns `null` if the input is empty.
+ * @param {HTMLInputElement} element - A datetime-local input element.
+ * @returns {Date | null} The selected date and time, or `null` if empty.
+ */
 export function datetime(element) {
   validate(element, types.datetime)
 
   return element.value === '' ? null : new Date(element.value)
 }
 
+/**
+ * Reads the value of an email input and splits it into local and domain parts.
+ * Returns `null` if the value is not a valid email address.
+ * @param {HTMLInputElement} element - An email input element.
+ * @returns {{ local: string, domain: string } | null} The parsed email parts, or `null` if invalid.
+ */
 export function email(element) {
   validate(element, types.email)
 
@@ -139,12 +185,23 @@ export function email(element) {
   return { local, domain }
 }
 
+/**
+ * Reads the selected files from a file input as an array of `File` objects.
+ * @param {HTMLInputElement} element - A file input element.
+ * @returns {File[]} Array of selected files (may be empty if no files are selected).
+ */
 export function file(element) {
   validate(element, types.file)
 
   return Array.from(element.files)
 }
 
+/**
+ * Reads the value of a month input and returns it as year and month numbers.
+ * Returns `null` if the input is empty.
+ * @param {HTMLInputElement} element - A month input element.
+ * @returns {{ year: number, month: number } | null} The selected year and month (1–12), or `null` if empty.
+ */
 export function month(element) {
   validate(element, types.month)
 
@@ -155,6 +212,12 @@ export function month(element) {
   return { year, month }
 }
 
+/**
+ * Reads the value of a number input as a numeric value.
+ * Returns `null` if the input is empty.
+ * @param {HTMLInputElement} element - A number input element.
+ * @returns {number | null} The numeric value, or `null` if empty.
+ */
 export function number(element) {
   validate(element, types.number)
 
@@ -162,20 +225,26 @@ export function number(element) {
 }
 
 /**
- *
- * @param {HTMLInputElement} element
- * @param {"SHA-256" | "SHA-384" | "SHA-512"} algorithm
- * @param {"hex" | "base64"} encoding
- * @returns {Promise<{ original: string, hash: string }>}
+ * Reads the value of a password input and optionally returns a hashed version of it.
+ * If no algorithm or encoding is provided, returns the plain-text value with a `null` hash.
+ * @param {HTMLInputElement} element - A password input element.
+ * @param {Object} [options={}] - Hashing options.
+ * @param {"SHA-256" | "SHA-384" | "SHA-512"} [options.algorithm] - The hashing algorithm to use.
+ * @param {"hex" | "base64"} [options.encoding] - The output encoding for the hash.
+ * @returns {Promise<{ value: string, hash: string | null }>} The original value and its hash (or `null` if no algorithm was specified).
  */
 export async function password(element, { algorithm, encoding } = {}) {
   validate(element, types.password)
+
+  const { value } = element
+
+  if (value.trim() === '') return null
 
   const hasAlgorithm = typeof algorithm === 'string'
   const hasEncoding = typeof encoding === 'string'
 
   if (hasAlgorithm === false && hasEncoding === false) {
-    return { original: element.value, hash: null }
+    return { value: element.value, hash: null }
   }
 
   if (['SHA-256', 'SHA-384', 'SHA-512'].includes(algorithm) === false) {
@@ -186,24 +255,35 @@ export async function password(element, { algorithm, encoding } = {}) {
     throw new Error('Unsupported encoding. Use "hex" or "base64".')
   }
 
-  const data = new TextEncoder().encode(original)
+  const data = new TextEncoder().encode(value)
   const digest = await crypto.subtle.digest(algorithm, data)
 
   if (encoding === 'hex') {
-    return { original, hash: toHex(digest) }
+    return { value, hash: toHex(digest) }
   }
 
   if (encoding === 'base64') {
-    return { original, hash: toBase64(digest) }
+    return { value, hash: toBase64(digest) }
   }
 }
 
+/**
+ * Reads the value of a radio input if it is selected.
+ * Returns `null` if the radio button is not checked.
+ * @param {HTMLInputElement} element - A radio input element.
+ * @returns {string | null} The value of the radio button if checked, or `null` otherwise.
+ */
 export function radio(element) {
   validate(element, types.radio)
 
   return element.checked ? element.value : null
 }
 
+/**
+ * Reads the value of a range input as a numeric value.
+ * @param {HTMLInputElement} element - A range input element.
+ * @returns {number} The current numeric value of the slider.
+ */
 export function range(element) {
   validate(element, types.range)
 
@@ -211,13 +291,14 @@ export function range(element) {
 }
 
 /**
- * @param {HTMLInputElement} element
- * @param {Object} options
- * @param {boolean} options.trim
- * @param {Object} options.regex
- * @param {RegExp} options.regex.cleaner
- * @param {RegExp} options.regex.splitter
- * @returns
+ * Reads the value of a text input, with optional trimming and regex-based processing.
+ * @param {HTMLInputElement} element - A text input element.
+ * @param {Object} [options={}] - Processing options.
+ * @param {boolean} [options.trim] - Whether to trim leading and trailing whitespace.
+ * @param {Object} [options.regex] - Regex options for cleaning and splitting the value.
+ * @param {RegExp} [options.regex.cleaner] - A regex used to remove characters from the value.
+ * @param {RegExp} [options.regex.splitter] - A regex used to split the value into parts.
+ * @returns {{ value: string, parts: RegExpMatchArray | null }} The processed value and any matched parts.
  */
 export function text(element, options = {}) {
   validate(element, types.text)
@@ -241,6 +322,12 @@ export function text(element, options = {}) {
   return { value, parts }
 }
 
+/**
+ * Reads the value of a time input and returns it as hours and minutes.
+ * Returns `null` if the input is empty.
+ * @param {HTMLInputElement} element - A time input element.
+ * @returns {{ hours: number, minutes: number } | null} The selected time, or `null` if empty.
+ */
 export function time(element) {
   validate(element, types.time)
 
@@ -253,6 +340,12 @@ export function time(element) {
   return { hours, minutes }
 }
 
+/**
+ * Reads the value of a URL input and returns it as a `URL` object.
+ * Returns `null` if the value is not a valid URL.
+ * @param {HTMLInputElement} element - A URL input element.
+ * @returns {URL | null} The parsed URL, or `null` if the value is invalid.
+ */
 export function url(element) {
   validate(element, types.url)
 
@@ -263,6 +356,17 @@ export function url(element) {
   }
 }
 
+/**
+ * Reads the value of a week input and returns the ISO 8601 week number along with the
+ * start and end dates (Monday–Sunday) of that week.
+ * Returns `null` if the input is empty.
+ * @param {HTMLInputElement} element - A week input element.
+ * @returns {{
+ *   week: number,
+ *   startDay: number, startMonth: number, startYear: number,
+ *   endDay: number, endMonth: number, endYear: number
+ * } | null} The week details, or `null` if empty.
+ */
 export function week(element) {
   validate(element, types.week)
 
