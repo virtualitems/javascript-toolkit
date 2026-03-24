@@ -4,7 +4,7 @@
  * @class
  * @extends {Error}
  */
-class HttpError extends Error {
+export class HttpError extends Error {
 
   /**
    * A frozen object containing standard HTTP status codes and their corresponding messages.
@@ -62,8 +62,8 @@ class HttpError extends Error {
    * @param {number} code - The HTTP status code.
    * @param {string} [message] - Fallback message if the status code is not recognized.
    */
-  constructor(code, message='Unknown Error') {
-    super(HttpError.messages[code] ?? message);
+  constructor(code, message = undefined) {
+    super(message ?? HttpError.messages[code]);
     this.code = code;
   }
 
