@@ -167,7 +167,7 @@ export class Money {
    * @returns {boolean}
    */
   equals(other) {
-    if (!(other instanceof Money)) {
+    if ((other instanceof Money) === false) {
       return false
     }
 
@@ -209,7 +209,7 @@ export class Money {
    * @param {Money} other - Money instance to compare
    */
   #assertCompatible(other) {
-    if (!(other instanceof Money)) {
+    if ((other instanceof Money) === false) {
       throw new TypeError('Expected Money instance.')
     }
 
