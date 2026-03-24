@@ -23,7 +23,7 @@ export class Money {
    * @param {string} currencyCode - ISO currency code (e.g., 'USD', 'EUR')
    */
   constructor(amount, decimalPlaces, currencyCode) {
-    if (typeof amount !== 'bigint') {
+    if ('bigint' !== typeof amount) {
       throw new TypeError('Amount must be a bigint.')
     }
 
@@ -31,7 +31,7 @@ export class Money {
       throw new RangeError('Decimal places must be a non-negative integer.')
     }
 
-    if (typeof currencyCode !== 'string' || currencyCode.trim() === '') {
+    if ('string' !== typeof currencyCode || currencyCode.trim() === '') {
       throw new TypeError('Currency code must be a non-empty string.')
     }
 
@@ -154,7 +154,7 @@ export class Money {
    * @returns {Money} New Money instance with product
    */
   mul(multiplier) {
-    if (typeof multiplier !== 'bigint') {
+    if ('bigint' !== typeof multiplier) {
       throw new Error('Multiplier must be a bigint.')
     }
 
@@ -234,7 +234,7 @@ export class Money {
    * @returns {Money} New Money instance
    */
   static fromDecimalString(value, decimalPlaces, currencyCode) {
-    if (typeof value !== 'string') {
+    if ('string' !== typeof value) {
       throw new Error('Value must be a string.')
     }
 
@@ -242,7 +242,7 @@ export class Money {
       throw new Error('Decimal places must be a non-negative integer.')
     }
 
-    if (typeof currencyCode !== 'string' || currencyCode.trim() === '') {
+    if ('string' !== typeof currencyCode || currencyCode.trim() === '') {
       throw new Error('Currency code must be a non-empty string.')
     }
 
