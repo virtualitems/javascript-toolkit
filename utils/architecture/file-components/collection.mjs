@@ -1,3 +1,3 @@
-const root = document.querySelectorAll('.collection') // unique query
+const nodes = document.querySelectorAll('.nodes') // unique query
 
-export default root // default export
+export default nodes // default export

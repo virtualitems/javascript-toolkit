@@ -1,3 +1,3 @@
-const root = document.querySelector('#root') // unique query
+const node = document.querySelector('.node') // unique query
 
-export default root // default export
+export default node // default export
