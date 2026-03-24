@@ -5,7 +5,7 @@ export function clone() {
     throw new TypeError('Expected a <template> element')
   }
 
-  return node.content.cloneNode(true) // deep clone
+  return node.content.cloneNode(true)
 }
 
 export default node // default export
