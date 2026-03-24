@@ -5,7 +5,7 @@
  * @param {Number} delay
  * @returns {Function}
  */
-function debounce(fn, delay) {
+export function debounce(fn, delay) {
 
   let timeout = null;
   let callback = null;
