@@ -1,3 +1,1 @@
-export class GenericSubject extends EventTarget {
-  //
-}
+export default new EventTarget()
