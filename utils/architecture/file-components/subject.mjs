@@ -1,1 +1,3 @@
-export default new EventTarget()
+export const subject = new EventTarget()
+
+export const eventName = 'customEvent'
