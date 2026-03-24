@@ -94,7 +94,7 @@ export class Money {
 
     const installments = []
 
-    for (let i = 0; i < numberOfInstallments; i++) {
+    for (let i = 0; i < numberOfInstallments; i += 1) {
       const partial = BigInt(i) < remainder ? baseAmount + 1n : baseAmount
       const amount = isNegative ? -partial : partial
       installments.push(new Money(amount, this.#decimalPlaces, this.#currencyCode))
