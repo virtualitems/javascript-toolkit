@@ -1,11 +1,25 @@
-const node = document.querySelector('.template') // unique query
+let node = new WeakRef(null)
+
+export function get() {
+  const ref = node.deref()
+  let el = null
+
+  if (ref instanceof HTMLTemplateElement === false) {
+    el = document.querySelector('.template') // unique query
+    node = new WeakRef(el) // unique query
+  }
+
+  return el
+}
 
 export function clone() {
-  if (node instanceof HTMLTemplateElement === false) {
+  const template = get()
+
+  if (template instanceof HTMLTemplateElement === false) {
     throw new TypeError('Expected a <template> element')
   }
 
-  return node.content.cloneNode(true)
+  return template.content.cloneNode(true)
 }
 
 export default node // default export
