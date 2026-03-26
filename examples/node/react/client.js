@@ -1,25 +1,25 @@
-import { createElement, useState, useEffect } from 'https://esm.sh/react@19?dev';
-import { hydrateRoot } from 'https://esm.sh/react-dom@19/client?dev';
+import { createElement, useState, useEffect } from 'https://esm.sh/react@19?dev'
+import { hydrateRoot } from 'https://esm.sh/react-dom@19/client?dev'
 
 /** @type {{ name: string, email: string }[]} */
-const contacts = JSON.parse(document.getElementById('json-contacts').textContent);
+const contacts = JSON.parse(document.getElementById('json-contacts').textContent)
 
-const rootElement = document.getElementById('root');
+const rootElement = document.getElementById('root')
 
-hydrateRoot(rootElement, createElement(Table, { contacts }));
+hydrateRoot(rootElement, createElement(Table, { contacts }))
 
 function Table(props) {
-  const [contacts, setContacts] = useState(props.contacts);
+  const [contacts, setContacts] = useState(props.contacts)
 
   return createElement(
     'table',
     {
-      onClick: () => setContacts(prev => prev.slice().reverse()),
+      onClick: () => setContacts((prev) => prev.slice().reverse()),
       style: {
         borderCollapse: 'collapse',
         width: '100%',
-        cursor: 'pointer',
-      },
+        cursor: 'pointer'
+      }
     },
     createElement(
       'thead',
@@ -28,20 +28,20 @@ function Table(props) {
         'tr',
         null,
         createElement('th', null, 'Nombre'),
-        createElement('th', null, 'Email'),
-      ),
+        createElement('th', null, 'Email')
+      )
     ),
     createElement(
       'tbody',
       null,
-      contacts.map(contact =>
+      contacts.map((contact) =>
         createElement(
           'tr',
           { key: contact.email },
           createElement('td', null, contact.name),
-          createElement('td', null, contact.email),
-        ),
-      ),
-    ),
-  );
+          createElement('td', null, contact.email)
+        )
+      )
+    )
+  )
 }
