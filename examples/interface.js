@@ -3,25 +3,23 @@
 
 // definition:
 function isDoable(obj) {
-  return obj && typeof obj.do === 'function';
-};
+  return obj && typeof obj.do === 'function'
+}
 
 class Model {
   constructor(id) {
-    this.id = id;
+    this.id = id
   }
   do() {
-    console.log('do something');
+    console.log('do something')
   }
-};
+}
 
 // usage:
-const obj = new Model(1);
+const obj = new Model(1)
 
 if (isDoable(obj)) {
-  obj.do();
-
+  obj.do()
 } else {
-  console.error('not doable');
-
+  console.error('not doable')
 }

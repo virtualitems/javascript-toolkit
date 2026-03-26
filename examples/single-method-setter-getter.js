@@ -8,17 +8,14 @@
  *
  */
 class Content {
-
   constructor(value) {
-    this._value = value ?? null;
+    this._value = value ?? null
   }
 
   value(val) {
     if (val === undefined) {
-      return this._value;
+      return this._value
     }
-    this._value = val;
+    this._value = val
   }
-
-
 }

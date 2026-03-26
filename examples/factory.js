@@ -13,14 +13,13 @@
  * @param {Object} initial The existing object
  * @returns {Object} The resulting object
  */
-const factory = function(initial) {
-
+const factory = function (initial) {
   // Create or get the object
-  const object = (initial === undefined || initial === null) ? {} : initial;
+  const object = initial === undefined || initial === null ? {} : initial
 
   // Initialize the object
-  object.by = 'factory';
+  object.by = 'factory'
 
   // Return the new object
-  return object;
-};
+  return object
+}
