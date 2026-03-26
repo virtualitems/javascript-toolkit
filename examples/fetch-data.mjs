@@ -69,25 +69,7 @@ class Aggregate {
   }
 }
 
-/**
- * @param {RequestInfo} target
- * @param {RequestInit?} options
- */
-async function fetchUsers(target, options) {
-  // request phase
-  const response = await fetch(target, options)
-  if (response.ok === false) throw new Error(response.statusText)
-
-  // decode phase
-  const json = await response.json()
-  if (Array.isArray(json) === false) throw new Error('Expected data to be an array')
-
-  // transform phase
-  const users = json.map(Aggregate.createUser)
-  return users
-}
-
-async function main() {
+async function getUsers() {
   // prepare phase
   const target = new URL('https://jsonplaceholder.typicode.com/users/')
 
@@ -102,12 +84,19 @@ async function main() {
     })
   }
 
-  try {
-    const users = await fetchUsers(target, options)
-    console.log(users[0])
-  } catch (error) {
-    console.error(error)
-  }
+  // request phase
+  const response = await fetch(target, options)
+  if (response.ok === false) throw new Error(response.statusText)
+
+  // decode phase
+  const json = await response.json()
+  if (Array.isArray(json) === false) throw new Error('Expected data to be an array')
+
+  // transform phase
+  const users = json.map(Aggregate.createUser)
+  return users
 }
 
-main()
+getUsers()
+  .then((users) => console.log(users[0]))
+  .catch(console.error)
