@@ -1,25 +1,12 @@
 /**
- * Capa de dominio.
+ * Operación de dominio para dividir dos números.
  *
- * Responsabilidad:
- * - Contener la regla de negocio de la división.
- * - Proteger el contrato de la operación.
+ * Valida que ambos argumentos sean números finitos y que el divisor
+ * sea distinto de 0.
  *
- * Esta función no sabe nada de:
- * - objetos de entrada;
- * - consola;
- * - interfaz;
- * - flujo de la aplicación.
- *
- * Solo conoce la operación "dividir" y sus reglas:
- * - ambos argumentos deben ser números finitos;
- * - el denominador no puede ser 0.
- *
- * Eso la hace reutilizable desde cualquier capa superior.
- *
- * @param {number} n1
- * @param {number} n2
- * @returns {number}
+ * @param {number} n1 Dividendo.
+ * @param {number} n2 Divisor.
+ * @returns {number} Cociente de n1 entre n2.
  * @throws {TypeError} Si n1 o n2 no son números finitos.
  * @throws {RangeError} Si n2 es 0.
  */
@@ -40,30 +27,40 @@ function div(n1, n2) {
 }
 
 /**
- * Capa de aplicación.
+ * Operación de dominio para sumar una lista de números.
  *
- * Responsabilidad:
- * - Recibir la entrada de la capa superior.
- * - Validar la forma de los datos.
- * - Orquestar la llamada a la lógica de dominio.
+ * Requiere al menos un argumento y valida que todos sean números finitos.
  *
- * Esta función no presenta resultados ni errores al usuario.
- * Tampoco implementa la regla matemática de la división.
- *
- * Su trabajo es validar la estructura del input:
- * - que "data" sea un objeto plano;
- * - que existan las propiedades n1 y n2.
- *
- * Después delega la validación del valor y la operación real
- * a la capa de dominio, llamando a div().
- *
- * @param {{n1: number, n2: number}} data
- * @returns {number}
- * @throws {TypeError} Si data no es un objeto plano.
- * @throws {TypeError} Si faltan las propiedades n1 o n2.
- * @throws {TypeError|RangeError} Propaga los errores lanzados por div().
+ * @param {...number} args Valores a sumar.
+ * @returns {number} Suma total.
+ * @throws {TypeError} Si no se recibe ningún argumento.
+ * @throws {TypeError} Si algún argumento no es un número finito.
  */
-function service(data) {
+function sum(...args) {
+  if (args.length === 0) {
+    throw new TypeError('At least one argument is required')
+  }
+
+  if (args.some((arg) => Number.isFinite(arg) === false)) {
+    throw new TypeError('All arguments must be valid numbers')
+  }
+
+  return args.reduce((acc, curr) => acc + curr, 0)
+}
+
+/**
+ * Caso de uso de aplicación para calcular el promedio de tres valores.
+ *
+ * Valida la estructura del objeto de entrada para ejecutar el caseo de uso
+ * y delega el cálculo a las funciones de dominio `sum()` y `div()`.
+ *
+ * @param {{n1: number, n2: number, n3: number}} data Datos de entrada.
+ * @returns {number} Promedio de n1, n2 y n3.
+ * @throws {TypeError} Si `data` no es un objeto plano.
+ * @throws {TypeError} Si faltan `n1`, `n2` o `n3`.
+ * @throws {TypeError|RangeError} Si `sum()` o `div()` lanzan un error.
+ */
+function avgService(data) {
   if (
     data === undefined ||
     data === null ||
@@ -72,42 +69,38 @@ function service(data) {
     throw new TypeError('Data must be a plain object')
   }
 
-  if (Object.hasOwn(data, 'n1') === false || Object.hasOwn(data, 'n2') === false) {
-    throw new TypeError('Data must have n1 and n2 properties')
+  if (
+    Object.hasOwn(data, 'n1') === false ||
+    Object.hasOwn(data, 'n2') === false ||
+    Object.hasOwn(data, 'n3') === false
+  ) {
+    throw new TypeError('Data must have n1, n2 and n3 properties')
   }
 
-  return div(data.n1, data.n2)
+  const sumResult = sum(data.n1, data.n2, data.n3)
+  const divResult = div(sumResult, 3)
+
+  return divResult
 }
 
 /**
- * Capa de presentación.
+ * Punto de entrada de la capa de presentación.
  *
- * Responsabilidad:
- * - Obtener o preparar los datos de entrada.
- * - Invocar la capa de aplicación.
- * - Mostrar el resultado o el error.
- *
- * Esta función sí conoce detalles de salida, como console.log.
- * Pero no conoce la implementación interna de la regla de negocio.
- *
- * La dependencia va hacia abajo:
- * - main() usa service()
- * - service() usa div()
- * - div() no conoce a las capas superiores
- *
- * Esa dirección evita acoplamiento entre capas.
+ * Genera datos, ejecuta el caso de uso `avgService()` e interactúa
+ * con el usuario mostrando el resultado o el error en consola.
  *
  * @returns {void}
  */
 function main() {
   const n1 = Math.floor(Math.random() * 10)
   const n2 = Math.floor(Math.random() * 10)
+  const n3 = Math.floor(Math.random() * 10)
 
   try {
-    const result = service({ n1, n2 })
-    console.log(`The result of dividing ${n1} by ${n2} is ${result}`)
+    const result = avgService({ n1, n2, n3 })
+    console.log(`The average of ${n1}, ${n2} and ${n3} is ${result}`)
   } catch (error) {
-    console.log(`Cannot divide ${n1} by ${n2}: ${error.message}`)
+    console.log(`Cannot calculate the average: ${error.message}`)
   }
 }
 
