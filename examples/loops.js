@@ -1,69 +1,89 @@
-// iterables
-const list = [1, 2, 3, 4]
-const object = { one: 1, two: 2, three: 3, four: 4 }
+function forLoop(arr) {
+  console.log('for')
 
-// for
-;(function () {
-  console.warn('for')
-
-  for (let i = 0, end = list.length; i < end; i += 1) {
-    const element = list[i]
+  for (let i = 0, end = arr.length; i < end; i += 1) {
+    const element = arr[i]
     console.log(element)
   }
-})()
+}
 
-// for of
-;(function () {
-  console.warn('for of')
+function forOfLoop(arr) {
+  console.log('for of')
 
-  for (const element of list) {
+  for (const element of arr) {
     console.log(element)
   }
-})()
+}
 
-// for in
-;(function () {
-  console.warn('for in')
+function forInLoop(obj) {
+  console.log('for in')
 
-  for (const key in object) {
-    const element = object[key]
+  for (const key in obj) {
+    const element = obj[key]
     console.log(element)
   }
-})()
+}
 
-// while
-;(function () {
-  console.warn('while')
+function whileLoop(arr) {
+  console.log('while')
 
   let index = 0
-  const end = list.length
+  const end = arr.length
 
   while (index < end) {
-    const element = list[index]
+    const element = arr[index]
     console.log(element)
     index += 1
   }
-})()
+}
 
-// do while
-;(function () {
-  console.warn('do while')
+function doWhileLoop(arr) {
+  console.log('do while')
 
   let index = 0
-  const end = list.length
+  const end = arr.length
 
   do {
-    const element = list[index]
+    const element = arr[index]
     console.log(element)
     index += 1
   } while (index < end)
-})()
+}
 
-// forEach
-;(function () {
-  console.warn('forEach')
+function forEachLoop(arr) {
+  console.log('forEach')
 
-  list.forEach((element) => {
+  arr.forEach((element) => {
     console.log(element)
   })
-})()
+}
+
+function forOfPromiseLoop(arr) {
+  console.log('for of promise')
+  for (const element of arr) {
+    new Promise((done) => {
+      console.log(element)
+      done()
+    })
+  }
+}
+
+async function forAwaitOfLoop(arr) {
+  console.log('for await of')
+
+  for await (const element of arr) {
+    console.log(element)
+  }
+}
+
+const list = [1, 2, 3, 4]
+const object = { one: 1, two: 2, three: 3, four: 4 }
+
+forLoop(list)
+forOfLoop(list)
+forInLoop(object)
+whileLoop(list)
+doWhileLoop(list)
+forEachLoop(list)
+forOfPromiseLoop(list)
+forAwaitOfLoop(list)
