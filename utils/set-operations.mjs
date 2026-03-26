@@ -9,13 +9,13 @@
  * union(a, b); // Set([1, 2, 3, 4, 5])
  */
 export function union(setA, setB) {
-  const result = new Set(setA);
+  const result = new Set(setA)
 
   for (const item of setB) {
-    result.add(item);
+    result.add(item)
   }
 
-  return result;
+  return result
 }
 
 /**
@@ -29,15 +29,15 @@ export function union(setA, setB) {
  * intersection(a, b); // Set([2, 3])
  */
 export function intersection(setA, setB) {
-  const result = new Set();
+  const result = new Set()
 
   for (const item of setA) {
     if (setB.has(item)) {
-      result.add(item);
+      result.add(item)
     }
   }
 
-  return result;
+  return result
 }
 
 /**
@@ -51,16 +51,16 @@ export function intersection(setA, setB) {
  * difference(a, b); // Set([1, 2])
  */
 export function difference(setA, setB) {
-  const result = new Set();
+  const result = new Set()
 
   for (const item of setA) {
     if (setB.has(item)) {
-      continue;
+      continue
     }
-    result.add(item);
+    result.add(item)
   }
 
-  return result;
+  return result
 }
 
 /**
@@ -74,23 +74,23 @@ export function difference(setA, setB) {
  * symmetricDifference(a, b); // Set([1, 2, 4, 5])
  */
 export function symmetricDiff(setA, setB) {
-  const result = new Set();
+  const result = new Set()
 
   for (const item of setA) {
     if (setB.has(item)) {
-      continue;
+      continue
     }
-    result.add(item);
+    result.add(item)
   }
 
   for (const item of setB) {
     if (setA.has(item)) {
-      continue;
+      continue
     }
-    result.add(item);
+    result.add(item)
   }
 
-  return result;
+  return result
 }
 
 /**
@@ -104,14 +104,14 @@ export function symmetricDiff(setA, setB) {
  * complement(mySet, universe); // Set([4, 5, 6])
  */
 export function complement(set, universe) {
-  const result = new Set();
+  const result = new Set()
 
   for (const item of universe) {
     if (set.has(item)) {
-      continue;
+      continue
     }
-    result.add(item);
+    result.add(item)
   }
 
-  return result;
+  return result
 }

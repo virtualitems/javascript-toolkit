@@ -138,8 +138,8 @@ export const on = Object.freeze({
   webkitanimationiteration: 'webkitanimationiteration',
   webkitanimationstart: 'webkitanimationstart',
   webkittransitionend: 'webkittransitionend',
-  wheel: 'wheel',
-});
+  wheel: 'wheel'
+})
 
 export const events = Object.freeze({
   abort: Event,
@@ -276,5 +276,5 @@ export const events = Object.freeze({
   webkitanimationiteration: AnimationEvent,
   webkitanimationstart: AnimationEvent,
   webkittransitionend: TransitionEvent,
-  wheel: WheelEvent,
-});
+  wheel: WheelEvent
+})

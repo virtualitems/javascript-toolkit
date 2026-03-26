@@ -25,7 +25,7 @@
  * @returns {boolean}
  */
 function isPrimitive(value) {
-  const type = typeof value;
+  const type = typeof value
   return (
     value === null ||
     type === 'string' ||
@@ -33,7 +33,7 @@ function isPrimitive(value) {
     type === 'boolean' ||
     type === 'bigint' ||
     type === 'symbol'
-  );
+  )
 }
 
 /**
@@ -41,24 +41,25 @@ function isPrimitive(value) {
  * @returns {FormData}
  */
 export function encode(json) {
-
-  const isArray = Array.isArray(json);
-  const isObject = json !== undefined && json !== null && json.constructor === Object;
+  const isArray = Array.isArray(json)
+  const isObject = json !== undefined && json !== null && json.constructor === Object
 
   if (isArray === false && isObject === false) {
-    throw new Error('Input must be a JSON object or array');
+    throw new Error('Input must be a JSON object or array')
   }
 
-  const formData = new FormData();
+  const formData = new FormData()
 
   /** @type {Array<{current: Json | Primitive | JsonBinary, path: string}>} */
-  const remaining = [{
-    current: json, // the current element value being processed
-    path: '', // the key of the current element in its parent
-  }];
+  const remaining = [
+    {
+      current: json, // the current element value being processed
+      path: '' // the key of the current element in its parent
+    }
+  ]
 
   while (remaining.length > 0) {
-    const { current, path } = remaining.pop();
+    const { current, path } = remaining.pop()
 
     // Si es un array
     if (Array.isArray(current)) {
@@ -66,9 +67,9 @@ export function encode(json) {
         remaining.push({
           current: current[i],
           path: `${path}[${i}]`
-        });
+        })
       }
-      continue;
+      continue
     }
 
     // Si es un objeto
@@ -77,32 +78,31 @@ export function encode(json) {
         remaining.push({
           current: current[key],
           path: `${path}[${key}]`
-        });
+        })
       }
-      continue;
+      continue
     }
 
     // Si es File
     if (current instanceof File) {
-      formData.append(path, current, current.name);
-      continue;
+      formData.append(path, current, current.name)
+      continue
     }
 
     // Si es Blob
     if (current instanceof Blob) {
-      formData.append(path, current);
-      continue;
+      formData.append(path, current)
+      continue
     }
 
     // Si es un valor primitivo
     if (isPrimitive(current)) {
-      formData.append(path, current);
-      continue;
+      formData.append(path, current)
+      continue
     }
-
   } //:: while
 
-  return formData;
+  return formData
 }
 
 /**
@@ -112,31 +112,31 @@ export function encode(json) {
  * @returns {Record<string, unknown>}
  */
 export function decode(data) {
-  const result = {};
+  const result = {}
 
   for (const key in data) {
-    if (!Object.prototype.hasOwnProperty.call(data, key)) continue;
+    if (!Object.prototype.hasOwnProperty.call(data, key)) continue
 
-    const value = data[key];
-    const keyParts = key.split(/[\[\]]+/).filter(Boolean);
+    const value = data[key]
+    const keyParts = key.split(/[\[\]]+/).filter(Boolean)
 
-    if (keyParts.length === 0) continue;
+    if (keyParts.length === 0) continue
 
-    let current = result;
+    let current = result
 
     for (let i = 0; i < keyParts.length - 1; i++) {
-      const part = keyParts[i];
+      const part = keyParts[i]
 
       if (current[part] === undefined) {
-        current[part] = {};
+        current[part] = {}
       }
 
-      current = current[part];
+      current = current[part]
     }
 
-    const lastPart = keyParts[keyParts.length - 1];
-    current[lastPart] = value;
+    const lastPart = keyParts[keyParts.length - 1]
+    current[lastPart] = value
   }
 
-  return result;
+  return result
 }

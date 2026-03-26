@@ -6,8 +6,8 @@
  * functionFactory(setCount => num => setCount(prev => prev + num));
  */
 export function functionFactory(fn) {
-  let fnCache = null;
-  let depsCache = [];
+  let fnCache = null
+  let depsCache = []
 
   return (...args) => {
     if (
@@ -15,10 +15,10 @@ export function functionFactory(fn) {
       depsCache.length !== args.length ||
       !args.every((dep, i) => Object.is(dep, depsCache[i]))
     ) {
-      fnCache = fn.apply(undefined, args);
-      depsCache = args;
+      fnCache = fn.apply(undefined, args)
+      depsCache = args
     }
 
-    return fnCache;
-  };
+    return fnCache
+  }
 }

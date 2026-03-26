@@ -5,7 +5,6 @@
  * @extends {Error}
  */
 export class HttpError extends Error {
-
   /**
    * A frozen object containing standard HTTP status codes and their corresponding messages.
    *
@@ -52,8 +51,8 @@ export class HttpError extends Error {
     507: 'Insufficient Storage',
     508: 'Loop Detected',
     510: 'Not Extended',
-    511: 'Network Authentication Required',
-  });
+    511: 'Network Authentication Required'
+  })
 
   /**
    * Creates an instance of HttpError.
@@ -63,8 +62,7 @@ export class HttpError extends Error {
    * @param {string} [message] - Fallback message if the status code is not recognized.
    */
   constructor(code, message = undefined) {
-    super(message ?? HttpError.messages[code]);
-    this.code = code;
+    super(message ?? HttpError.messages[code])
+    this.code = code
   }
-
 }

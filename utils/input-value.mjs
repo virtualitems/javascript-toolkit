@@ -388,6 +388,6 @@ export function week(element) {
     week,
     year,
     startDate: start,
-    endDate: end,
+    endDate: end
   }
 }

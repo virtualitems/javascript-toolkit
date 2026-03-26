@@ -1,12 +1,12 @@
-const { assert } = console;
-const { document } = window;
+const { assert } = console
+const { document } = window
 
 if (!document) {
-  throw new Error('Document is not available');
+  throw new Error('Document is not available')
 }
 
 if (!assert) {
-  throw new Error('Console assert is not available');
+  throw new Error('Console assert is not available')
 }
 
 /**
@@ -19,13 +19,10 @@ if (!assert) {
  * @throws {Error} If the provided parameter is not an instance of HTMLTemplateElement.
  */
 export function clone(base, deep = true) {
-  assert(
-    base instanceof HTMLElement,
-    'base param must be a instance of HTMLElement',
-  );
+  assert(base instanceof HTMLElement, 'base param must be a instance of HTMLElement')
 
-  const target = base.content ?? base;
-  return target.cloneNode(Boolean(deep));
+  const target = base.content ?? base
+  return target.cloneNode(Boolean(deep))
 }
 
 /**
@@ -37,9 +34,9 @@ export function clone(base, deep = true) {
  * @throws {Error} Throws an error if the parent is not a Node.
  */
 function appendChildren(parent, children) {
-  assert(parent instanceof Node, 'Parent must be a instance of Node');
+  assert(parent instanceof Node, 'Parent must be a instance of Node')
   for (const child of children) {
-    parent.appendChild(child instanceof Node ? child : document.createTextNode(child));
+    parent.appendChild(child instanceof Node ? child : document.createTextNode(child))
   }
 }
 
@@ -51,11 +48,10 @@ function appendChildren(parent, children) {
  * @returns {DocumentFragment} The created DocumentFragment with the appended children.
  */
 export function fragment(...children) {
-  const fragment = document.createDocumentFragment();
-  appendChildren(fragment, children);
-  return fragment;
+  const fragment = document.createDocumentFragment()
+  appendChildren(fragment, children)
+  return fragment
 }
-
 
 /**
  * Creates a new DOM element with the specified tagName, properties, and children.
@@ -67,42 +63,42 @@ export function fragment(...children) {
  * @returns {HTMLElement|DocumentFragment} The created DOM element or document fragment.
  */
 export function ce(tagName, props, ...children) {
-  assert(typeof tagName === 'string', 'Tag name must be a string');
+  assert(typeof tagName === 'string', 'Tag name must be a string')
   assert(
     typeof props === null || props === undefined || props.constructor === Object,
-    'Props must be an object or undefined',
-  );
+    'Props must be an object or undefined'
+  )
   assert(
     /^[a-zA-Z0-9-]*$/.test(tagName),
-    'Tag name must contain only letters, numbers, hyphens, or be an empty string.',
-  );
+    'Tag name must contain only letters, numbers, hyphens, or be an empty string.'
+  )
 
   if (tagName === '') {
-    return createFragment(...children);
+    return createFragment(...children)
   }
 
-  let element = document.createElement(tagName);
+  let element = document.createElement(tagName)
 
-  appendChildren(element.content ?? element, children);
+  appendChildren(element.content ?? element, children)
 
   if (props === null || props === undefined) {
-    return element;
+    return element
   }
 
   for (const key in props) {
     if ('object' === typeof props[key]) {
       if (!(key in element)) {
-        element[key] = {};
+        element[key] = {}
       }
 
-      Object.assign(element[key], props[key]);
-      continue;
+      Object.assign(element[key], props[key])
+      continue
     }
 
-    element[key] = props[key];
+    element[key] = props[key]
   }
 
-  return element;
+  return element
 }
 
 /**
@@ -112,11 +108,8 @@ export function ce(tagName, props, ...children) {
  * @param {*} content - The new content to replace the existing content.
  */
 export function hydrate(target, ...content) {
-  assert(
-    target instanceof HTMLElement,
-    'Target must be an instance of HTMLElement',
-  );
+  assert(target instanceof HTMLElement, 'Target must be an instance of HTMLElement')
 
-  target.innerHTML = '';
-  appendChildren(target, content);
+  target.innerHTML = ''
+  appendChildren(target, content)
 }

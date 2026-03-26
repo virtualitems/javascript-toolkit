@@ -6,13 +6,11 @@
  * @throws {Error} Throws an error if the input is not a Promise.
  */
 export function safe(promise) {
-  if ((promise instanceof Promise) === false) {
-    throw new TypeError('Input must be a Promise');
+  if (promise instanceof Promise === false) {
+    throw new TypeError('Input must be a Promise')
   }
 
-  return promise
-    .then(val => [null, val])
-    .catch(err => [err, undefined]);
+  return promise.then((val) => [null, val]).catch((err) => [err, undefined])
 }
 
 /**
@@ -26,18 +24,18 @@ export function safe(promise) {
  * @throws {Error} If `fn` is not a function or `args` is not an array.
  */
 export function safeExec(fn, thisArg = undefined, args = []) {
-  if ((fn instanceof Function) === false) {
-    throw new TypeError('Input must be a Function');
+  if (fn instanceof Function === false) {
+    throw new TypeError('Input must be a Function')
   }
 
   if (Array.isArray(args) === false) {
-    throw new TypeError('Arguments must be an array');
+    throw new TypeError('Arguments must be an array')
   }
 
   try {
-    const val = fn.apply(thisArg, args);
-    return [null, val];
+    const val = fn.apply(thisArg, args)
+    return [null, val]
   } catch (err) {
-    return [err, undefined];
+    return [err, undefined]
   }
 }

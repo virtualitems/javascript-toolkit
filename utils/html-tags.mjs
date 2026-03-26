@@ -2,32 +2,25 @@
  * @fileoverview HTML tags collection
  */
 
-const tags = {
-
-  // core
-  body: 'body',
-  head: 'head',
-  html: 'html',
-  title: 'title',
-
-  // metadata
-  base: 'base',
-  meta: 'meta',
-
-  // coding
-  link: 'link',
-  script: 'script',
-
-  // functional
+export const behavior = Object.freeze({
   area: 'area',
+  br: 'br',
+  button: 'button',
+  canvas: 'canvas',
+  details: 'details',
   dialog: 'dialog',
+  hr: 'hr',
   map: 'map',
+  meter: 'meter',
   noscript: 'noscript',
+  progress: 'progress',
   slot: 'slot',
   style: 'style',
-  template: 'template',
+  template: 'template'
+})
 
-  // text format
+export const text = Object.freeze({
+  // format
   b: 'b',
   bdi: 'bdi',
   bdo: 'bdo',
@@ -57,7 +50,7 @@ const tags = {
   u: 'u',
   wbr: 'wbr',
 
-  // data definition
+  // definition
   abbr: 'abbr',
   address: 'address',
   cite: 'cite',
@@ -67,37 +60,17 @@ const tags = {
   kbd: 'kbd',
   samp: 'samp',
   time: 'time',
-  var: 'var',
+  var: 'var'
+})
 
-  // semantic
-  article: 'article',
-  aside: 'aside',
-  figcaption: 'figcaption',
-  figure: 'figure',
-  footer: 'footer',
-  header: 'header',
-  hgroup: 'hgroup',
-  main: 'main',
-  menu: 'menu',
-  nav: 'nav',
-  search: 'search',
-  section: 'section',
-  summary: 'summary',
+export const document = Object.freeze({
+  body: 'body',
+  head: 'head',
+  html: 'html',
+  title: 'title'
+})
 
-  // media
-  audio: 'audio',
-  img: 'img',
-  picture: 'picture',
-  source: 'source',
-  track: 'track',
-  video: 'video',
-
-  // interactive
-  a: 'a',
-  button: 'button',
-  details: 'details',
-
-  // form
+export const form = Object.freeze({
   datalist: 'datalist',
   fieldset: 'fieldset',
   form: 'form',
@@ -109,45 +82,57 @@ const tags = {
   option: 'option',
   output: 'output',
   select: 'select',
-  textarea: 'textarea',
+  textarea: 'textarea'
+})
 
-  // list
+export const layout = Object.freeze({
+  article: 'article',
+  aside: 'aside',
+  div: 'div',
+  figcaption: 'figcaption',
+  figure: 'figure',
+  footer: 'footer',
+  header: 'header',
+  hgroup: 'hgroup',
+  main: 'main',
+  menu: 'menu',
+  nav: 'nav',
+  search: 'search',
+  section: 'section',
+  summary: 'summary'
+})
+
+export const list = Object.freeze({
   dd: 'dd',
   dl: 'dl',
   dt: 'dt',
   li: 'li',
   ol: 'ol',
-  ul: 'ul',
+  ul: 'ul'
+})
 
-  // table
-  caption: 'caption',
-  col: 'col',
-  colgroup: 'colgroup',
-  table: 'table',
-  tbody: 'tbody',
-  td: 'td',
-  tfoot: 'tfoot',
-  th: 'th',
-  thead: 'thead',
-  tr: 'tr',
+export const meta = Object.freeze({
+  base: 'base',
+  meta: 'meta'
+})
 
-  // embed
+export const hypermedia = Object.freeze({
+  a: 'a',
+  audio: 'audio',
   embed: 'embed',
   iframe: 'iframe',
+  img: 'img',
+  link: 'link',
   object: 'object',
   param: 'param',
+  picture: 'picture',
+  script: 'script',
+  source: 'source',
+  track: 'track',
+  video: 'video'
+})
 
-  // draw
-  br: 'br',
-  canvas: 'canvas',
-  hr: 'hr',
-  meter: 'meter',
-  progress: 'progress',
-
-  // divison
-  div: 'div',
-
-  // svg
+export const svg = Object.freeze({
   animate: 'animate',
   animateMotion: 'animateMotion',
   animateTransform: 'animateTransform',
@@ -206,6 +191,18 @@ const tags = {
   textPath: 'textPath',
   tspan: 'tspan',
   use: 'use',
-  view: 'view',
+  view: 'view'
+})
 
-};
+export const table = Object.freeze({
+  caption: 'caption',
+  col: 'col',
+  colgroup: 'colgroup',
+  table: 'table',
+  tbody: 'tbody',
+  td: 'td',
+  tfoot: 'tfoot',
+  th: 'th',
+  thead: 'thead',
+  tr: 'tr'
+})

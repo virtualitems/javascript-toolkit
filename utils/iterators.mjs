@@ -16,32 +16,32 @@
  */
 export function* range(start, end, step = 1) {
   if ('number' !== typeof start || 'number' !== typeof end || 'number' !== typeof step) {
-    throw new Error('Arguments must be numbers');
+    throw new Error('Arguments must be numbers')
   }
 
   if (step === 0) {
-    throw new Error('Step must not be zero');
+    throw new Error('Step must not be zero')
   }
 
   if (start > end && step > 0) {
-    throw new Error('Step must be negative when start is greater than end');
+    throw new Error('Step must be negative when start is greater than end')
   }
 
   if (start < end && step < 0) {
-    throw new Error('Step must be positive when start is less than end');
+    throw new Error('Step must be positive when start is less than end')
   }
 
   if (start === end) {
-    return start;
+    return start
   }
 
   if (start < end) {
     for (let i = start; i < end; i += step) {
-      yield i;
+      yield i
     }
   } else {
     for (let i = start; i > end; i += step) {
-      yield i;
+      yield i
     }
   }
 }
@@ -63,31 +63,31 @@ export function* range(start, end, step = 1) {
  */
 export function* dateRange(start, end, step = 1000) {
   if (!(start instanceof Date) || !(end instanceof Date)) {
-    throw new Error('Arguments must be Date objects');
+    throw new Error('Arguments must be Date objects')
   }
 
-  const startTime = start.getTime();
-  const endTime = end.getTime();
+  const startTime = start.getTime()
+  const endTime = end.getTime()
 
   if (startTime > endTime && step > 0) {
-    throw new Error('Step must be negative when start is greater than end');
+    throw new Error('Step must be negative when start is greater than end')
   }
 
   if (startTime < endTime && step < 0) {
-    throw new Error('Step must be positive when start is less than end');
+    throw new Error('Step must be positive when start is less than end')
   }
 
   if (startTime === endTime) {
-    return start;
+    return start
   }
 
   if (startTime < endTime) {
     for (let i = startTime; i < endTime; i += step) {
-      yield new Date(i);
+      yield new Date(i)
     }
   } else {
     for (let i = startTime; i > endTime; i += step) {
-      yield new Date(i);
+      yield new Date(i)
     }
   }
 }
@@ -99,16 +99,16 @@ export function* dateRange(start, end, step = 1000) {
  */
 export function* count(iterable, start = 1) {
   if (!iterable[Symbol.iterator]) {
-    throw new Error('Argument must be an iterable object');
+    throw new Error('Argument must be an iterable object')
   }
 
   if ('number' !== typeof start || start < 0) {
-    throw new Error('Start must be zero or a positive number');
+    throw new Error('Start must be zero or a positive number')
   }
 
   for (const val of iterable) {
-    yield count;
-    count += 1;
+    yield count
+    count += 1
   }
 }
 
@@ -118,12 +118,12 @@ export function* count(iterable, start = 1) {
  */
 export function* cycle(iterable) {
   if (!iterable[Symbol.iterator]) {
-    throw new Error('Argument must be an iterable object');
+    throw new Error('Argument must be an iterable object')
   }
 
   while (true) {
     for (const val of iterable) {
-      yield val;
+      yield val
     }
   }
 }
@@ -135,18 +135,18 @@ export function* cycle(iterable) {
  */
 export function* enumerate(iterable, start = 1) {
   if (!iterable[Symbol.iterator]) {
-    throw new Error('Argument must be an iterable object');
+    throw new Error('Argument must be an iterable object')
   }
 
   if ('number' !== typeof start || start < 0) {
-    throw new Error('Start must be zero or a positive number');
+    throw new Error('Start must be zero or a positive number')
   }
 
-  let idx = start;
+  let idx = start
 
   for (const val of iterable) {
-    yield [val, idx];
-    idx += 1;
+    yield [val, idx]
+    idx += 1
   }
 }
 
@@ -155,24 +155,24 @@ export function* enumerate(iterable, start = 1) {
  * @returns {Generator}
  */
 export function* zip(...iterables) {
-  const iterators = [];
+  const iterators = []
 
   for (let i = 0; i < iterables.length; i++) {
     if (!iterables[i][Symbol.iterator]) {
-      throw new Error('All arguments must be iterable objects');
+      throw new Error('All arguments must be iterable objects')
     }
 
-    iterators.push(iterables[i][Symbol.iterator]());
+    iterators.push(iterables[i][Symbol.iterator]())
   }
 
   while (true) {
-    const results = iterators.map(i => i.next());
+    const results = iterators.map((i) => i.next())
 
-    if (results.some(r => r.done)) {
-      break;
+    if (results.some((r) => r.done)) {
+      break
     }
 
-    yield results.map(r => r.value);
+    yield results.map((r) => r.value)
   }
 }
 
@@ -183,25 +183,25 @@ export function* zip(...iterables) {
  */
 export function* pack(iterable, size = 2) {
   if (!iterable[Symbol.iterator]) {
-    throw new Error('Argument must be an iterable object');
+    throw new Error('Argument must be an iterable object')
   }
 
   if ('number' !== typeof size || size < 0) {
-    throw new Error('Size must be zero or a positive number');
+    throw new Error('Size must be zero or a positive number')
   }
 
-  let pack = [];
+  let pack = []
 
   for (const val of iterable) {
-    pack.push(val);
+    pack.push(val)
 
     if (pack.length === size) {
-      yield pack;
-      pack = [];
+      yield pack
+      pack = []
     }
   }
 
   if (pack.length > 0) {
-    yield pack;
+    yield pack
   }
 }

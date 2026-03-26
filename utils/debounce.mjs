@@ -6,21 +6,20 @@
  * @returns {Function}
  */
 export function debounce(fn, delay) {
+  let timeout = null
+  let callback = null
 
-  let timeout = null;
-  let callback = null;
-
-  const wrapper = function() {
-    clearTimeout(timeout);
+  const wrapper = function () {
+    clearTimeout(timeout)
 
     if (callback === null) {
-      const context = this;
-      const args = arguments;
-      callback = () => fn.apply(context, args);
+      const context = this
+      const args = arguments
+      callback = () => fn.apply(context, args)
     }
 
-    timeout = setTimeout(callback, delay);
-  };
+    timeout = setTimeout(callback, delay)
+  }
 
-  return wrapper;
+  return wrapper
 }

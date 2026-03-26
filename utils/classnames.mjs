@@ -6,86 +6,72 @@
  * cn('foo', new Set(['bar']), undefined, { baz: true, qux: false }, [null, 'quux']);
  */
 export function cn(...args) {
-  const classNames = new Set();
+  const classNames = new Set()
 
-  const remaining = Array.from(args);
+  const remaining = Array.from(args)
 
   while (remaining.length) {
-    const current = remaining.shift();
+    const current = remaining.shift()
 
     // skip null undefined NaN values
     if (current === undefined || current === null || Object.is(current, NaN)) {
-      continue;
+      continue
     }
 
     // is string
     if (current.constructor === String) {
-      const trimmed = current.trim();
+      const trimmed = current.trim()
 
-      if (trimmed.length === 0) continue;
+      if (trimmed.length === 0) continue
 
-      classNames.add(trimmed);
+      classNames.add(trimmed)
 
-      continue;
+      continue
     }
 
     // is object
     if (current.constructor === Object) {
       for (const key in current) {
-        const value = current[key];
+        const value = current[key]
 
-        if (Boolean(value) === false) continue;
+        if (Boolean(value) === false) continue
 
-        const trimmed = String(key).trim();
+        const trimmed = String(key).trim()
 
-        if (trimmed.length === 0) continue;
+        if (trimmed.length === 0) continue
 
-        classNames.add(trimmed);
+        classNames.add(trimmed)
       }
-      continue;
+      continue
     }
 
     // is map
     if (current.constructor === Map) {
       for (const [key, value] of current) {
+        if (Boolean(value) === false) continue
 
-        if (Boolean(value) === false) continue;
+        const trimmed = String(key).trim()
 
-        const trimmed = String(key).trim();
+        if (trimmed.length === 0) continue
 
-        if (trimmed.length === 0) continue;
-
-        classNames.add(trimmed);
+        classNames.add(trimmed)
       }
 
-      continue;
+      continue
     }
 
     // is iterable
     if ('function' === typeof current[Symbol.iterator]) {
       for (const item of current) {
         if (item !== undefined && item !== null && Object.is(item, NaN) === false) {
-          remaining.push(item);
+          remaining.push(item)
         }
       }
-      continue;
+      continue
     }
 
     // otherwise, ignore
   }
 
-  return Array.from(classNames).join(' ');
-}
-
-/**
- * Function to map class names using a CSS module dictionary.
- *
- * @param {Record<string, string>} classDict
- * @returns {string}
- *
- * @example
- * module({ foo: 'foo_abc123', bar: 'bar_def456' });
- */
-export function module(classDict) {
-  return Object.values(classDict).join(' ');
+  return Array.from(classNames).join(' ')
 }
