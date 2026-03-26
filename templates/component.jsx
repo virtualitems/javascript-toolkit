@@ -1,6 +1,6 @@
 // Libraries
 
-import React from 'react';
+import React from 'react'
 
 // Components
 
@@ -16,15 +16,13 @@ import React from 'react';
 
 // Constants
 
-
 /**
- * @description 
+ * @description
  *
  * @param {React.HTMLProps<HTMLElement>} props
  * @returns {React.ReactElement}
  */
 export default function __COMPONENT__(props) {
-
   // STATE ------------------------
 
   // EFFECTS ---------------------------
@@ -33,6 +31,5 @@ export default function __COMPONENT__(props) {
 
   // VIEW ------------------------------
 
-  return (props.children);
-
+  return props.children
 } //:: ReactElement
