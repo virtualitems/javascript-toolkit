@@ -1,43 +1,42 @@
-import http from 'http';
+import http from 'http'
 
-const port = process.argv[2] ?? 80;
+const port = process.argv[2] ?? 80
 
 // create server
 const server = http.createServer((req, res) => {
-
   if (req.method !== 'GET') {
-    res.statusCode = 405; // Method Not Allowed
-    res.end();
-    return;
+    res.statusCode = 405 // Method Not Allowed
+    res.end()
+    return
   }
 
-  const date = new Date();
-  console.debug(date);
+  const date = new Date()
+  console.debug(date)
 
   // shared headers
-  res.statusCode = 200;
-  res.setHeader('Connection', 'close');
-  res.setHeader('Cache-Control', 'no-store');
-  res.setHeader('Language', 'es-CO');
-  res.setHeader('Transfer-Encoding', 'chunked');
+  res.statusCode = 200
+  res.setHeader('Connection', 'close')
+  res.setHeader('Cache-Control', 'no-store')
+  res.setHeader('Language', 'es-CO')
+  res.setHeader('Transfer-Encoding', 'chunked')
 
   if (req.url.endsWith('/api')) {
     // api response
-    const timeIsoString = date.toISOString();
-    const data = { date: timeIsoString };
-    const json = JSON.stringify(data);
+    const timeIsoString = date.toISOString()
+    const data = { date: timeIsoString }
+    const json = JSON.stringify(data)
 
-    res.setHeader('Content-Type', 'application/json; charset=utf-8');
-    res.end(json);
-    return;
+    res.setHeader('Content-Type', 'application/json; charset=utf-8')
+    res.end(json)
+    return
   }
 
   // default response
-  const timeString = date.toLocaleString('es-CO', { timeZone: 'America/Bogota' });
+  const timeString = date.toLocaleString('es-CO', { timeZone: 'America/Bogota' })
 
-  res.setHeader('Content-Type', 'text/plain; charset=utf-8');
-  res.end(timeString);
-});
+  res.setHeader('Content-Type', 'text/plain; charset=utf-8')
+  res.end(timeString)
+})
 
 // start server
-server.listen(port, () => console.log(`http://localhost:${port}`));
+server.listen(port, () => console.log(`http://localhost:${port}`))

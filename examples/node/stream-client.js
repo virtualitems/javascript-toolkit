@@ -1,9 +1,9 @@
-const http = require('node:http');
+const http = require('node:http')
 
 function delay(ms) {
   return new Promise((resolve) => {
-    setTimeout(resolve, ms);
-  });
+    setTimeout(resolve, ms)
+  })
 }
 
 /**
@@ -13,51 +13,51 @@ function delay(ms) {
 async function store(options, data) {
   const req = http.request(options, (res) => {
     res.on('data', (chunk) => {
-      console.log(chunk.toString());
-    });
+      console.log(chunk.toString())
+    })
 
     res.on('end', () => {
-      console.log('-- end --');
-    });
-  });
+      console.log('-- end --')
+    })
+  })
 
   req.on('error', (err) => {
-    console.error(err);
-  });
+    console.error(err)
+  })
 
-  for (const item of data) { // Send chunks
-    await delay(500); // simulate heavy processing
-    req.write(item);
-    console.log('chunk sent:', item);
+  for (const item of data) {
+    // Send chunks
+    await delay(500) // simulate heavy processing
+    req.write(item)
+    console.log('chunk sent:', item)
   }
 
-  req.end();
+  req.end()
 }
 
 /**
  * @param {import('node:http').RequestOptions} options
  */
 async function list(options) {
-
   const req = http.request(options, (res) => {
     res.on('data', (chunk) => {
-      console.log('chunk received:', chunk.toString());
-    });
+      console.log('chunk received:', chunk.toString())
+    })
 
     res.on('end', () => {
-      console.log('-- end --');
-    });
-  });
+      console.log('-- end --')
+    })
+  })
 
   req.on('error', (err) => {
-    console.error(err);
-  });
+    console.error(err)
+  })
 
-  req.end();
+  req.end()
 }
 
 new Promise((resolve) => {
-  const titles = 'id,name\n';
+  const titles = 'id,name\n'
   const names = [
     'John Doe',
     'Jane Smith',
@@ -78,26 +78,33 @@ new Promise((resolve) => {
     'Paul King',
     'Quinn Wright',
     'Ruby Scott',
-    'Sam Green',
-  ];
-  resolve([titles].concat(names.map((name, i) => `${i + 1},${name}\n`)));
+    'Sam Green'
+  ]
+  resolve([titles].concat(names.map((name, i) => `${i + 1},${name}\n`)))
 })
-  .then((data) => store({
-    hostname: 'localhost',
-    port: 80,
-    path: '/',
-    method: 'POST',
-    headers: {
-      'Type': 'text/csv',
-      'Transfer-Encoding': 'chunked',
-      'Connection': 'keep-alive',
-    }
-  }, data))
+  .then((data) =>
+    store(
+      {
+        hostname: 'localhost',
+        port: 80,
+        path: '/',
+        method: 'POST',
+        headers: {
+          Type: 'text/csv',
+          'Transfer-Encoding': 'chunked',
+          Connection: 'keep-alive'
+        }
+      },
+      data
+    )
+  )
   // RETRIEVE
-  .then(() => list({
-    hostname: 'localhost',
-    port: 80,
-    path: '/',
-    method: 'GET',
-    headers: { 'Accept': 'text/csv' },
-  }));
+  .then(() =>
+    list({
+      hostname: 'localhost',
+      port: 80,
+      path: '/',
+      method: 'GET',
+      headers: { Accept: 'text/csv' }
+    })
+  )

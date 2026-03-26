@@ -12,10 +12,10 @@ source.addEventListener('end', (event) => {
 
 */
 
-const http = require('http');
+const http = require('http')
 
 function delay(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
+  return new Promise((resolve) => setTimeout(resolve, ms))
 }
 
 /**
@@ -38,24 +38,24 @@ function delay(ms) {
  */
 function sse(id, data, event) {
   if ('string' !== typeof id) {
-    throw new TypeError('id must be a string');
+    throw new TypeError('id must be a string')
   }
 
   if ('string' !== typeof data) {
-    throw new TypeError('data must be a string');
+    throw new TypeError('data must be a string')
   }
 
-  let str = '';
+  let str = ''
 
-  str += `id: ${id}\n`;
+  str += `id: ${id}\n`
 
   if ('string' === typeof event) {
-    str += `event: ${event}\n`;
+    str += `event: ${event}\n`
   }
 
-  str += `data: ${data}\n`;
+  str += `data: ${data}\n`
 
-  return `${str}\n`;
+  return `${str}\n`
 }
 
 const server = http.createServer(async (_, res) => {
@@ -63,17 +63,17 @@ const server = http.createServer(async (_, res) => {
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Methods': 'GET',
     'Cache-Control': 'no-store',
-    'Connection': 'keep-alive',
-    'Content-Type': 'text/event-stream',
-  });
+    Connection: 'keep-alive',
+    'Content-Type': 'text/event-stream'
+  })
 
   for (let i = 1; i <= 4; i += 1) {
-    await delay(500);
-    res.write(sse(i.toString(), Date.now().toString()));
+    await delay(500)
+    res.write(sse(i.toString(), Date.now().toString()))
   }
 
-  res.write(sse('-', 'bye', 'end'));
-  res.end();
-});
+  res.write(sse('-', 'bye', 'end'))
+  res.end()
+})
 
-server.listen(80, () => console.log('http://localhost'));
+server.listen(80, () => console.log('http://localhost'))
