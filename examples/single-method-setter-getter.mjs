@@ -7,7 +7,7 @@
  * cnt.value(); // get value
  *
  */
-class Content {
+export class Content {
   constructor(value) {
     this._value = value ?? null
   }
