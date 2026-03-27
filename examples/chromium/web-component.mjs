@@ -1,149 +1,61 @@
-export class Model extends EventTarget {
-
-  /**
-   * @type {unknown}
-   * @private
-   */
-  #state = { active: false };
-
-  get state() {
-    return this.#state;
-  }
-
-  set state(value) {
-    this.#state = value;
-    this.#dispatch('model.change', this.#state);
-  }
-
-  #dispatch(eventName, detail = {}) {
-    const payload = { detail };
-    this.dispatchEvent(new CustomEvent(eventName, payload));
-  }
-}
-
-export class ModelChangeHandler {
-
-  /**
-   * @param {WebComponent} element
-   */
-  constructor(element) {
-    if ((element instanceof WebComponent) === false) {
-      throw new Error('element must be an instance of WebComponent');
-    }
-    this.element = element;
-  }
-
-  /**
-   * Handle model change event
-   *
-   * @param {CustomEvent} event
-   */
-  handleEvent(event) {
-    console.debug('ƒ handleEvent', event.type);
-
-    const active = event?.detail?.active;
-
-    if (active === undefined) return;
-
-    if (active) {
-      this.element.classList.add('active');
-    } else {
-      this.element.classList.remove('active');
-    }
-
-  }
-}
-
-export class ClickHandler {
-
-  /**
-   * @param {WebComponent} element
-   */
-  constructor(element) {
-    if ((element instanceof WebComponent) === false) {
-      throw new Error('element must be an instance of WebComponent');
-    }
-    this.element = element;
-  }
-
-  /**
-   * Handle click event
-   *
-   * @param {PointerEvent} event
-   */
-  handleEvent(event) {
-    console.debug('ƒ handleEvent', event.type);
-
-    const state = this.element.model.state;
-
-    this.element.model.state = Object.assign({}, state, { active: !state.active });
-  }
-}
-
 export class WebComponent extends HTMLElement {
-
   /**
-   * @type {ClickHandler}
-   */
-  clickHandler;
-
-  /**
-   * @type {Model}
-   */
-  model;
-
-  /**
-   * @type {ModelChangeHandler}
-   */
-  modelChangeHandler;
-
-  /**
+   * @description CSS styles as string
    * @type {string|null}
    */
-  static htmlString = null;
+  static cssString = null
 
   /**
+   * @description HTML template as string
    * @type {string|null}
    */
-  static cssString = null;
+  static htmlString = null
+
+  /**
+   * @description Tag name for the custom element
+   * @type {string|null}
+   */
+  static tagName = null
 
   /**
    * @property {NamedNodeMap} attributes
    * @property {ShadowRoot} shadowRoot
    */
   constructor() {
-    super();
-    console.debug('ƒ constructor', this);
+    super()
+    console.debug('ƒ constructor', this)
+    const { cssString, htmlString } = this.constructor
 
-    this.model = new Model();
-    this.modelChangeHandler = new ModelChangeHandler(this);
-    this.clickHandler = new ClickHandler(this);
+    if (typeof cssString !== 'string') {
+      throw new TypeError('cssString must be a string')
+    }
+
+    if (typeof htmlString !== 'string') {
+      throw new TypeError('htmlString must be a string')
+    }
 
     // html
-    this.attachShadow({ mode: 'open' });
-    this.shadowRoot.innerHTML = this.constructor.htmlString;
+    this.attachShadow({ mode: 'open' })
+    this.shadowRoot.innerHTML = this.constructor.htmlString
 
     // css
-    const stylesheet = new CSSStyleSheet();
-    stylesheet.replace(this.constructor.cssString);
-    this.shadowRoot.adoptedStyleSheets.push(stylesheet);
+    const stylesheet = new CSSStyleSheet()
+    stylesheet.replace(this.constructor.cssString)
+    this.shadowRoot.adoptedStyleSheets.push(stylesheet)
   }
 
   /**
    * Names of all attributes for which the element needs to change
    */
   static get observedAttributes() {
-    return ['class', 'id', 'lang', 'style', 'title'];
+    return ['class', 'id', 'lang', 'style', 'title']
   }
 
   /**
    * Called each time the element is added to the document
    */
   connectedCallback() {
-    console.debug('ƒ connectedCallback');
-
-    this.addEventListener('click', this.clickHandler);
-    this.model.addEventListener('model.change', this.modelChangeHandler);
+    console.debug('ƒ connectedCallback')
   }
 
   /**
@@ -155,24 +67,21 @@ export class WebComponent extends HTMLElement {
    * - stop observers
    */
   disconnectedCallback() {
-    console.debug('ƒ disconnectedCallback');
-
-    this.removeEventListener('click', this.clickHandler);
-    this.model.removeEventListener('model.change', this.modelChangeHandler);
+    console.debug('ƒ disconnectedCallback')
   }
 
   /**
    * Called each time the element is moved by using Element.moveBefore()
    */
   connectedMoveCallback() {
-    console.debug('ƒ connectedMoveCallback');
+    console.debug('ƒ connectedMoveCallback')
   }
 
   /**
    * Called each time the element is moved to a new document
    */
   adoptedCallback() {
-    console.debug('ƒ adoptedCallback');
+    console.debug('ƒ adoptedCallback')
   }
 
   /**
@@ -183,13 +92,12 @@ export class WebComponent extends HTMLElement {
    * @param {string|null} newValue
    */
   attributeChangedCallback(attributeName, oldValue, newValue) {
-    console.debug('ƒ attributeChangedCallback', attributeName, oldValue, newValue);
+    console.debug('ƒ attributeChangedCallback', attributeName, oldValue, newValue)
   }
 }
 
-/**
- * HTML template as string
- */
+WebComponent.tagName = 'web-component'
+
 WebComponent.htmlString = `
   <h1>
     <slot></slot>
@@ -197,11 +105,8 @@ WebComponent.htmlString = `
   <p>
     <slot name="text"></slot>
   </p>
-`;
+`
 
-/**
- * CSS styles as string
- */
 WebComponent.cssString = `
   :host {
     display: block;
@@ -226,4 +131,4 @@ WebComponent.cssString = `
   h1 {
     color: blue;
   }
-`;
+`
