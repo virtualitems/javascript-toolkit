@@ -37,6 +37,9 @@ export class Container {
     if (typeof constructor !== 'function')
       throw new TypeError('Constructor must be a function')
 
+    if (this.#map.has(constructor) === false)
+      throw new Error(`Constructor ${constructor.name} is not registered`)
+
     return this.#map.get(constructor)
   }
 
