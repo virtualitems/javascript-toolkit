@@ -282,7 +282,7 @@ describe('Container', () => {
         })
 
       assert.throws(() => container.resolve(ServiceA), {
-        name: 'Error',
+        name: 'CircularDependencyError',
         message: 'Circular dependency detected for ServiceA',
       })
     })
@@ -300,7 +300,7 @@ describe('Container', () => {
       })
 
       assert.throws(() => container.resolve(SelfDependent), {
-        name: 'Error',
+        name: 'CircularDependencyError',
         message: 'Circular dependency detected for SelfDependent',
       })
     })
