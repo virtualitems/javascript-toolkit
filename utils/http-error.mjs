@@ -64,5 +64,6 @@ export class HttpError extends Error {
   constructor(code, message = undefined) {
     super(message ?? HttpError.messages[code])
     this.code = code
+    this.name = 'HttpError'
   }
 }
