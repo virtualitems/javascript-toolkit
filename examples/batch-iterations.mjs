@@ -7,18 +7,16 @@ const csv = [
 ]
 
 function makeInvoice(rows) {
-  const invoice = {
-    items: new Array(rows.length),
-    total: 0
-  }
+  const items = new Array(rows.length)
+  let total = 0
 
   for (let i = 0, end = rows.length; i < end; i += 1) {
     const [item, price, quantity] = rows[i]
-    invoice.items[i] = { item, price, quantity, total: price * quantity }
-    invoice.total += invoice.items[i].total
+    items[i] = { item, price, quantity, total: price * quantity }
+    total += items[i].total
   }
 
-  return invoice
+  return { items, total }
 }
 
 console.log(makeInvoice(csv.slice(1)))
