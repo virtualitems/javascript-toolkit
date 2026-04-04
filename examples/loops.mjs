@@ -61,10 +61,7 @@ function forEachLoop(arr) {
 function forOfPromiseLoop(arr) {
   console.log('for of promise')
   for (const element of arr) {
-    new Promise((done) => {
-      console.log(element)
-      done()
-    })
+    Promise.resolve(element).then(console.log)
   }
 }
 
