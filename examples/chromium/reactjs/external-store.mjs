@@ -29,7 +29,9 @@ function createCounterStore() {
   }
 
   return {
+    store,
     getState,
+    setState,
     subscribe,
     increment,
     decrement,
