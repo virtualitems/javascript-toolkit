@@ -12,24 +12,25 @@ import { createStore } from 'https://esm.sh/zustand/vanilla'
 
 function createCounterStore() {
   const store = createStore(() => ({ count: 0 }))
+  const { getState, subscribe, setState } = store
 
   const increment = () => {
-    const state = store.getState()
-    store.setState({ count: state.count + 1 })
+    const state = getState()
+    setState({ count: state.count + 1 })
   }
 
   const decrement = () => {
-    const state = store.getState()
-    store.setState({ count: state.count - 1 })
+    const state = getState()
+    setState({ count: state.count - 1 })
   }
 
   const reset = () => {
-    store.setState({ count: 0 })
+    setState({ count: 0 })
   }
 
   const state = {
-    getState: store.getState,
-    subscribe: store.subscribe,
+    getState,
+    subscribe,
     increment,
     decrement,
     reset
