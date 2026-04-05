@@ -15,24 +15,24 @@ function createCounterStore() {
 
   const { getState, setState } = store
 
-  const getRef = () => Object.assign({}, getState())
+  const state = () => Object.assign({}, getState())
 
   const increment = () => {
-    const state = getRef()
-    state.count = state.count + 1
-    setState(state)
+    const current = state()
+    current.count += 1
+    setState(current)
   }
 
   const decrement = () => {
-    const state = getRef()
-    state.count = state.count - 1
-    setState(state)
+    const current = state()
+    current.count -= 1
+    setState(current)
   }
 
   const reset = () => {
-    const state = getRef()
-    state.count = 0
-    setState(state)
+    const current = state()
+    current.count = 0
+    setState(current)
   }
 
   return {
