@@ -28,15 +28,13 @@ function createCounterStore() {
     setState({ count: 0 })
   }
 
-  const state = {
+  return {
     getState,
     subscribe,
     increment,
     decrement,
     reset
   }
-
-  return state
 }
 
 const counterStore = createCounterStore()
