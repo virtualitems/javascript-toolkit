@@ -15,17 +15,21 @@ function createCounterStore() {
   const { getState, setState } = store
 
   const increment = () => {
-    const state = getState()
-    setState({ count: state.count + 1 })
+    const state = Object.assign({}, getState())
+    state.count = state.count + 1
+    setState(state)
   }
 
   const decrement = () => {
-    const state = getState()
-    setState({ count: state.count - 1 })
+    const state = Object.assign({}, getState())
+    state.count = state.count - 1
+    setState(state)
   }
 
   const reset = () => {
-    setState({ count: 0 })
+    const state = Object.assign({}, getState())
+    state.count = 0
+    setState(state)
   }
 
   return {
@@ -41,7 +45,10 @@ const counterStore = createCounterStore()
 // REACT COMPONENT
 
 function Counter() {
-  const { count } = useSyncExternalStore(counterStore.store.subscribe, counterStore.store.getState)
+  const { count } = useSyncExternalStore(
+    counterStore.store.subscribe,
+    counterStore.store.getState
+  )
 
   return h(
     'div',
