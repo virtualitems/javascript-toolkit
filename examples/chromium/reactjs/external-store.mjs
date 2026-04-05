@@ -44,5 +44,19 @@ function Counter() {
   )
 }
 
-const root = createRoot(document.getElementById('root'))
-root.render(createElement(Fragment, null, createElement(Counter), createElement(Counter)))
+const rootElement = document.getElementById('root')
+
+if (rootElement === null) {
+  throw new Error('Root element not found')
+}
+
+const root = createRoot(rootElement)
+
+const fragment = createElement(
+  Fragment,
+  null,
+  createElement(Counter),
+  createElement(Counter)
+)
+
+root.render(fragment)
