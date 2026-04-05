@@ -12,7 +12,7 @@ import { createStore } from 'https://esm.sh/zustand/vanilla'
 
 function createCounterStore() {
   const store = createStore(() => ({ count: 0 }))
-  const { getState, setState } = store
+  const { getState, setState, subscribe } = store
 
   const increment = () => {
     const state = getState()
@@ -30,6 +30,9 @@ function createCounterStore() {
 
   return {
     store,
+    getState,
+    setState,
+    subscribe,
     increment,
     decrement,
     reset
@@ -41,7 +44,7 @@ const counterStore = createCounterStore()
 // REACT COMPONENT
 
 function Counter() {
-  const { count } = useSyncExternalStore(counterStore.store.subscribe, counterStore.store.getState)
+  const { count } = useSyncExternalStore(counterStore.subscribe, counterStore.getState)
 
   return h(
     'div',
