@@ -10,30 +10,40 @@ import { createStore } from 'https://esm.sh/zustand/vanilla'
 
 // EXTERNAL STORE
 
-const store = createStore(() => ({ count: 0 }))
+function createCounterStore() {
+  const store = createStore(() => ({ count: 0 }))
 
-const getState = store.getState
+  const increment = () => {
+    const state = store.getState()
+    store.setState({ count: state.count + 1 })
+  }
 
-const subscribe = store.subscribe
+  const decrement = () => {
+    const state = store.getState()
+    store.setState({ count: state.count - 1 })
+  }
 
-function increment() {
-  const state = store.getState()
-  store.setState({ count: state.count + 1 })
+  const reset = () => {
+    store.setState({ count: 0 })
+  }
+
+  const state = {
+    getState: store.getState,
+    subscribe: store.subscribe,
+    increment,
+    decrement,
+    reset
+  }
+
+  return state
 }
 
-function decrement() {
-  const state = store.getState()
-  store.setState({ count: state.count - 1 })
-}
-
-function reset() {
-  store.setState({ count: 0 })
-}
+const counterStore = createCounterStore()
 
 // REACT COMPONENT
 
 function Counter() {
-  const { count } = useSyncExternalStore(subscribe, getState)
+  const { count } = useSyncExternalStore(counterStore.subscribe, counterStore.getState)
 
   return h(
     'div',
@@ -42,9 +52,9 @@ function Counter() {
     h(
       'div',
       { style: { display: 'flex', gap: '0.5rem', justifyContent: 'center' } },
-      h('button', { onClick: decrement }, 'Decrement'),
-      h('button', { onClick: reset }, 'Reset'),
-      h('button', { onClick: increment }, 'Increment')
+      h('button', { onClick: counterStore.decrement }, 'Decrement'),
+      h('button', { onClick: counterStore.reset }, 'Reset'),
+      h('button', { onClick: counterStore.increment }, 'Increment')
     )
   )
 }
