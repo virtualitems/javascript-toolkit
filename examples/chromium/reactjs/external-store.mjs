@@ -52,11 +52,11 @@ if (rootElement === null) {
 
 const root = createRoot(rootElement)
 
-const fragment = createElement(
+const node = createElement(
   Fragment,
   null,
   createElement(Counter),
   createElement(Counter)
 )
 
-root.render(fragment)
+root.render(node)
