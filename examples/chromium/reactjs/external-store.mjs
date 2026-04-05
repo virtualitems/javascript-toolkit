@@ -1,4 +1,8 @@
-import { useSyncExternalStore, createElement, Fragment } from 'https://esm.sh/react@19'
+import {
+  useSyncExternalStore,
+  createElement as h,
+  Fragment
+} from 'https://esm.sh/react@19'
 import { createRoot } from 'https://esm.sh/react-dom@19/client'
 
 import { createStore } from 'https://esm.sh/zustand/vanilla'
@@ -30,16 +34,16 @@ function reset() {
 function Counter() {
   const { count } = useSyncExternalStore(subscribe, getState)
 
-  return createElement(
+  return h(
     'div',
     { style: { fontFamily: 'sans-serif', textAlign: 'center', marginTop: '2rem' } },
-    createElement('h1', null, `Count: ${count}`),
-    createElement(
+    h('h1', null, `Count: ${count}`),
+    h(
       'div',
       { style: { display: 'flex', gap: '0.5rem', justifyContent: 'center' } },
-      createElement('button', { onClick: decrement }, 'Decrement'),
-      createElement('button', { onClick: reset }, 'Reset'),
-      createElement('button', { onClick: increment }, 'Increment')
+      h('button', { onClick: decrement }, 'Decrement'),
+      h('button', { onClick: reset }, 'Reset'),
+      h('button', { onClick: increment }, 'Increment')
     )
   )
 }
@@ -52,11 +56,6 @@ if (rootElement === null) {
 
 const root = createRoot(rootElement)
 
-const node = createElement(
-  Fragment,
-  null,
-  createElement(Counter),
-  createElement(Counter)
-)
+const node = h(Fragment, null, h(Counter), h(Counter))
 
 root.render(node)
