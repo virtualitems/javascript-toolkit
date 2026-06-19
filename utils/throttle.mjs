@@ -7,6 +7,18 @@
  * @returns {Function}
  */
 export function throttle(fn, delay, maxCalls = 1) {
+  if ('function' !== typeof fn) {
+    throw new TypeError('Expected a function')
+  }
+
+  if ('number' !== typeof delay || delay < 0) {
+    throw new TypeError('Expected delay to be a non-negative number')
+  }
+
+  if ('number' !== typeof maxCalls || maxCalls < 1) {
+    throw new TypeError('Expected maxCalls to be a positive integer')
+  }
+
   let windowStart = 0
   let calls = 0
 

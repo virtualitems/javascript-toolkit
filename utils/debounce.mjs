@@ -6,6 +6,14 @@
  * @returns {Function}
  */
 export function debounce(fn, delay) {
+  if ('function' !== typeof fn) {
+    throw new TypeError('Expected a function')
+  }
+
+  if ('number' !== typeof delay || delay < 0) {
+    throw new TypeError('Expected delay to be a non-negative number')
+  }
+
   let timeout = null
   let callback = null
 
