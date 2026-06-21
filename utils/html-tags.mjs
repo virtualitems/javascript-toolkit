@@ -1,8 +1,9 @@
 /**
- * @fileoverview HTML tags collection
+ * @fileoverview HTML and SVG tags collections
  */
 
-export const behavior = Object.freeze({
+export const tags = Object.freeze({
+  // Behavior
   area: 'area',
   br: 'br',
   button: 'button',
@@ -16,11 +17,9 @@ export const behavior = Object.freeze({
   progress: 'progress',
   slot: 'slot',
   style: 'style',
-  template: 'template'
-})
+  template: 'template',
 
-export const text = Object.freeze({
-  // format
+  // Text
   b: 'b',
   bdi: 'bdi',
   bdo: 'bdo',
@@ -50,7 +49,7 @@ export const text = Object.freeze({
   u: 'u',
   wbr: 'wbr',
 
-  // definition
+  // Definition
   abbr: 'abbr',
   address: 'address',
   cite: 'cite',
@@ -60,17 +59,15 @@ export const text = Object.freeze({
   kbd: 'kbd',
   samp: 'samp',
   time: 'time',
-  var: 'var'
-})
+  var: 'var',
 
-export const document = Object.freeze({
+  // Document
   body: 'body',
   head: 'head',
   html: 'html',
-  title: 'title'
-})
+  title: 'title',
 
-export const form = Object.freeze({
+  // Form
   datalist: 'datalist',
   fieldset: 'fieldset',
   form: 'form',
@@ -82,10 +79,9 @@ export const form = Object.freeze({
   option: 'option',
   output: 'output',
   select: 'select',
-  textarea: 'textarea'
-})
+  textarea: 'textarea',
 
-export const layout = Object.freeze({
+  // Layout
   article: 'article',
   aside: 'aside',
   div: 'div',
@@ -99,24 +95,21 @@ export const layout = Object.freeze({
   nav: 'nav',
   search: 'search',
   section: 'section',
-  summary: 'summary'
-})
+  summary: 'summary',
 
-export const list = Object.freeze({
+  // List
   dd: 'dd',
   dl: 'dl',
   dt: 'dt',
   li: 'li',
   ol: 'ol',
-  ul: 'ul'
-})
+  ul: 'ul',
 
-export const meta = Object.freeze({
+  // Metadata
   base: 'base',
-  meta: 'meta'
-})
+  meta: 'meta',
 
-export const hypermedia = Object.freeze({
+  // Hypermedia
   a: 'a',
   audio: 'audio',
   embed: 'embed',
@@ -129,10 +122,21 @@ export const hypermedia = Object.freeze({
   script: 'script',
   source: 'source',
   track: 'track',
-  video: 'video'
-})
+  video: 'video',
 
-export const svg = Object.freeze({
+  // Table
+  caption: 'caption',
+  col: 'col',
+  colgroup: 'colgroup',
+  table: 'table',
+  tbody: 'tbody',
+  td: 'td',
+  tfoot: 'tfoot',
+  th: 'th',
+  thead: 'thead',
+  tr: 'tr',
+
+  // SVG
   animate: 'animate',
   animateMotion: 'animateMotion',
   animateTransform: 'animateTransform',
@@ -192,17 +196,4 @@ export const svg = Object.freeze({
   tspan: 'tspan',
   use: 'use',
   view: 'view'
-})
-
-export const table = Object.freeze({
-  caption: 'caption',
-  col: 'col',
-  colgroup: 'colgroup',
-  table: 'table',
-  tbody: 'tbody',
-  td: 'td',
-  tfoot: 'tfoot',
-  th: 'th',
-  thead: 'thead',
-  tr: 'tr'
 })
