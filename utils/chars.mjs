@@ -18,12 +18,3 @@ export const QMK = 0x3f // \?
 /* Whitespace */
 export const SPC = 0x20 // space
 export const NBS = 0xa0 // non-breaking space
-
-/* Functions */
-export function slstr(...strings) {
-  return strings.join(' ')
-}
-
-export function mlstr(...strings) {
-  return strings.join('\n')
-}
