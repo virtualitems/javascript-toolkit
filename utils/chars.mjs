@@ -49,3 +49,6 @@ export const SEMI = 0x3b // ; semicolon
 export const TILDE = 0x7e // ~ tilde
 export const LOWBAR = 0x5f // _ underscore
 export const VERT = 0x7c // | vertical bar
+
+export const MINUS = HYPHEN
+export const UNDERSCORE = LOWBAR
