@@ -33,7 +33,7 @@ export const EQUALS = 0x3d // = equals sign
 export const EXCL = 0x21 // ! exclamation mark
 export const SOL = 0x2f // / forward slash
 export const GT = 0x3e // > greater-than sign
-export const HYPHEN_MINUS = 0x2d // - hyphen-minus
+export const HYPHEN = 0x2d // - hyphen-minus
 export const LBRACE = 0x7b // { left curly brace
 export const LPAR = 0x28 // ( left parenthesis
 export const LBRACK = 0x5b // [ left square bracket
