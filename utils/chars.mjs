@@ -9,6 +9,8 @@ export const CR = 0x0d // \r - carriage return
 export const HT = 0x09 // \t - horizontal tab
 export const VT = 0x0b // \v - vertical tab
 
+export const CRLF = CR + LF // \r\n - carriage return + line feed
+
 /* Whitespace */
 export const SPACE = 0x20 // space
 export const NBSP = 0xa0 // non-breaking space
