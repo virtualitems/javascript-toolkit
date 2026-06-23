@@ -87,7 +87,7 @@
  * }))
  */
 
-class WeakRefsMap {
+class WeakMemo {
   #refs = {}
 
   set(key, value) {
@@ -324,9 +324,9 @@ export class BaseEventHandler {
     /**
      * Mapa de referencias débiles indexadas por clave string.
      *
-     * @type {WeakRefsMap}
+     * @type {WeakMemo}
      */
-    this.refs = new WeakRefsMap()
+    this.refs = new WeakMemo()
   }
 
   /**
