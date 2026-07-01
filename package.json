@@ -10,6 +10,7 @@
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
     "redux": "^5.0.1",
+    "tshex-cli": "^1.0.15",
     "typescript": "^6.0.3"
   }
 }
