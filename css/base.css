@@ -7,11 +7,14 @@
 html,
 body {
   min-height: 100vh;
-  min-width: 100%;
+  touch-action: pan-x pan-y;
+  width: 100%;
 }
 
 body {
-  line-height: 1.15;
+  background-color: #282828;
+  color: #f1f1f1;
   font-family: sans-serif;
   font-size: 16px;
+  line-height: 1.15;
 }
