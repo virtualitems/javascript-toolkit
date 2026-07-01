@@ -34,6 +34,7 @@
   "include": [
     "examples/**/*.mjs",
     "templates/**/*.mjs",
+    "types/**/*.d.ts",
     "utils/**/*.mjs"
   ]
 }
