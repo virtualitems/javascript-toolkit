@@ -1,0 +1,30 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "checkJs": true,
+    "noEmit": true,
+    "module": "nodenext",
+    "target": "esnext",
+    "types": [
+      "node"
+    ],
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
+    "verbatimModuleSyntax": true,
+    "isolatedModules": true,
+    "noUncheckedSideEffectImports": true,
+    "moduleDetection": "force",
+    "skipLibCheck": true
+  },
+  "include": [
+    "examples/**/*.mjs",
+    "templates/**/*.mjs",
+    "utils/**/*.mjs"
+  ],
+  "exclude": [
+    "build",
+    "dist",
+    "node_modules"
+  ]
+}

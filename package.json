@@ -1,0 +1,15 @@
+{
+  "private": true,
+  "name": "javascript-toolkit",
+  "scripts": {
+    "check": "tsc -p mjs.tsconfig.json"
+  },
+  "dependencies": {
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7"
+  },
+  "devDependencies": {
+    "@types/node": "^26.0.1",
+    "typescript": "^6.0.3"
+  }
+}
