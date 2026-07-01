@@ -1,0 +1,782 @@
+/*
+<div class="pdf-viewer">
+  <input class="sidebar-state" id="sidebar-state" type="checkbox" checked>
+
+  <header class="toolbar" aria-label="Barra de herramientas del visor PDF">
+    <div class="toolbar__start">
+      <label class="icon-button" for="sidebar-state" title="Mostrar u ocultar barra lateral"
+        aria-label="Mostrar u ocultar barra lateral">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M4 6h16v2H4V6Zm0 5h16v2H4v-2Zm0 5h16v2H4v-2Z" />
+        </svg>
+      </label>
+      <span class="document-title">documento.pdf</span>
+    </div>
+
+    <div class="toolbar__center">
+      <div class="page-selector" aria-label="Selector de página">
+        <input aria-label="Página actual" inputmode="numeric" value="1">
+        <span>/</span>
+        <span>3</span>
+      </div>
+
+      <span class="vertical-separator" aria-hidden="true"></span>
+
+      <div class="zoom-controls">
+        <button class="icon-button" type="button" title="Alejar" aria-label="Alejar">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M5 11h14v2H5z" />
+          </svg>
+        </button>
+        <input class="zoom-value" aria-label="Nivel de zoom" value="100%">
+        <button class="icon-button" type="button" title="Acercar" aria-label="Acercar">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M11 5h2v6h6v2h-6v6h-2v-6H5v-2h6z" />
+          </svg>
+        </button>
+      </div>
+
+      <span class="vertical-separator" aria-hidden="true"></span>
+
+      <button class="icon-button fit-button" type="button" title="Ajustar a la página"
+        aria-label="Ajustar a la página">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path
+            d="M7 3h10a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Zm0 2v14h10V5H7Zm2 2h6v2H9V7Zm0 8h6v2H9v-2Z" />
+        </svg>
+      </button>
+
+      <button class="icon-button" type="button" title="Girar hacia la izquierda"
+        aria-label="Girar hacia la izquierda">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M7.11 8H4V4.89l1.58 1.58A8 8 0 1 1 4 13h2a6 6 0 1 0 1.11-3.47L9.58 12H7V8Z" />
+        </svg>
+      </button>
+    </div>
+
+    <div class="toolbar__end">
+      <button class="icon-button" type="button" title="Descargar" aria-label="Descargar">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M11 4h2v9.17l3.59-3.58L18 11l-6 6-6-6 1.41-1.41L11 13.17V4ZM5 19h14v2H5v-2Z" />
+        </svg>
+      </button>
+
+      <button class="icon-button" type="button" title="Imprimir" aria-label="Imprimir">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path
+            d="M7 3h10v4H7V3Zm10 14v4H7v-4H5a3 3 0 0 1-3-3v-4a3 3 0 0 1 3-3h14a3 3 0 0 1 3 3v4a3 3 0 0 1-3 3h-2Zm-2 2v-5H9v5h6Zm4-9H5a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h2v-3h10v3h2a1 1 0 0 0 1-1v-3a1 1 0 0 0-1-1Z" />
+        </svg>
+      </button>
+
+      <details class="more-menu">
+        <summary class="icon-button" title="Más acciones" aria-label="Más acciones">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path
+              d="M12 8a2 2 0 1 0 0-4 2 2 0 0 0 0 4Zm0 2a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm0 6a2 2 0 1 0 0 4 2 2 0 0 0 0-4Z" />
+          </svg>
+        </summary>
+        <div class="action-menu" role="menu">
+          <button role="menuitemcheckbox" aria-checked="false"><span class="check-slot"></span>Vista de dos
+            páginas</button>
+          <button role="menuitemcheckbox" aria-checked="true"><span class="check-slot">✓</span>Mostrar
+            anotaciones</button>
+          <hr>
+          <button role="menuitem"><span class="check-slot"></span>Presentar</button>
+          <button role="menuitem"><span class="check-slot"></span>Propiedades del documento</button>
+        </div>
+      </details>
+    </div>
+  </header>
+
+  <main class="viewer-container">
+    <aside class="sidenav" aria-label="Barra lateral">
+      <nav class="sidenav__tabs" aria-label="Vistas del documento">
+        <button class="sidenav-tab selected" type="button" title="Miniaturas" aria-label="Miniaturas">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M4 4h6v7H4V4Zm10 0h6v7h-6V4ZM4 13h6v7H4v-7Zm10 0h6v7h-6v-7Z" />
+          </svg>
+        </button>
+        <button class="sidenav-tab" type="button" title="Esquema del documento" aria-label="Esquema del documento">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M5 4h14v2H5V4Zm0 5h10v2H5V9Zm0 5h14v2H5v-2Zm0 5h10v2H5v-2Z" />
+          </svg>
+        </button>
+        <button class="sidenav-tab" type="button" title="Archivos adjuntos" aria-label="Archivos adjuntos">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path
+              d="M17.5 6.5 9 15a2.12 2.12 0 0 0 3 3l8-8a4.24 4.24 0 0 0-6-6L5.5 12.5a6.36 6.36 0 0 0 9 9L21 15l-1.41-1.41-6.5 6.5a4.36 4.36 0 0 1-6.18-6.18l8.5-8.5a2.24 2.24 0 0 1 3.18 3.18l-8 8a.12.12 0 0 1-.18-.18l8.5-8.5-1.41-1.41Z" />
+          </svg>
+        </button>
+      </nav>
+
+      <section class="thumbnail-bar" aria-label="Miniaturas de páginas">
+        <button class="thumbnail-item active" type="button" aria-label="Página 1">
+          <span class="thumbnail-page thumbnail-page--one">
+            <span class="thumb-title"></span>
+            <span class="thumb-line thumb-line--wide"></span>
+            <span class="thumb-line"></span>
+            <span class="thumb-line thumb-line--short"></span>
+          </span>
+          <span class="thumbnail-number">1</span>
+        </button>
+
+        <button class="thumbnail-item" type="button" aria-label="Página 2">
+          <span class="thumbnail-page">
+            <span class="thumb-title"></span>
+            <span class="thumb-line thumb-line--wide"></span>
+            <span class="thumb-line"></span>
+            <span class="thumb-line thumb-line--short"></span>
+          </span>
+          <span class="thumbnail-number">2</span>
+        </button>
+
+        <button class="thumbnail-item" type="button" aria-label="Página 3">
+          <span class="thumbnail-page">
+            <span class="thumb-title"></span>
+            <span class="thumb-line thumb-line--wide"></span>
+            <span class="thumb-line"></span>
+            <span class="thumb-line thumb-line--short"></span>
+          </span>
+          <span class="thumbnail-number">3</span>
+        </button>
+      </section>
+    </aside>
+
+    <section class="document-viewport" aria-label="Documento PDF">
+      <div class="document-canvas">
+        <article class="pdf-page" aria-label="Página 1">
+          <div class="sample-document">
+            <div class="sample-heading"></div>
+            <div class="sample-subheading"></div>
+            <div class="sample-rule"></div>
+            <div class="sample-paragraph"></div>
+            <div class="sample-paragraph sample-paragraph--short"></div>
+            <div class="sample-block"></div>
+            <div class="sample-paragraph"></div>
+            <div class="sample-paragraph sample-paragraph--medium"></div>
+          </div>
+        </article>
+
+        <article class="pdf-page" aria-label="Página 2">
+          <div class="sample-document">
+            <div class="sample-heading sample-heading--small"></div>
+            <div class="sample-rule"></div>
+            <div class="sample-paragraph"></div>
+            <div class="sample-paragraph"></div>
+            <div class="sample-block sample-block--small"></div>
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+</div>
+*/
+
+:root {
+  --viewer-background-color: rgb(40, 40, 40);
+  --viewer-pdf-toolbar-background-color: rgb(60, 60, 60);
+  --viewer-side-background-color: rgb(40, 41, 42);
+  --viewer-border-color: rgb(94, 94, 94);
+  --pdf-toolbar-text-color: rgb(241, 241, 241);
+  --viewer-text-input-selection-color: rgba(255, 255, 255, 0.3);
+  --active-button-bg: rgba(255, 255, 255, 0.24);
+  --button-hover-bg: rgba(255, 255, 255, 0.08);
+  --sidenav-selected-tab-color: rgb(138, 180, 248);
+  --viewer-pdf-toolbar-height: 56px;
+  --viewer-pdf-sidenav-width: 300px;
+  --viewer-icon-size: 20px;
+  --viewer-icon-button-size: 36px;
+  --page-width: 816px;
+  --page-height: 1056px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+html {
+  touch-action: pan-x pan-y;
+}
+
+body {
+  margin: 0;
+  background: var(--viewer-background-color);
+  color: var(--pdf-toolbar-text-color);
+  font-family: Roboto, "Noto Sans", Arial, sans-serif;
+  font-size: 13px;
+  line-height: 1.54;
+  overflow: hidden;
+}
+
+button,
+input,
+summary {
+  font: inherit;
+}
+
+button {
+  color: inherit;
+}
+
+.pdf-viewer {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  min-width: 320px;
+}
+
+.sidebar-state {
+  position: fixed;
+  inline-size: 1px;
+  block-size: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.toolbar {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  flex: 0 0 var(--viewer-pdf-toolbar-height);
+  width: 100%;
+  height: var(--viewer-pdf-toolbar-height);
+  padding: 0 16px;
+  background: var(--viewer-pdf-toolbar-background-color);
+  color: #fff;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.28);
+}
+
+.toolbar__start,
+.toolbar__center,
+.toolbar__end,
+.zoom-controls,
+.page-selector {
+  display: flex;
+  align-items: center;
+}
+
+.toolbar__start,
+.toolbar__end {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.toolbar__start {
+  overflow: hidden;
+  padding-inline-end: 20px;
+}
+
+.toolbar__center {
+  flex: 0 0 auto;
+}
+
+.toolbar__end {
+  justify-content: flex-end;
+  padding-inline-start: 20px;
+  white-space: nowrap;
+}
+
+.document-title {
+  min-width: 0;
+  margin-inline-start: 16px;
+  overflow: hidden;
+  font-size: 0.87rem;
+  font-weight: 500;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.icon-button {
+  display: inline-grid;
+  place-items: center;
+  flex: 0 0 var(--viewer-icon-button-size);
+  width: var(--viewer-icon-button-size);
+  height: var(--viewer-icon-button-size);
+  margin: 0;
+  padding: 8px;
+  border: 0;
+  border-radius: 50%;
+  outline: 0;
+  background: transparent;
+  color: var(--pdf-toolbar-text-color);
+  cursor: pointer;
+  user-select: none;
+}
+
+.icon-button svg,
+.sidenav-tab svg {
+  width: var(--viewer-icon-size);
+  height: var(--viewer-icon-size);
+  fill: currentColor;
+}
+
+.icon-button:hover,
+.icon-button:focus-visible,
+.sidenav-tab:hover,
+.sidenav-tab:focus-visible {
+  background: var(--button-hover-bg);
+}
+
+.icon-button:focus-visible,
+.sidenav-tab:focus-visible,
+.thumbnail-item:focus-visible {
+  outline: 2px solid rgb(128, 134, 139);
+  outline-offset: 1px;
+}
+
+.vertical-separator {
+  width: 1px;
+  height: 20px;
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.page-selector {
+  height: 36px;
+  margin-inline-end: 20px;
+  direction: ltr;
+  color: #fff;
+  font-size: 0.81rem;
+  text-align: center;
+}
+
+.page-selector input,
+.zoom-value {
+  height: 28px;
+  border: 0;
+  outline: 0;
+  background: rgba(0, 0, 0, 0.5);
+  color: inherit;
+  caret-color: currentColor;
+  text-align: center;
+}
+
+.page-selector input {
+  width: 25px;
+  padding: 0 4px;
+}
+
+.page-selector span {
+  margin: 0 4px;
+}
+
+.page-selector input::selection,
+.zoom-value::selection {
+  background: var(--viewer-text-input-selection-color);
+}
+
+.zoom-controls {
+  padding: 0 4px;
+}
+
+.zoom-value {
+  width: 5ch;
+  margin: 0 4px;
+  padding: 0 4px;
+}
+
+.fit-button {
+  margin-inline-start: 12px;
+}
+
+.toolbar__end>.icon-button,
+.more-menu {
+  margin-inline-start: 4px;
+}
+
+.more-menu {
+  position: relative;
+}
+
+.more-menu>summary {
+  list-style: none;
+}
+
+.more-menu>summary::-webkit-details-marker {
+  display: none;
+}
+
+.more-menu[open]>summary {
+  background: var(--active-button-bg);
+}
+
+.action-menu {
+  position: absolute;
+  top: calc(100% + 4px);
+  right: 0;
+  z-index: 10;
+  width: 260px;
+  padding: 8px 0;
+  border-radius: 4px;
+  background: rgb(32, 33, 36);
+  box-shadow: rgba(0, 0, 0, 0.3) 0 1px 2px,
+    rgba(0, 0, 0, 0.15) 0 3px 6px 2px;
+  color: rgb(232, 234, 237);
+}
+
+.action-menu button {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: 40px;
+  padding: 0 16px 0 12px;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  text-align: start;
+  cursor: pointer;
+}
+
+.action-menu button:hover,
+.action-menu button:focus-visible {
+  outline: 0;
+  background: rgb(60, 64, 67);
+}
+
+.action-menu hr {
+  margin: 8px 0;
+  border: 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.check-slot {
+  flex: 0 0 16px;
+  width: 16px;
+  margin-inline-end: 12px;
+  text-align: center;
+}
+
+.viewer-container {
+  position: relative;
+  display: flex;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.sidenav {
+  display: flex;
+  flex: 0 0 var(--viewer-pdf-sidenav-width);
+  min-width: var(--viewer-pdf-sidenav-width);
+  width: var(--viewer-pdf-sidenav-width);
+  height: 100%;
+  overflow: hidden;
+  border-inline-end: 1px solid var(--viewer-border-color);
+  background: var(--viewer-side-background-color);
+  transform: translateX(0);
+  visibility: visible;
+  transition: transform 250ms cubic-bezier(0.6, 0, 0, 1),
+    visibility 250ms,
+    width 0ms,
+    min-width 0ms,
+    flex-basis 0ms;
+}
+
+.sidebar-state:not(:checked)~.viewer-container .sidenav {
+  flex-basis: 0;
+  min-width: 0;
+  width: 0;
+  border-inline-end: 0;
+  transform: translateX(-100%);
+  visibility: hidden;
+  transition: transform 200ms cubic-bezier(0.6, 0, 0, 1),
+    visibility 200ms,
+    width 0ms 200ms,
+    min-width 0ms 200ms,
+    flex-basis 0ms 200ms;
+}
+
+.sidenav__tabs {
+  display: flex;
+  flex: 0 0 64px;
+  min-width: 64px;
+  flex-direction: column;
+  align-items: center;
+}
+
+.sidenav-tab {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  margin: 12px auto 0;
+  padding: 8px;
+  border: 0;
+  border-radius: 50%;
+  outline: 0;
+  background: transparent;
+  color: var(--pdf-toolbar-text-color);
+  cursor: pointer;
+}
+
+.sidenav-tab.selected {
+  color: var(--sidenav-selected-tab-color);
+}
+
+.sidenav-tab.selected::before {
+  position: absolute;
+  top: 7px;
+  left: -14px;
+  width: 3px;
+  height: 22px;
+  border-radius: 0 2px 2px 0;
+  background: var(--sidenav-selected-tab-color);
+  content: "";
+}
+
+.thumbnail-bar {
+  flex: 1 1 auto;
+  height: 100%;
+  overflow: auto;
+  padding: 24px 28px 24px 0;
+  text-align: center;
+  scrollbar-color: rgb(95, 99, 104) transparent;
+  scrollbar-width: thin;
+}
+
+.thumbnail-item {
+  display: block;
+  width: 120px;
+  margin: 0 auto 24px;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: white;
+  cursor: pointer;
+}
+
+.thumbnail-page {
+  position: relative;
+  display: flex;
+  width: 108px;
+  height: 140px;
+  margin: 0 auto 12px;
+  flex-direction: column;
+  align-items: stretch;
+  padding: 17px 13px;
+  background: #fff;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+  opacity: 0.5;
+}
+
+.thumbnail-item.active .thumbnail-page {
+  box-shadow: 0 0 0 6px var(--sidenav-selected-tab-color);
+  opacity: 1;
+}
+
+.thumbnail-item:hover .thumbnail-page {
+  opacity: 0.7;
+}
+
+.thumbnail-item.active:hover .thumbnail-page {
+  opacity: 0.7;
+}
+
+.thumbnail-number {
+  display: block;
+  line-height: 1;
+}
+
+.thumb-title,
+.thumb-line {
+  display: block;
+  background: rgb(75, 75, 75);
+}
+
+.thumb-title {
+  width: 58%;
+  height: 6px;
+  margin-bottom: 12px;
+}
+
+.thumb-line {
+  width: 80%;
+  height: 3px;
+  margin-bottom: 6px;
+  background: rgb(170, 170, 170);
+}
+
+.thumb-line--wide {
+  width: 100%;
+}
+
+.thumb-line--short {
+  width: 60%;
+}
+
+.document-viewport {
+  position: relative;
+  flex: 1 1 auto;
+  min-width: 0;
+  height: 100%;
+  overflow: auto;
+  background: var(--viewer-background-color);
+  direction: ltr;
+  scrollbar-color: rgb(95, 99, 104) transparent;
+}
+
+.document-canvas {
+  display: flex;
+  min-width: calc(var(--page-width) + 64px);
+  min-height: 100%;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 32px 32px;
+}
+
+.pdf-page {
+  position: relative;
+  flex: 0 0 auto;
+  width: var(--page-width);
+  height: var(--page-height);
+  overflow: hidden;
+  background: white;
+  color: rgb(32, 33, 36);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.38);
+}
+
+.sample-document {
+  padding: 76px 86px;
+}
+
+.sample-heading,
+.sample-subheading,
+.sample-rule,
+.sample-paragraph,
+.sample-block {
+  background: rgb(221, 223, 225);
+}
+
+.sample-heading {
+  width: 56%;
+  height: 24px;
+  margin-bottom: 18px;
+  background: rgb(83, 86, 90);
+}
+
+.sample-heading--small {
+  width: 42%;
+}
+
+.sample-subheading {
+  width: 35%;
+  height: 10px;
+  margin-bottom: 28px;
+  background: rgb(154, 160, 166);
+}
+
+.sample-rule {
+  width: 100%;
+  height: 2px;
+  margin-bottom: 34px;
+}
+
+.sample-paragraph {
+  width: 100%;
+  height: 84px;
+  margin-bottom: 28px;
+  background: repeating-linear-gradient(to bottom,
+      rgb(218, 220, 224) 0,
+      rgb(218, 220, 224) 3px,
+      transparent 3px,
+      transparent 14px);
+}
+
+.sample-paragraph--short {
+  width: 72%;
+  height: 56px;
+}
+
+.sample-paragraph--medium {
+  width: 88%;
+}
+
+.sample-block {
+  width: 100%;
+  height: 245px;
+  margin-bottom: 34px;
+  border: 1px solid rgb(210, 212, 215);
+  background: rgb(245, 246, 247);
+}
+
+.sample-block--small {
+  height: 160px;
+}
+
+.thumbnail-bar::-webkit-scrollbar,
+.document-viewport::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+.thumbnail-bar::-webkit-scrollbar-thumb,
+.document-viewport::-webkit-scrollbar-thumb {
+  min-height: 32px;
+  border: 3px solid transparent;
+  border-radius: 8px;
+  background: rgb(95, 99, 104);
+  background-clip: padding-box;
+}
+
+.thumbnail-bar::-webkit-scrollbar-corner,
+.document-viewport::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+@media (max-width: 900px) {
+  :root {
+    --page-width: 612px;
+    --page-height: 792px;
+  }
+
+  .document-title,
+  .zoom-value {
+    display: none;
+  }
+}
+
+@media (max-width: 600px) {
+
+  .document-title,
+  .zoom-value {
+    display: none;
+  }
+
+  .sidenav {
+    display: none;
+  }
+}
+
+@media (max-width: 500px) {
+
+  .toolbar__start,
+  .fit-button {
+    display: none;
+  }
+}
+
+@media (max-width: 420px) {
+  .toolbar__center {
+    display: none;
+  }
+
+  .toolbar__end {
+    padding-inline-start: 0;
+  }
+}
+
+@media (max-width: 200px),
+(max-height: 250px) {
+  .toolbar {
+    display: none;
+  }
+}
