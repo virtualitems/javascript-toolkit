@@ -6,11 +6,11 @@
   },
   "devDependencies": {
     "@reduxjs/toolkit": "^2.12.0",
-    "@types/node": "^26.0.1",
+    "@types/node": "^26.1.0",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
     "redux": "^5.0.1",
-    "tshex-cli": "^1.0.15",
+    "tshex-cli": "^1.0.16",
     "typescript": "^6.0.3"
   }
 }
