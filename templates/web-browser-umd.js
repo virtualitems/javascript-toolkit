@@ -5,47 +5,38 @@
  * @example [html] <script> window.Lib.greet(); </script>
  */
 
-
 // ----------------------------------------
 // Checks
 // ----------------------------------------
 
-
-if (!window.alert) {
-  throw new Error('alert not found');
+if ('alert' in window === false) {
+  throw new Error('alert not found')
 }
-
 
 // ----------------------------------------
 // Namespaces
 // ----------------------------------------
 
-const namespace = 'Lib';
-
+const namespace = 'Lib'
 
 if (namespace in window) {
-  throw new Error('Lib is already defined');
+  throw new Error('Lib is already defined')
 }
 
-
 window[namespace] = (function (alert) {
-
-  'use strict';
+  'use strict'
 
   function greet() {
-    alert('Hello, World!');
+    alert('Greetings!')
   }
-
 
   // ----------------------------------------
   // Exports
   // ----------------------------------------
 
-  return { greet };
-
+  return { greet }
 
   // ----------------------------------------
   // Imports
   // ----------------------------------------
-
-})(window.alert);
+})(window.alert)
