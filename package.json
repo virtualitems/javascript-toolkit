@@ -4,12 +4,11 @@
   "scripts": {
     "check": "tsc -p mjs.tsconfig.json"
   },
-  "dependencies": {
-    "react": "^19.2.7",
-    "react-dom": "^19.2.7"
-  },
   "devDependencies": {
     "@types/node": "^26.0.1",
+    "react-dom": "^19.2.7",
+    "react": "^19.2.7",
+    "redux": "^5.0.1",
     "typescript": "^6.0.3"
   }
 }
