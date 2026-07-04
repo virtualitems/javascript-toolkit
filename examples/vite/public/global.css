@@ -1,0 +1,30 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  min-height: 100vh;
+  touch-action: pan-x pan-y;
+  width: 100%;
+}
+
+body {
+  background-color: #282828;
+  color: #f1f1f1;
+  display: grid;
+  justify-items: center;
+  align-content: center;
+  gap: 0.75rem;
+  font-family: sans-serif;
+  font-size: 16px;
+  line-height: 1.15;
+  padding: 1rem;
+}
+
+.version {
+  font-size: 0.75rem;
+  opacity: 0.85;
+}
