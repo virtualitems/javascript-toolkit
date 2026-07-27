@@ -12,13 +12,13 @@ export class BaseWebComponent extends HTMLElement {
   static htmlString = null
 
   /** @type {Record<string, HTMLElement>} */
-  refs;
+  refs
 
   /** @type {Record<string, EventListenerObject>} */
-  handlers;
+  handlers
 
   /** @type {Record<string, unknown} */
-  state;
+  state
 
   constructor() {
     super()
