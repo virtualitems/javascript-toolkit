@@ -14,7 +14,7 @@ export class BaseWebComponent extends HTMLElement {
   /** @type {Record<string, HTMLElement>} */
   refs;
 
-  /** @type {Record<string, CustomEventListenerObject>} */
+  /** @type {Record<string, EventListenerObject>} */
   handlers;
 
   /** @type {Record<string, unknown} */
