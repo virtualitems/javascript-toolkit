@@ -1,3 +1,11 @@
+/**
+ * @typedef {Object} CustomEventListenerObject
+ * @property {(object: CustomEvent) => void} handleEvent
+ */
+
+/**
+ * @description Abstract class for web components
+ */
 export class BaseWebComponent extends HTMLElement {
   static cssString = null
 
@@ -6,7 +14,7 @@ export class BaseWebComponent extends HTMLElement {
   /** @type {Record<string, HTMLElement>} */
   refs;
 
-  /** @type {Record<string, EventListenerObject>} */
+  /** @type {Record<string, CustomEventListenerObject>} */
   handlers;
 
   /** @type {Record<string, unknown} */
