@@ -42,16 +42,4 @@ export class BaseWebComponent extends HTMLElement {
     stylesheet.replace(cssString)
     this.shadowRoot.adoptedStyleSheets.push(stylesheet)
   }
-
-  static define(tagName) {
-    if ('customElements' in window === false) {
-      throw new Error('Custom Elements are not supported in this environment')
-    }
-
-    if (typeof tagName !== 'string' || tagName.trim() === '') {
-      throw new TypeError('tagName must be a non-empty string')
-    }
-
-    customElements.define(tagName, this)
-  }
 }
