@@ -22,7 +22,7 @@ export class BaseWebComponent extends HTMLElement {
 
         const { styles, children } = this.constructor
 
-        const root = this.createRenderRoot()
+        const root = this.attachShadow(this.constructor.shadowRootOptions)
 
         if (typeof styles === 'string') {
             const stylesheet = new CSSStyleSheet()
@@ -45,13 +45,6 @@ export class BaseWebComponent extends HTMLElement {
         else if (children !== undefined) {
             throw new TypeError('children must be a Node, string, or undefined')
         }
-    }
-
-    /**
-     * @returns {ShadowRoot}
-     */
-    createRenderRoot() {
-        return this.attachShadow(this.constructor.shadowRootOptions)
     }
 }
 
