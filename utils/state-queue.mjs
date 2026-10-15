@@ -64,19 +64,3 @@ export class State {
         }
     }
 }
-
-const s = new State(0)
-
-s.set(5)
-
-new Promise((resolve) => {
-    s.update((prev) => prev + 1)
-    resolve()
-})
-
-new Promise((resolve) => {
-    s.update((prev) => prev + 1)
-    resolve()
-})
-
-console.log(s.value)
