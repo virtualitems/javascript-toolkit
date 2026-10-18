@@ -19,3 +19,4 @@ fetch('https://example.org', { method: 'GET' })
     )
     .catch(console.warn) // on use error
     .finally(clean)
+    .catch(console.warn) // on clean error
