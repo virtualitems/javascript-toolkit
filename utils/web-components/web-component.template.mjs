@@ -1,22 +1,14 @@
+import { css, html } from './utils.mjs'
+
 /** @type {CSSStyleSheet[]} */
-const stylesheets = []
+const stylesheets = [css('')]
 
 export class WebComponent extends HTMLElement {
     constructor() {
         super()
-        const root = this.createRenderRoot()
+        const root = this.attachShadow({ mode: 'open' })
         root.adoptedStyleSheets.push(...stylesheets)
-        root.replaceChildren(...children())
-    }
-
-    /** @returns {Node[]} */
-    children() {
-        return []
-    }
-
-    /** @returns {Element | ShadowRoot} */
-    createRenderRoot() {
-        return this.attachShadow({ mode: 'open' })
+        root.replaceChildren(html(''))
     }
 }
 
