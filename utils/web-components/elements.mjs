@@ -5,7 +5,7 @@
  */
 
 /** @description Standard HTML content attributes and global extensions. */
-const standardHTMLAttributes = new Set([
+const STANDARD_HTML_ATTRIBUTES = new Set([
     'abbr',
     'accept',
     'accept-charset',
@@ -159,7 +159,7 @@ const standardHTMLAttributes = new Set([
 ])
 
 /** @description Standard WAI-ARIA states and properties. */
-const standardARIAAttributes = new Set([
+const STANDARD_ARIA_ATTRIBUTES = new Set([
     'aria-activedescendant',
     'aria-atomic',
     'aria-autocomplete',
@@ -216,38 +216,38 @@ const standardARIAAttributes = new Set([
 ])
 
 /** @description Event handler names are not permitted in DOM props or attributes. */
-const eventNamePattern = /^on[a-z]/i
+const EVENT_NAME_PATTERN = /^on[a-z]/i
 
 /** @description Valid lower-case WAI-ARIA attribute name syntax. */
-const ariaAttributePattern = /^aria-[a-z][a-z0-9-]*$/u
+const ARIA_ATTRIBUTE_PATTERN = /^aria-[a-z][a-z0-9-]*$/u
 
 /** @description XML-compatible characters following the data- attribute prefix. */
-const dataAttributePattern = /^data-[\p{L}\p{M}\p{N}_.:\u00B7\u203F-\u2040-]+$/u
+const DATA_ATTRIBUTE_PATTERN = /^data-[\p{L}\p{M}\p{N}_.:\u00B7\u203F-\u2040-]+$/u
 
 /** @description Prohibits ASCII uppercase characters in custom data attribute names. */
-const uppercaseASCIINamePattern = /[A-Z]/
+const UPPERCASE_ASCII_NAME_PATTERN = /[A-Z]/
 
 /** @description Native WAI-ARIA property names. */
-const ariaStringPropertyPattern = /^aria[A-Z][A-Za-z0-9]*$/u
+const ARIA_STRING_PROPERTY_PATTERN = /^aria[A-Z][A-Za-z0-9]*$/u
 
 /** @description Native WAI-ARIA properties that refer to one element. */
-const ariaElementPropertyPattern = /^aria[A-Z][A-Za-z0-9]*Element$/u
+const ARIA_ELEMENT_PROPERTY_PATTERN = /^aria[A-Z][A-Za-z0-9]*Element$/u
 
 /** @description Native WAI-ARIA properties that refer to multiple elements. */
-const ariaElementsPropertyPattern = /^aria[A-Z][A-Za-z0-9]*Elements$/u
+const ARIA_ELEMENTS_PROPERTY_PATTERN = /^aria[A-Z][A-Za-z0-9]*Elements$/u
 
 /** @description Native IDL properties that may start out null but accept strings. */
-const nullableStringProperties = new Set(['crossOrigin'])
+const NULLABLE_STRING_PROPERTIES = new Set(['crossOrigin'])
 
 /** @description Nullable native properties that refer to one HTML element. */
-const nullableElementProperties = new Set([
+const NULLABLE_ELEMENT_PROPERTIES = new Set([
     'commandForElement',
     'interestTargetElement',
     'popoverTargetElement'
 ])
 
 /** @description DOM collections and forwarding properties that are not assignable. */
-const unassignableProperties = new Set([
+const UNASSIGNABLE_PROPERTIES = new Set([
     'attributes',
     'childNodes',
     'children',
@@ -259,7 +259,7 @@ const unassignableProperties = new Set([
 ])
 
 /** @description Native numeric IDL properties whose values must be integral. */
-const integerProperties = new Set([
+const INTEGER_PROPERTIES = new Set([
     'colSpan',
     'cols',
     'height',
@@ -293,13 +293,14 @@ const integerProperties = new Set([
 /**
  * @description Creates a DOM tree using the React.createElement call shape.
  * Only native DOM values are accepted. Externally created DocumentFragments
- * are allowed as children; props.children, fragments as type, and events are not.
+ * are allowed as children; props.children, value, fragments as type, and events
+ * are not supported.
  * @param {string} type - HTML tag name.
  * @param {DOMProps | null} [props=null] - Standard DOM properties and attributes.
  * @param {...Child} children - DOM nodes, null, or undefined; text must be Text nodes.
  * @returns {HTMLElement} A native HTML element.
- * @throws {TypeError} For events, unknown attributes, invalid children,
- * read-only properties, or a non-string element type.
+ * @throws {TypeError} For events, unsupported properties, unknown attributes,
+ * invalid children, read-only properties, or a non-string element type.
  * @throws {DOMException} For invalid tag names or browser-level DOM failures.
  */
 export function createElement(type, props = null, ...children) {
@@ -311,19 +312,10 @@ export function createElement(type, props = null, ...children) {
     const element = document.createElement(type)
 
     for (const [name, value] of Object.entries(ownProps)) {
-        if (name === 'value') {
-            continue
-        }
-
         setProperty(element, name, value)
     }
 
     appendChildren(element, children)
-
-    // A <select> needs its <option> descendants before setting its value.
-    if (Object.hasOwn(ownProps, 'value')) {
-        setProperty(element, 'value', ownProps.value)
-    }
 
     return element
 } //:: createElement
@@ -344,7 +336,7 @@ function validateElementType(type) {
  * @description Checks the props container and reserved names before DOM creation.
  * @param {unknown} props - Candidate property record.
  * @returns {void} Nothing.
- * @throws {TypeError} For an invalid record, children in props, or event names.
+ * @throws {TypeError} For an invalid record, children, value, or event names.
  */
 function validateProps(props) {
     if (props === null || typeof props !== 'object' || Array.isArray(props) === true) {
@@ -353,6 +345,10 @@ function validateProps(props) {
 
     if (Object.hasOwn(props, 'children') === true) {
         throw new TypeError('Pass children as arguments, not as props.children')
+    }
+
+    if (Object.hasOwn(props, 'value') === true) {
+        throw new TypeError('The value DOM property is unsupported')
     }
 
     for (const name of Object.keys(props)) {
@@ -367,7 +363,7 @@ function validateProps(props) {
  * @throws {TypeError} If the name has the syntax of an event handler.
  */
 function validateEventName(name) {
-    if (eventNamePattern.test(name) === true) {
+    if (EVENT_NAME_PATTERN.test(name) === true) {
         throw new TypeError(`Event properties are unsupported: ${name}`)
     }
 } //:: validateEventName
@@ -422,7 +418,7 @@ function setProperty(element, name, value) {
         return
     }
 
-    if (unassignableProperties.has(name) === true) {
+    if (UNASSIGNABLE_PROPERTIES.has(name) === true) {
         throw new TypeError(`Non-assignable DOM collection property: ${name}`)
     }
 
@@ -506,27 +502,27 @@ function validatePropertyValue(element, name, value) {
     }
 
     if (
-        nullableElementProperties.has(name) === true
-        || ariaElementPropertyPattern.test(name) === true
+        NULLABLE_ELEMENT_PROPERTIES.has(name) === true
+        || ARIA_ELEMENT_PROPERTY_PATTERN.test(name) === true
     ) {
         validateNullableElement(value, name)
         return
     }
 
-    if (ariaElementsPropertyPattern.test(name) === true) {
+    if (ARIA_ELEMENTS_PROPERTY_PATTERN.test(name) === true) {
         validateNullableElementSequence(value, name)
         return
     }
 
     if (
-        nullableStringProperties.has(name) === true
-        || ariaStringPropertyPattern.test(name) === true
+        NULLABLE_STRING_PROPERTIES.has(name) === true
+        || ARIA_STRING_PROPERTY_PATTERN.test(name) === true
     ) {
         validateNullableString(value, name)
         return
     }
 
-    if (integerProperties.has(name) === true) {
+    if (INTEGER_PROPERTIES.has(name) === true) {
         validateInteger(value, name)
         return
     }
@@ -774,7 +770,7 @@ function findDescriptor(element, name) {
 function validateAttributeName(name) {
     validateAttributeEventName(name)
 
-    const isHTML = standardHTMLAttributes.has(name) === true
+    const isHTML = STANDARD_HTML_ATTRIBUTES.has(name) === true
     const isARIA = isStandardARIAAttribute(name)
     const isData = isStandardDataAttribute(name)
 
@@ -790,7 +786,7 @@ function validateAttributeName(name) {
  * @throws {TypeError} If the name identifies an event attribute.
  */
 function validateAttributeEventName(name) {
-    if (eventNamePattern.test(name) === true) {
+    if (EVENT_NAME_PATTERN.test(name) === true) {
         throw new TypeError(`Event attributes are unsupported: ${name}`)
     }
 } //:: validateAttributeEventName
@@ -801,8 +797,8 @@ function validateAttributeEventName(name) {
  * @returns {boolean} Whether the name and spelling are standard.
  */
 function isStandardARIAAttribute(name) {
-    return ariaAttributePattern.test(name) === true
-        && standardARIAAttributes.has(name) === true
+    return ARIA_ATTRIBUTE_PATTERN.test(name) === true
+        && STANDARD_ARIA_ATTRIBUTES.has(name) === true
 } //:: isStandardARIAAttribute
 
 /**
@@ -811,8 +807,8 @@ function isStandardARIAAttribute(name) {
  * @returns {boolean} Whether the name can be a standard data attribute.
  */
 function isStandardDataAttribute(name) {
-    return dataAttributePattern.test(name) === true
-        && uppercaseASCIINamePattern.test(name) === false
+    return DATA_ATTRIBUTE_PATTERN.test(name) === true
+        && UPPERCASE_ASCII_NAME_PATTERN.test(name) === false
 } //:: isStandardDataAttribute
 
 /**
