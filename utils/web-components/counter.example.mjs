@@ -3,6 +3,23 @@ import { Subject, css, html } from './vanilla-backpack.mjs'
 /** @type {CSSStyleSheet[]} */
 const stylesheets = [css(':host { font-size: 4em; cursor: pointer; user-select: none; }')]
 
+class ClickHandler {
+    /** @param {WebComponent} host */
+    constructor(host) {
+        this.host = host
+    }
+
+    handleEvent() {
+        const { state, shadowRoot } = this.host
+        state.update(this.increment)
+        shadowRoot.innerHTML = state.current()
+    }
+
+    increment(prev) {
+        return prev + 1
+    }
+}
+
 export class WebComponent extends HTMLElement {
     constructor() {
         super()
@@ -20,18 +37,15 @@ export class WebComponent extends HTMLElement {
         this.state = new Subject(0)
 
         // event handlers
-        this.onClick = () => {
-            this.state.update((prev) => prev + 1)
-            root.innerHTML = this.state.current()
-        }
+        this.clickHandler = new ClickHandler(this)
     }
 
     connectedCallback() {
-        this.addEventListener('click', this.onClick)
+        this.addEventListener('click', this.clickHandler)
     }
 
     disconnectedCallback() {
-        this.removeEventListener('click', this.onClick)
+        this.removeEventListener('click', this.clickHandler)
     }
 }
 
