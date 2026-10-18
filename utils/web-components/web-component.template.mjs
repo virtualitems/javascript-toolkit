@@ -1,17 +1,17 @@
+/** @type {CSSStyleSheet[]} */
+const stylesheets = []
+
 export class WebComponent extends HTMLElement {
-    /** @type {CSSStyleSheet[]} */
-    static stylesheets = []
-
-    /** @returns {Node[]} */
-    static children() {
-        return []
-    }
-
     constructor() {
         super()
         const root = this.createRenderRoot()
-        root.adoptedStyleSheets.push(...WebComponent.stylesheets)
-        root.replaceChildren(...WebComponent.children())
+        root.adoptedStyleSheets.push(...stylesheets)
+        root.replaceChildren(...children())
+    }
+
+    /** @returns {Node[]} */
+    children() {
+        return []
     }
 
     /** @returns {Element | ShadowRoot} */
