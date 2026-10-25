@@ -1,0 +1,27 @@
+{
+  "fmt": {
+    "bracePosition": "sameLine",
+    "indentWidth": 4,
+    "json.trailingCommas": "never",
+    "jsx.bracketPosition": "sameLine",
+    "jsx.forceNewLinesSurroundingContent": false,
+    "jsx.multiLineParens": "prefer",
+    "lineWidth": 90,
+    "newLineKind": "lf",
+    "nextControlFlowPosition": "nextLine",
+    "operatorPosition": "nextLine",
+    "proseWrap": "never",
+    "quoteProps": "asNeeded",
+    "semiColons": false,
+    "singleBodyPosition": "maintain",
+    "singleQuote": true,
+    "sortNamedExports": "caseSensitive",
+    "sortNamedImports": "caseSensitive",
+    "spaceAround": false,
+    "spaceSurroundingProperties": true,
+    "trailingCommas": "never",
+    "typeLiteral.separatorKind": "semiColon",
+    "useBraces": "always",
+    "useTabs": false
+  }
+}
